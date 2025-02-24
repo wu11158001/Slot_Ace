@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 989e60ebabb5b2948b965084005bf8c1
   m_currentHash:
     serializedVersion: 2
-    Hash: 6633c9fdee92a61822f3f58aca283c68
+    Hash: 340d7936af1e8777d7be2f7db6296008
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_CatalogRequestsTimeout: 0
@@ -59,7 +59,11 @@ MonoBehaviour:
   m_BuildAddressablesWithPlayerBuild: 0
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
+  - {fileID: 11400000, guid: 89c3a1361a71a0f4ab8b297259ba4568, type: 2}
   - {fileID: 11400000, guid: b92a181e0907e4741b636f54c4c7342e, type: 2}
+  - {fileID: 11400000, guid: 6a6cd145892600845813cccf0d2a98c5, type: 2}
+  - {fileID: 11400000, guid: 2ea6cdb6fb0ca7249ae8fc9982ae53fa, type: 2}
+  - {fileID: 11400000, guid: b701bbdfafa3b1c4cacf3be7a74664b5, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
     m_BundleBuildPath: Temp/com.unity.addressables/AssetBundles
@@ -70,13 +74,13 @@ MonoBehaviour:
       m_ProfileName: Default
       m_Values:
       - m_Id: 0883d1ff28485c944bbbcefa72e918f3
-        m_Value: http://192.168.0.172:8080
+        m_Value: https://wu11158001.github.io/Slot_Ace_HotFix/
       - m_Id: 692da45d4a5771a44bfc54e9ac56bb65
         m_Value: http://127.0.0.1:8080
       - m_Id: bee386336b3b2b8458e36434a844d80e
-        m_Value: 'E:\HttpServer\SlotAce/[BuildTarget]'
+        m_Value: 'E:\HttpServer\Slot_Ace_HotFix/[BuildTarget]'
       - m_Id: c7720f1608efe5c458c791bb8e522680
-        m_Value: 'E:\HttpServer\SlotAce/[BuildTarget]'
+        m_Value: 'E:\HttpServer\Slot_Ace_HotFix/[BuildTarget]'
       - m_Id: de2aea3f9f771df4ab6e86c02b108a29
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
     m_ProfileEntryNames:
@@ -99,6 +103,9 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - Locale
+    - Locale-zh-TW
+    - Locale-en
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 173f302fe195a9c44a59910c26fef2d5, type: 2}

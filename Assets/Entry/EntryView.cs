@@ -1,9 +1,126 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.AddressableAssets.ResourceLocators;
 
 public class EntryView : MonoBehaviour
 {
     [SerializeField] Image LodingBar_Img;
     [SerializeField] TextMeshProUGUI LoadingProgress_Txt;
+    [SerializeField] Button Retry_Btn;
+
+    private void Start()
+    {
+        Retry_Btn.gameObject.SetActive(false);
+        Retry_Btn.onClick.AddListener(() =>
+        {
+            StartCoroutine(IDoUpdateAddressable());
+            Retry_Btn.gameObject.SetActive(false);
+        });
+
+        StartCoroutine(IDoUpdateAddressable());
+    }
+
+    /// <summary>
+    /// 執行熱更新
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator IDoUpdateAddressable()
+    {
+        AsyncOperationHandle<IResourceLocator> initHandle = Addressables.InitializeAsync();
+        yield return initHandle;
+
+        // 檢測更新
+        var checkHandle = Addressables.CheckForCatalogUpdates(true);
+        yield return checkHandle;
+        if (checkHandle.Status != AsyncOperationStatus.Succeeded)
+        {
+            OnError("檢測更新錯誤");
+            yield break;
+        }
+
+        if (checkHandle.Result.Count > 0)
+        {
+            var updateHandle = Addressables.UpdateCatalogs(checkHandle.Result, true);
+            yield return updateHandle;
+            if (updateHandle.Status != AsyncOperationStatus.Succeeded)
+            {
+                OnError("更新錯誤");
+                yield break;
+            }
+
+            // 更新列表迭代器
+            List<IResourceLocator> locators = updateHandle.Result;
+            foreach (var locator in locators)
+            {
+                List<object> keys = new();
+                keys.AddRange(locator.Keys);
+
+                // 獲取待下載文件總大小
+                var sizeHandle = Addressables.GetDownloadSizeAsync(keys.GetEnumerator());
+                yield return sizeHandle;
+                if (sizeHandle.Status != AsyncOperationStatus.Succeeded)
+                {
+                    OnError("獲取待下載文件總大小錯誤");
+                    yield break;
+                }
+
+                long totalDownloadSize = sizeHandle.Result;
+                LoadingProgress_Txt.text = $"Download Size : {totalDownloadSize}";
+                Debug.Log($"Download Size : {totalDownloadSize}");
+                if (totalDownloadSize > 0)
+                {
+                    // 下載
+                    var downloadHandle = Addressables.DownloadDependenciesAsync(keys, true);
+                    while (!downloadHandle.IsDone)
+                    {
+                        if (downloadHandle.Status == AsyncOperationStatus.Failed)
+                        {
+                            OnError($"下載錯誤 : {downloadHandle.OperationException}");
+                            yield break;
+                        }
+
+                        // 下載進度
+                        float percentage = downloadHandle.PercentComplete;
+                        Debug.Log($"已下載 : {percentage}");
+                        LoadingProgress_Txt.text = $"{totalDownloadSize.ToString("F0")}%";
+                        yield return null;
+                    }
+
+                    if (downloadHandle.Status == AsyncOperationStatus.Succeeded)
+                    {
+                        Debug.Log("下載完成");
+                    }
+                }
+            }
+        }
+        else
+        {
+            LoadingProgress_Txt.text = $"Enter Game";
+        }
+
+        OnUpdateComplete();
+    }
+
+    /// <summary>
+    /// 錯誤
+    /// </summary>
+    /// <param name="msg"></param>
+    private void OnError(string msg)
+    {
+        Debug.LogError(msg);
+        Retry_Btn.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// 更新完成
+    /// </summary>
+    private void OnUpdateComplete()
+    {
+
+    }
 }
