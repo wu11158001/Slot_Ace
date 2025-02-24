@@ -25,12 +25,14 @@ public class EntryView : MonoBehaviour
             Retry_Btn.gameObject.SetActive(false);
         });
 
-        
+        Caching.ClearCache();
+        StartCoroutine(IDoUpdateAddressable());
+        /*
 #if UNITY_EDITOR
         StartCoroutine(IUpdateComplete());
 #else
         StartCoroutine(IDoUpdateAddressable());
-#endif
+#endif*/
     }
 
     /// <summary>
@@ -39,6 +41,8 @@ public class EntryView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IDoUpdateAddressable()
     {
+        LodingBar_Img.fillAmount = 0;
+
         // 檢測更新
         var checkHandle = Addressables.CheckForCatalogUpdates(true);
         yield return checkHandle;
@@ -62,6 +66,8 @@ public class EntryView : MonoBehaviour
             List<IResourceLocator> locators = updateHandle.Result;
             foreach (var locator in locators)
             {
+                LodingBar_Img.fillAmount = 0;
+
                 List<object> keys = new();
                 keys.AddRange(locator.Keys);
 
@@ -90,24 +96,32 @@ public class EntryView : MonoBehaviour
                         }
 
                         // 下載進度
-                        float percentage = downloadHandle.PercentComplete;
-                        Debug.Log($"已下載 : {percentage}");
-                        LoadingProgress_Txt.text = $"{totalDownloadSize.ToString("F0")}%";
+                        float percentage = downloadHandle.PercentComplete * 100f;
+                        Debug.Log($"已下載 : {percentage}%");
+
+                        // 更新加載進度條與文本
+                        LodingBar_Img.fillAmount = downloadHandle.PercentComplete;
+                        LoadingProgress_Txt.text = $"{percentage:F1}%";
+                        LodingBar_Img.fillAmount = downloadHandle.PercentComplete;
+
                         yield return null;
                     }
 
                     if (downloadHandle.Status == AsyncOperationStatus.Succeeded)
                     {
                         Debug.Log("下載完成");
+                        LodingBar_Img.fillAmount = 1;
                     }
                 }
             }
         }
         else
         {
+            Debug.Log("沒有更新內容");
             LoadingProgress_Txt.text = $"Enter Game";
         }
 
+        LodingBar_Img.fillAmount = 1;
         StartCoroutine(IUpdateComplete());
     }
 
