@@ -6,6 +6,9 @@ using TMPro;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.AddressableAssets.ResourceLocators;
+using System.Reflection;
+using System;
+using System.Linq;
 
 public class EntryView : MonoBehaviour
 {
@@ -22,7 +25,12 @@ public class EntryView : MonoBehaviour
             Retry_Btn.gameObject.SetActive(false);
         });
 
+        
+#if UNITY_EDITOR
+        StartCoroutine(IUpdateComplete());
+#else
         StartCoroutine(IDoUpdateAddressable());
+#endif
     }
 
     /// <summary>
@@ -31,9 +39,6 @@ public class EntryView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IDoUpdateAddressable()
     {
-        AsyncOperationHandle<IResourceLocator> initHandle = Addressables.InitializeAsync();
-        yield return initHandle;
-
         // 檢測更新
         var checkHandle = Addressables.CheckForCatalogUpdates(true);
         yield return checkHandle;
@@ -103,7 +108,7 @@ public class EntryView : MonoBehaviour
             LoadingProgress_Txt.text = $"Enter Game";
         }
 
-        OnUpdateComplete();
+        StartCoroutine(IUpdateComplete());
     }
 
     /// <summary>
@@ -119,8 +124,37 @@ public class EntryView : MonoBehaviour
     /// <summary>
     /// 更新完成
     /// </summary>
-    private void OnUpdateComplete()
+    private IEnumerator IUpdateComplete()
     {
+        yield return null;
 
+        bool isEditor = false;
+        Assembly ass = null;
+
+#if UNITY_EDITOR
+        isEditor = true;
+        ass = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "HotFix");
+#else
+        // 啟動腳本
+        var handle = Addressables.LoadAssetAsync<TextAsset>("DLL/HotFix.dll.bytes");
+        yield return handle;
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            TextAsset dllAsset = handle.Result;
+            byte[] loadDllData = dllAsset.bytes;
+            ass = Assembly.Load(loadDllData);
+            Debug.Log("DLL 加載成功");
+        }
+        else
+        {
+            Debug.LogError("DLL 加載失敗");
+        }  
+#endif
+
+        Type type = ass.GetType("LauncherManager");
+        GameObject launcherObj = new GameObject("LauncherManager");
+        launcherObj.AddComponent(type);
+        type.GetMethod("GameLauncher").Invoke(launcherObj.GetComponent(type), new object[] { isEditor });
     }
 }

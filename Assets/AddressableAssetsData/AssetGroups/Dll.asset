@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: 989e60ebabb5b2948b965084005bf8c1
   m_SerializeEntries:
   - m_GUID: 70dc598943498c94187a38ddf0e420cb
-    m_Address: Assets/HotFixAssets/DLL
+    m_Address: DLL
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
