@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: ef3cfed919b9fae4391b481b01072aa0
   m_SerializeEntries:
   - m_GUID: 780065b4d1adde9469d2ef73511e44db
-    m_Address: Entry_zh-TW
+    m_Address: Entry_Table_zh-TW
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-zh-TW

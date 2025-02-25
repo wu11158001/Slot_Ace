@@ -2,8 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using SlotAceProtobuf;
+using System.Reflection;
+using System;
+using System.Linq;
 
-public class LauncherManager : UnitySingleton<LauncherManager>
+public class LauncherManager : MonoBehaviour
 {
     private bool _isEditor;
 
@@ -34,14 +37,13 @@ public class LauncherManager : UnitySingleton<LauncherManager>
         if (!isConnectServer)
         {
             // 連接服務器失敗
-
+            OnError("Failed to connect to the server.");
             yield break;
         }
 
         if (_isEditor)
         {
             // 編輯器模式
-
             LoginPack loginPack = new()
             {
                 UserId = "EditorUserId",
@@ -52,7 +54,6 @@ public class LauncherManager : UnitySingleton<LauncherManager>
         else
         {
             // 非編輯器模式
-
             GPGSManager.I.LoginGoogle(SendLoginServer);
         }
     }
@@ -65,7 +66,8 @@ public class LauncherManager : UnitySingleton<LauncherManager>
     {
         if (loginPack == null)
         {
-            Debug.Log("登入資料為空");
+            Debug.Log("Google登入失敗");
+            OnError("Google login failed.");
             return;
         }
 
@@ -81,10 +83,32 @@ public class LauncherManager : UnitySingleton<LauncherManager>
         if (mainPack.ReturnCode != ReturnCode.Succeed)
         {
             // 登入服務器失敗
-
+            OnError("Failed to connect to the server.");
             return;
         }
 
+        EnterLobby();        
+    }
+
+    /// <summary>
+    /// 錯誤
+    /// </summary>
+    /// <param name="msg"></param>
+    private void OnError(string msg)
+    {
+        Assembly ass = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "Assembly-CSharp");
+        Type type = ass.GetType("EntryView");
+        GameObject entryViewObj = GameObject.Find("EntryView");
+        type.GetMethod("OnError", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(entryViewObj.GetComponent(type), new object[] { msg, false });
+
+        Destroy(gameObject); 
+    }
+
+    /// <summary>
+    /// 進入大廳
+    /// </summary>
+    private void EnterLobby()
+    {
         LoadSceneManager.I.LoadScene(SceneEnum.Lobby);
     }
 }

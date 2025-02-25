@@ -14,17 +14,19 @@ public class EntryView : MonoBehaviour
 {
     [SerializeField] Image LodingBar_Img;
     [SerializeField] TextMeshProUGUI LoadingProgress_Txt;
-    [SerializeField] Button Retry_Btn;
+    [SerializeField] EntryErrorView entryErrorView;
+
+    private static EntryView _instance;
+    public static EntryView I { get { return _instance; } }
+
+    private void Awake()
+    {
+        if (_instance == null) _instance = this;
+    }
 
     private void Start()
     {
-        Retry_Btn.gameObject.SetActive(false);
-        Retry_Btn.onClick.AddListener(() =>
-        {
-            StartCoroutine(IDoUpdateAddressable());
-            Retry_Btn.gameObject.SetActive(false);
-        });
-
+        entryErrorView.gameObject.SetActive(false);
         Caching.ClearCache();
         
 #if UNITY_EDITOR
@@ -38,7 +40,7 @@ public class EntryView : MonoBehaviour
     /// 執行熱更新
     /// </summary>
     /// <returns></returns>
-    private IEnumerator IDoUpdateAddressable()
+    public IEnumerator IDoUpdateAddressable()
     {
         LodingBar_Img.fillAmount = 0;
 
@@ -120,27 +122,35 @@ public class EntryView : MonoBehaviour
             LoadingProgress_Txt.text = $"Enter Game";
         }
 
-        LodingBar_Img.fillAmount = 1;
         StartCoroutine(IUpdateComplete());
     }
 
     /// <summary>
     /// 錯誤
     /// </summary>
-    /// <param name="msg"></param>
-    private void OnError(string msg)
+    /// <param name="msg">錯誤訊息</param>
+    /// <param name="isReloadHotFix">重載熱更/重新連接服務器</param>
+    private void OnError(string msg, bool isReloadHotFix = true)
     {
         Debug.LogError(msg);
-        Retry_Btn.gameObject.SetActive(true);
+        string key =
+            isReloadHotFix ?
+            "Hot update failed." :
+            msg;
+
+        LanguageManager.I.GetString(LocalizationTableEnum.Entry_Table, key, (text) =>
+        {
+            entryErrorView.gameObject.SetActive(true);
+            entryErrorView.SetErrorMsg(text, isReloadHotFix);
+        });
     }
 
     /// <summary>
     /// 更新完成
     /// </summary>
-    private IEnumerator IUpdateComplete()
+    public IEnumerator IUpdateComplete()
     {
-        yield return null;
-
+        LodingBar_Img.fillAmount = 1;
         bool isEditor = false;
         Assembly ass = null;
 
@@ -166,8 +176,10 @@ public class EntryView : MonoBehaviour
 #endif
 
         Type type = ass.GetType("LauncherManager");
-        GameObject launcherObj = new GameObject("LauncherManager");
+        GameObject launcherObj = new("LauncherManager");
         launcherObj.AddComponent(type);
         type.GetMethod("GameLauncher").Invoke(launcherObj.GetComponent(type), new object[] { isEditor });
+
+        yield return null;
     }
 }

@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: Entry Shared Data
+  m_Name: Entry_Table Shared Data
   m_EditorClassIdentifier: 
-  m_TableCollectionName: Entry
+  m_TableCollectionName: Entry_Table
   m_TableCollectionNameGuidString: 0b62ac1176aa9f24ca0aabe05bb0e8c7
   m_Entries:
   - m_Id: 8493142016
