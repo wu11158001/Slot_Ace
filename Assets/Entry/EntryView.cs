@@ -26,13 +26,12 @@ public class EntryView : MonoBehaviour
         });
 
         Caching.ClearCache();
-        StartCoroutine(IDoUpdateAddressable());
-        /*
+        
 #if UNITY_EDITOR
         StartCoroutine(IUpdateComplete());
 #else
         StartCoroutine(IDoUpdateAddressable());
-#endif*/
+#endif
     }
 
     /// <summary>
