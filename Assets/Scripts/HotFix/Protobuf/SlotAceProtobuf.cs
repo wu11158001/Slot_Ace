@@ -31,17 +31,17 @@ namespace SlotAceProtobuf {
             "QWNlUHJvdG9idWYuUmV0dXJuQ29kZRItCglMb2dpblBhY2sYBCABKAsyGi5T",
             "bG90QWNlUHJvdG9idWYuTG9naW5QYWNrEjMKDFVzZXJJbmZvUGFjaxgFIAEo",
             "CzIdLlNsb3RBY2VQcm90b2J1Zi5Vc2VySW5mb1BhY2siLQoJTG9naW5QYWNr",
-            "Eg4KBlVzZXJJZBgBIAEoCRIQCghOaWNrTmFtZRgCIAEoCSIcCgxVc2VySW5m",
+            "Eg4KBlVzZXJJZBgBIAEoCRIQCghOaWNrbmFtZRgCIAEoCSIcCgxVc2VySW5m",
             "b1BhY2sSDAoEQ29pbhgBIAEoBSooCgtSZXF1ZXN0Q29kZRIPCgtSZXF1ZXN0",
-            "Tm9uZRAAEggKBFVzZXIQASonCgpBY3Rpb25Db2RlEg4KCkFjdGlvbk5vbmUQ",
-            "ABIJCgVMb2dpbhABKkcKClJldHVybkNvZGUSDgoKUmV0dXJuTm9uZRAAEgsK",
-            "B1N1Y2NlZWQQARIICgRGYWlsEAISEgoORHVwbGljYXRlTG9naW4QA2IGcHJv",
-            "dG8z"));
+            "Tm9uZRAAEggKBFVzZXIQASo4CgpBY3Rpb25Db2RlEg4KCkFjdGlvbk5vbmUQ",
+            "ABIJCgVMb2dpbhABEg8KC0dldFVzZXJJbmZvEAIqRwoKUmV0dXJuQ29kZRIO",
+            "CgpSZXR1cm5Ob25lEAASCwoHU3VjY2VlZBABEggKBEZhaWwQAhISCg5EdXBs",
+            "aWNhdGVMb2dpbhADYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SlotAceProtobuf.RequestCode), typeof(global::SlotAceProtobuf.ActionCode), typeof(global::SlotAceProtobuf.ReturnCode), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.MainPack), global::SlotAceProtobuf.MainPack.Parser, new[]{ "RequestCode", "ActionCode", "ReturnCode", "LoginPack", "UserInfoPack" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.LoginPack), global::SlotAceProtobuf.LoginPack.Parser, new[]{ "UserId", "NickName" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.LoginPack), global::SlotAceProtobuf.LoginPack.Parser, new[]{ "UserId", "Nickname" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.UserInfoPack), global::SlotAceProtobuf.UserInfoPack.Parser, new[]{ "Coin" }, null, null, null, null)
           }));
     }
@@ -63,6 +63,7 @@ namespace SlotAceProtobuf {
   public enum ActionCode {
     [pbr::OriginalName("ActionNone")] ActionNone = 0,
     [pbr::OriginalName("Login")] Login = 1,
+    [pbr::OriginalName("GetUserInfo")] GetUserInfo = 2,
   }
 
   public enum ReturnCode {
@@ -366,7 +367,7 @@ namespace SlotAceProtobuf {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public LoginPack(LoginPack other) : this() {
       userId_ = other.userId_;
-      nickName_ = other.nickName_;
+      nickname_ = other.nickname_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -389,17 +390,17 @@ namespace SlotAceProtobuf {
       }
     }
 
-    /// <summary>Field number for the "NickName" field.</summary>
-    public const int NickNameFieldNumber = 2;
-    private string nickName_ = "";
+    /// <summary>Field number for the "Nickname" field.</summary>
+    public const int NicknameFieldNumber = 2;
+    private string nickname_ = "";
     /// <summary>
     /// 暱稱
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string NickName {
-      get { return nickName_; }
+    public string Nickname {
+      get { return nickname_; }
       set {
-        nickName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        nickname_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -417,7 +418,7 @@ namespace SlotAceProtobuf {
         return true;
       }
       if (UserId != other.UserId) return false;
-      if (NickName != other.NickName) return false;
+      if (Nickname != other.Nickname) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -425,7 +426,7 @@ namespace SlotAceProtobuf {
     public override int GetHashCode() {
       int hash = 1;
       if (UserId.Length != 0) hash ^= UserId.GetHashCode();
-      if (NickName.Length != 0) hash ^= NickName.GetHashCode();
+      if (Nickname.Length != 0) hash ^= Nickname.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -443,9 +444,9 @@ namespace SlotAceProtobuf {
         output.WriteRawTag(10);
         output.WriteString(UserId);
       }
-      if (NickName.Length != 0) {
+      if (Nickname.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteString(NickName);
+        output.WriteString(Nickname);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -458,8 +459,8 @@ namespace SlotAceProtobuf {
       if (UserId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(UserId);
       }
-      if (NickName.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(NickName);
+      if (Nickname.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Nickname);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -475,8 +476,8 @@ namespace SlotAceProtobuf {
       if (other.UserId.Length != 0) {
         UserId = other.UserId;
       }
-      if (other.NickName.Length != 0) {
-        NickName = other.NickName;
+      if (other.Nickname.Length != 0) {
+        Nickname = other.Nickname;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -494,7 +495,7 @@ namespace SlotAceProtobuf {
             break;
           }
           case 18: {
-            NickName = input.ReadString();
+            Nickname = input.ReadString();
             break;
           }
         }

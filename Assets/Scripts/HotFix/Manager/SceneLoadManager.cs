@@ -4,7 +4,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
 using UnityEngine.SceneManagement;
 
-public class LoadSceneManager : UnitySingleton<LoadSceneManager>
+public class SceneLoadManager : UnitySingleton<SceneLoadManager>
 {
     private SceneEnum _activeScene;
 
@@ -32,9 +32,9 @@ public class LoadSceneManager : UnitySingleton<LoadSceneManager>
 
             switch (_activeScene)
             {
-                // 大廳
-                case SceneEnum.Lobby:
-                    ViewManager.I.OpenView<RectTransform>(ViewEnum.LobbyView);
+                // 遊戲
+                case SceneEnum.Game:
+                    ViewManager.I.OpenView<RectTransform>(ViewEnum.GameView);
                     break;
             }
         }

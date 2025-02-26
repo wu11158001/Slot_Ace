@@ -11,12 +11,12 @@ using System;
 public class Utils : UnitySingleton<Utils>
 {
     // 觸碰的UI
-    private static GraphicRaycaster graphicRaycaster;
-    private static EventSystem eventSystem;
+    private GraphicRaycaster graphicRaycaster;
+    private EventSystem eventSystem;
     /// <summary>
     /// 初始化GraphicRaycaster和EventSystem
     /// </summary>
-    private static void Initialize()
+    private void Initialize()
     {
         if (graphicRaycaster == null)
         {
@@ -48,7 +48,7 @@ public class Utils : UnitySingleton<Utils>
     /// 獲取觸碰的UI物件
     /// </summary>
     /// <returns></returns>
-    public static GameObject GetTouchUIObj()
+    public GameObject GetTouchUIObj()
     {
         Initialize();
 
@@ -83,7 +83,7 @@ public class Utils : UnitySingleton<Utils>
     /// <param name="url"></param>
     /// <param name="callback"></param>
     /// <returns></returns>
-    public static IEnumerator ImageUrlToSprite(string url, UnityAction<Sprite> callback)
+    public IEnumerator ImageUrlToSprite(string url, UnityAction<Sprite> callback)
     {
         if (!string.IsNullOrEmpty(url))
         {
@@ -103,6 +103,7 @@ public class Utils : UnitySingleton<Utils>
             else
             {
                 Debug.LogError($"載入url圖片失敗:{www.error}");
+                callback?.Invoke(null);
             }
         }
     }

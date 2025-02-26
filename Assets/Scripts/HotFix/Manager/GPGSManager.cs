@@ -6,13 +6,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using SlotAceProtobuf;
 
-public class GPGSManager : UnitySingleton<GPGSManager>
+public static class GPGSManager
 {
     /// <summary>
     /// 登入Google
     /// </summary>
     /// <param name="callback"></param>
-    public void LoginGoogle(UnityAction<LoginPack> callback)
+    public static void LoginGoogle(UnityAction<LoginPack> callback)
     {     
         PlayGamesPlatform.Activate().Authenticate((status) =>
         {
@@ -22,12 +22,14 @@ public class GPGSManager : UnitySingleton<GPGSManager>
                 string nickname = PlayGamesPlatform.Instance.GetUserDisplayName();
                 string imgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
+                DataManager.I.UserImgUrl = imgUrl;
+
                 Debug.Log($"用戶登入 : {nickname} ID : {userId}");
 
                 LoginPack loginPack = new()
                 {
                     UserId = userId,
-                    NickName = nickname,
+                    Nickname = nickname,
                 };
                 callback.Invoke(loginPack);
             }

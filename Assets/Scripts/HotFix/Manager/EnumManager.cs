@@ -4,7 +4,7 @@
 /// </summary>
 public enum SceneEnum
 {
-    Lobby,
+    Game,
 }
 
 /// <summary>
@@ -12,7 +12,7 @@ public enum SceneEnum
 /// </summary>
 public enum ViewEnum
 {
-    LobbyView,
+    GameView,
 }
 
 /// <summary>

@@ -47,14 +47,14 @@ public class LauncherManager : MonoBehaviour
             LoginPack loginPack = new()
             {
                 UserId = "EditorUserId",
-                NickName = "EditorPlayer",
+                Nickname = "EditorPlayer",
             };
             SendLoginServer(loginPack);
         }
         else
         {
             // 非編輯器模式
-            GPGSManager.I.LoginGoogle(SendLoginServer);
+            GPGSManager.LoginGoogle(SendLoginServer);
         }
     }
 
@@ -70,6 +70,8 @@ public class LauncherManager : MonoBehaviour
             OnError("Google login failed.");
             return;
         }
+
+        DataManager.I.UserId = loginPack.UserId;
 
         RequestControl.LoginServerRequest(loginPack, OnLoginServerResult);
     }
@@ -109,6 +111,6 @@ public class LauncherManager : MonoBehaviour
     /// </summary>
     private void EnterLobby()
     {
-        LoadSceneManager.I.LoadScene(SceneEnum.Lobby);
+        SceneLoadManager.I.LoadScene(SceneEnum.Game);
     }
 }
