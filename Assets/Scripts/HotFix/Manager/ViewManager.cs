@@ -15,35 +15,8 @@ public class ViewManager : UnitySingleton<ViewManager>
     // 當前場景Canvas RectTransform
     public RectTransform CurrSceneCanvasRt { get; private set; }
 
-    // 所有介面物件
-    private Dictionary<ViewEnum, GameObject> _viewObjDic;
     // 已創建介面
     private Dictionary<ViewEnum, RectTransform> _createdViewDic = new();
-
-    /// <summary>
-    /// 載入所有介面
-    /// </summary>
-    /// <returns></returns>
-    public IEnumerator ILoadViewAssets()
-    {
-        _viewObjDic = new();
-
-        foreach (var viewEnum in Enum.GetValues(typeof(ViewEnum)))
-        {
-            var handle = Addressables.LoadAssetAsync<GameObject>($"Prefab/View/{(ViewEnum)viewEnum}.prefab");
-            yield return handle;
-
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                GameObject viewObj = handle.Result;
-                _viewObjDic.Add((ViewEnum)viewEnum, viewObj);
-            }
-            else
-            {
-                Debug.LogError($"{viewEnum} 加載失敗");
-            }
-        }
-    }
 
     /// <summary>
     /// 設置當前場景Canvas
@@ -76,7 +49,7 @@ public class ViewManager : UnitySingleton<ViewManager>
             SetCurrSceneCanvas();
         }
 
-        if (!_viewObjDic.ContainsKey(openView))
+        if (!AssetsManager.I.ViewObjDic.ContainsKey(openView))
         {
             Debug.LogError($"無法找到介面 : {openView}");
             return;
@@ -94,13 +67,11 @@ public class ViewManager : UnitySingleton<ViewManager>
         {
             // 介面未創建
 
-            RectTransform newView = Instantiate(_viewObjDic[openView], CurrSceneCanvasRt).GetComponent<RectTransform>();
+            RectTransform newView = Instantiate(AssetsManager.I.ViewObjDic[openView], CurrSceneCanvasRt).GetComponent<RectTransform>();
             CreateViewHandle(newView, CurrSceneCanvasRt, callback);
             _createdViewDic.Add(openView, newView);
             _openedView.Push(newView);
         }
-
-        
     }
 
     /// <summary>

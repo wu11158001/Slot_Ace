@@ -34,7 +34,10 @@ public class SceneLoadManager : UnitySingleton<SceneLoadManager>
             {
                 // 遊戲
                 case SceneEnum.Game:
-                    ViewManager.I.OpenView<RectTransform>(ViewEnum.GameView);
+                    Addressables.LoadAssetAsync<GameObject>("Prefab/Game/GameMVC.prefab").Completed += (assets) =>
+                    {
+                        Instantiate(assets.Result);
+                    };
                     break;
             }
         }

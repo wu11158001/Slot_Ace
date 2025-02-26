@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7644799d279e4345bb8d8bb73baa281, type: 3}
+  m_Name: PokerSprite_SO
+  m_EditorClassIdentifier: 
+  SpriteList:
+  - {fileID: 2136130118105564158, guid: 4863983aff4fede489206034b91a7a7e, type: 3}
+  - {fileID: -4859783777405034084, guid: 236b1e00264da6d4d89bbf984277ea4f, type: 3}
+  - {fileID: 4432793351920879750, guid: 33ba8ea143ef9a44b8ca695dd8182fd9, type: 3}
+  - {fileID: -3173057495752149194, guid: 2b599edd1d8dcdd4c95fe376fa857adf, type: 3}
+  - {fileID: -581286770295223724, guid: fb1e2b66b287cf24185e7879d0564333, type: 3}
+  - {fileID: -3859272008004827343, guid: 9e871a1f4513f3e43a18248698d38566, type: 3}
+  - {fileID: 1646720447909147354, guid: 5d9dfb586123dd5409072123215afb1b, type: 3}
+  - {fileID: -8680797543115379092, guid: 4c86f4ff6a4c5574d8120bd27e11fab1, type: 3}
+  - {fileID: -5380170316889814623, guid: d8f76e8159ce22c4db2ac8a9461115f6, type: 3}
+  - {fileID: -3017632856372990247, guid: 9c51e8c8a2429944ba67b85a2bb148f8, type: 3}

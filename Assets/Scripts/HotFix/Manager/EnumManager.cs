@@ -12,7 +12,7 @@ public enum SceneEnum
 /// </summary>
 public enum ViewEnum
 {
-    GameView,
+    GameControlView,
 }
 
 /// <summary>

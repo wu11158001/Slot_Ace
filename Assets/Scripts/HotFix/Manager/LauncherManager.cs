@@ -10,6 +10,11 @@ public class LauncherManager : MonoBehaviour
 {
     private bool _isEditor;
 
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     /// <summary>
     /// 遊戲啟動
     /// </summary>
@@ -30,7 +35,7 @@ public class LauncherManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IProjectInitialize()
     {
-        yield return ViewManager.I.ILoadViewAssets();
+        yield return AssetsManager.I.Initialize();
 
         // 連接服務器
         bool isConnectServer = ClientManager.I.InitSocket();
