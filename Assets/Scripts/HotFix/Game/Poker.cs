@@ -17,5 +17,9 @@ public class Poker : MonoBehaviour
     public void SetPoker(int num, bool isGold)
     {
         _spriteRenderer.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[num];
+        _spriteRenderer.color =
+            isGold ?
+            Color.yellow :
+            Color.white;
     }
 }

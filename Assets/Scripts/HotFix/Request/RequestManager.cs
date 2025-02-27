@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using SlotAceProtobuf;
 using UnityEngine.Events;
-using SlotAceProtobuf;
 
 public class RequestManager : UnitySingleton<RequestManager>
 {

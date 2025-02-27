@@ -58,36 +58,51 @@ public class Game_View : MonoBehaviour
             }
 
             // 初始牌面
-            List<List<int>> initCards = new()
+            SlotResultData slotResultData = new()
             {
-                new()
+                // 盤面結果
+                SlotCardNumList = new()
                 {
-                    7, 7, 7, 7,
-                    6, 6, 6, 6,
-                    5, 5, 5, 5,
-                    4, 4, 4, 4,
-                    3, 3, 3, 3,
+                    new()
+                    {
+                        7, 7, 7, 7,
+                        6, 6, 6, 6,
+                        5, 5, 5, 5,
+                        4, 4, 4, 4,
+                        3, 3, 3, 3,
+                    },
+                },
+
+                // 黃金牌資料
+                GoldCardDataList = new()
+                {
+                    new GoldCardData()
+                    {
+                        CardIndexList = new() { 7 },
+                        CardTypeLiist = new() { 0 }
+                    },
                 },
             };
-            StartSlot(initCards);
+            StartSlot(slotResultData);
         };
     }
 
     /// <summary>
     /// 開始輪轉
     /// </summary>
-    /// <param name="slotResultList"></param>
-    public void StartSlot(List<List<int>> slotResultList)
+    /// <param name="slotResultData"></param>
+    public void StartSlot(SlotResultData slotResultData)
     {
         // 輪轉初始化
         int index = 0;
         foreach (var poker in _poker_Dic)
         {
             float slotPosY = poker.Value.y + slotStartPositionAddY;
-            int pokerNum = slotResultList[0][index];
+            int pokerNum = slotResultData.SlotCardNumList[0][index];
+            bool isGold = slotResultData.GoldCardDataList[0].CardIndexList.Contains(index);
 
             poker.Key.gameObject.transform.position = new(poker.Value.x, slotPosY, 0);
-            poker.Key.SetPoker(pokerNum, false);
+            poker.Key.SetPoker(pokerNum, isGold);
 
             index++;
         }
