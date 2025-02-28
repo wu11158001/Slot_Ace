@@ -5,6 +5,7 @@ public class GameMVC : MonoBehaviour
     public Game_View game_View { get; private set; }
     public Game_Controller game_Contriller { get; private set; }
     public Game_Model game_Model { get; private set; }
+    public GameControlView gameControlView { get; private set; }
 
     private void Awake()
     {
@@ -14,6 +15,7 @@ public class GameMVC : MonoBehaviour
 
         ViewManager.I.OpenView<GameControlView>(ViewEnum.GameControlView, (view) =>
         {
+            gameControlView = view;
             view.SetGameMVC(this);
         });
     }

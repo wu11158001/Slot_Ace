@@ -87,7 +87,7 @@ public class Game_View : MonoBehaviour
                     },
                 },
             };
-            StartSlot(slotResultData);
+            StartSlot(slotResultData, true);
         };
     }
 
@@ -95,7 +95,8 @@ public class Game_View : MonoBehaviour
     /// 開始輪轉
     /// </summary>
     /// <param name="slotResultData"></param>
-    public void StartSlot(SlotResultData slotResultData)
+    /// <param name="isInit">初始輪轉</param>
+    public void StartSlot(SlotResultData slotResultData, bool isInit = false)
     {
         // 首輪輪轉
         foreach (var poker in _pokerList)
@@ -104,15 +105,16 @@ public class Game_View : MonoBehaviour
             poker.gameObject.transform.position = new(poker.TargetPos.x, slotPosY, 0);
         }
 
-        StartCoroutine(IStartSlotEffect(slotResultData));
+        StartCoroutine(IStartSlotEffect(slotResultData, isInit));
     }
 
     /// <summary>
     /// 開始輪轉效果
     /// </summary>
     /// <param name="slotResultData"></param>
+    /// <param name="isInit"></param>
     /// <returns></returns>
-    private IEnumerator IStartSlotEffect(SlotResultData slotResultData)
+    private IEnumerator IStartSlotEffect(SlotResultData slotResultData, bool isInit)
     {
         for (int i = 0; i < slotResultData.SlotCardNumList.Count; i++)
         {
@@ -155,6 +157,9 @@ public class Game_View : MonoBehaviour
                     {
                         poker.NotWin();
                     }
+
+                    // 設置連擊數UI
+                    _gameMVC.gameControlView.SetComboPanelText(i);
                 }
 
                 // 中獎牌效果
@@ -165,7 +170,10 @@ public class Game_View : MonoBehaviour
                 }
             }
 
-            yield return new WaitForSeconds(2);
+            if (!isInit)
+            {
+                yield return new WaitForSeconds(2);
+            }
 
             // 中獎牌翻牌/位置重製
             if (slotResultData.WinCardPosList != null)
@@ -181,6 +189,8 @@ public class Game_View : MonoBehaviour
                 }
             }
         }
+
+        _gameMVC.gameControlView.OpenOperation();
     }
 
     /// <summary>
