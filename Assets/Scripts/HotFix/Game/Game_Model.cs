@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using SlotAceProtobuf;
+using Google.Protobuf.Collections;
 
 public class Game_Model : MonoBehaviour
 {
@@ -20,30 +21,28 @@ public class Game_Model : MonoBehaviour
     {
         List<List<int>> slotResoultList = new();
         List<GoldCardData> goldCardDataList = new();
+        List<List<int>> winCardPosList = new();
 
         foreach (var resultList in mainPack.SlotResultListPack.SlotResultList)
         {
             // 盤面結果
-            List<int> list = new();
-            foreach (var slotResult in resultList.SlotResult)
-            {
-                list.Add(slotResult);
-            }
-            slotResoultList.Add(list);
+            RepeatedField<int> resultRepeate = resultList.SlotResult;
+            slotResoultList.Add(new(resultRepeate));
 
             // 黃金牌資料
             foreach (var goldData in resultList.GoldCardDataList)
             {
                 GoldCardData goldCardData = new();
-                goldCardData.CardIndexList = new();
-                goldCardData.CardTypeLiist = new();
-                for (int i = 0; i < goldData.CardIndexList.Count; i++)
-                {
-                    goldCardData.CardIndexList.Add(goldData.CardIndexList[i]);
-                    goldCardData.CardTypeLiist.Add(goldData.GoldCardTypeList[i]);
-                }
+                RepeatedField<int> cardIndexRepeate = goldData.CardIndexList;
+                RepeatedField<int> cardTypeRepeate = goldData.GoldCardTypeList;
+                goldCardData.CardIndexList = new(cardIndexRepeate);
+                goldCardData.CardTypeLiist = new(cardTypeRepeate);
                 goldCardDataList.Add(goldCardData);
-            }            
+            }
+
+            // 中獎牌位置
+            RepeatedField<int> winPosRepeate = resultList.WinIndexList;
+            winCardPosList.Add(new(winPosRepeate));
         }
 
         // 輪轉結果
@@ -51,6 +50,7 @@ public class Game_Model : MonoBehaviour
         {
             SlotCardNumList = slotResoultList,
             GoldCardDataList = goldCardDataList,
+            WinCardPosList = winCardPosList,
         };
 
         _gameMVC.game_View.StartSlot(slotResultData);

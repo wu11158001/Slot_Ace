@@ -3,6 +3,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Game_View : MonoBehaviour
 {
@@ -21,8 +22,8 @@ public class Game_View : MonoBehaviour
     // 撲克牌間距
     private Vector2 pokerSpace = new(1.65f, 1.9f);
 
-    // 場上撲克牌(撲克牌, 移動目標位置)
-    private Dictionary<Poker, Vector3> _poker_Dic;
+    // 場上撲克牌
+    private List<Poker> _pokerList;
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class Game_View : MonoBehaviour
     /// </summary>
     private void CreatePokers()
     {
-        _poker_Dic = new();
+        _pokerList = new();
 
         // 產生撲克牌
         Addressables.LoadAssetAsync<GameObject>("Prefab/Game/Poker.prefab").Completed += (assets) =>
@@ -47,13 +48,16 @@ public class Game_View : MonoBehaviour
                 {
                     float posX = pokerStartPosition.x + (row * pokerSpace.x);
                     float posY = pokerStartPosition.y + (col * pokerSpace.y);
-                    Vector3 pos = new(posX, posY, 0);
+                    Vector3 targetPos = new(posX, posY, 0);
 
                     GameObject pokerObj = Instantiate(assets.Result, PokerArea);
-                    pokerObj.transform.position = pos;
-                    Poker poker = pokerObj.AddComponent<Poker>();
+                    pokerObj.transform.position = targetPos;
+                    Poker poker = pokerObj.GetComponent<Poker>();
+                    poker.Initialize(
+                        col + (row * 4),
+                        targetPos);
 
-                    _poker_Dic.Add(poker, pos);
+                    _pokerList.Add(poker);
                 }
             }
 
@@ -93,33 +97,89 @@ public class Game_View : MonoBehaviour
     /// <param name="slotResultData"></param>
     public void StartSlot(SlotResultData slotResultData)
     {
-        // 輪轉初始化
-        int index = 0;
-        foreach (var poker in _poker_Dic)
+        // 首輪輪轉
+        foreach (var poker in _pokerList)
         {
-            float slotPosY = poker.Value.y + slotStartPositionAddY;
-            int pokerNum = slotResultData.SlotCardNumList[0][index];
-            bool isGold = slotResultData.GoldCardDataList[0].CardIndexList.Contains(index);
-
-            poker.Key.gameObject.transform.position = new(poker.Value.x, slotPosY, 0);
-            poker.Key.SetPoker(pokerNum, isGold);
-
-            index++;
+            float slotPosY = poker.TargetPos.y + slotStartPositionAddY;
+            poker.gameObject.transform.position = new(poker.TargetPos.x, slotPosY, 0);
         }
 
-        StartCoroutine(IStartSlotEffect());
+        StartCoroutine(IStartSlotEffect(slotResultData));
     }
 
     /// <summary>
     /// 開始輪轉效果
     /// </summary>
+    /// <param name="slotResultData"></param>
     /// <returns></returns>
-    private IEnumerator IStartSlotEffect()
+    private IEnumerator IStartSlotEffect(SlotResultData slotResultData)
     {
-        foreach (var item in _poker_Dic)
+        for (int i = 0; i < slotResultData.SlotCardNumList.Count; i++)
         {
-            StartCoroutine(ISlotEffect(item.Key.gameObject.transform, item.Value));
-            yield return new WaitForSeconds(slotYieldTime);
+            // 重製撲克牌
+            foreach (var poker in _pokerList)
+            {
+                poker.ResetPoker();
+            }
+
+            // 輪轉效果
+            int index = 0;
+            foreach (var poker in _pokerList)
+            {
+                // 設置撲克牌
+                int pokerNum = slotResultData.SlotCardNumList[i][index];
+                bool isGold = slotResultData.GoldCardDataList[i].CardIndexList.Contains(index);
+                poker.SetPoker(pokerNum, isGold);
+
+                StartCoroutine(ISlotEffect(poker));
+                yield return new WaitForSeconds(slotYieldTime);
+
+                index++;
+            }
+
+            // 等待輪轉效果結束
+            bool isFinishSlot = _pokerList.All(x => x.gameObject.transform.position == x.TargetPos);
+            while (!isFinishSlot)
+            {
+                isFinishSlot = _pokerList.All(x => x.gameObject.transform.position == x.TargetPos);
+                yield return null;
+            }
+
+            // 中獎牌效果
+            if (slotResultData.WinCardPosList != null)
+            {
+                if (slotResultData.WinCardPosList[i].Count > 0)
+                {
+                    // 有中獎預設所有牌未中獎效果
+                    foreach (var poker in _pokerList)
+                    {
+                        poker.NotWin();
+                    }
+                }
+
+                // 中獎牌效果
+                foreach (var winPos in slotResultData.WinCardPosList[i])
+                {
+                    Poker winPoker = _pokerList.Where(x => x.PosIndex == winPos).FirstOrDefault();
+                    if (winPoker) winPoker.Winning();
+                }
+            }
+
+            yield return new WaitForSeconds(2);
+
+            // 中獎牌翻牌/位置重製
+            if (slotResultData.WinCardPosList != null)
+            {
+                foreach (var winPos in slotResultData.WinCardPosList[i])
+                {
+                    Poker winPoker = _pokerList.Where(x => x.PosIndex == winPos).FirstOrDefault();
+                    if (winPoker)
+                    {
+                        float slotPosY = winPoker.TargetPos.y + slotStartPositionAddY;
+                        winPoker.gameObject.transform.position = new(winPoker.TargetPos.x, slotPosY, 0);
+                    }
+                }
+            }
         }
     }
 
@@ -129,20 +189,22 @@ public class Game_View : MonoBehaviour
     /// <param name="tr">物件</param>
     /// <param name="targetPos">目標位置</param>
     /// <returns></returns>
-    private IEnumerator ISlotEffect(Transform tr, Vector3 targetPos)
+    private IEnumerator ISlotEffect(Poker poker)
     {
-        while (tr.position.y > targetPos.y)
+        Transform tr = poker.gameObject.transform;
+
+        while (tr.position.y > poker.TargetPos.y)
         {
             tr.Translate(Vector3.down * slotMoveSpeed * Time.deltaTime, Space.World);
 
-            if (tr.position.y <= targetPos.y)
+            if (tr.position.y <= poker.TargetPos.y)
             {
-                tr.position = targetPos;
+                tr.position = poker.TargetPos;
             }
 
             yield return null;
         }
 
-        tr.position = targetPos;
+        tr.position = poker.TargetPos;
     }
 }

@@ -11,6 +11,8 @@ public class SlotResultData
     public List<List<int>> SlotCardNumList;
     // 黃金牌資料
     public List<GoldCardData> GoldCardDataList;
+    // 中獎牌位置
+    public List<List<int>> WinCardPosList;
 }
 
 /// <summary>
