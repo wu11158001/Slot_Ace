@@ -35,16 +35,16 @@ namespace SlotAceProtobuf {
             "aXN0UGFjayItCglMb2dpblBhY2sSDgoGVXNlcklkGAEgASgJEhAKCE5pY2tu",
             "YW1lGAIgASgJIhwKDFVzZXJJbmZvUGFjaxIMCgRDb2luGAEgASgFIk0KElNs",
             "b3RSZXN1bHRMaXN0UGFjaxI3Cg5TbG90UmVzdWx0TGlzdBgBIAMoCzIfLlNs",
-            "b3RBY2VQcm90b2J1Zi5TbG90UmVzdWx0UGFjayJ3Cg5TbG90UmVzdWx0UGFj",
-            "axISCgpTbG90UmVzdWx0GAEgAygFEjsKEEdvbGRDYXJkRGF0YUxpc3QYAiAD",
-            "KAsyIS5TbG90QWNlUHJvdG9idWYuR29sZENhcmREYXRhUGFjaxIUCgxXaW5J",
-            "bmRleExpc3QYAyADKAUiQwoQR29sZENhcmREYXRhUGFjaxIYChBHb2xkQ2Fy",
-            "ZFR5cGVMaXN0GAEgAygFEhUKDUNhcmRJbmRleExpc3QYAiADKAUqMgoLUmVx",
-            "dWVzdENvZGUSDwoLUmVxdWVzdE5vbmUQABIICgRVc2VyEAESCAoER2FtZRAC",
-            "KkIKCkFjdGlvbkNvZGUSDgoKQWN0aW9uTm9uZRAAEgkKBUxvZ2luEAESDwoL",
-            "R2V0VXNlckluZm8QAhIICgRTbG90EAMqRwoKUmV0dXJuQ29kZRIOCgpSZXR1",
-            "cm5Ob25lEAASCwoHU3VjY2VlZBABEggKBEZhaWwQAhISCg5EdXBsaWNhdGVM",
-            "b2dpbhADYgZwcm90bzM="));
+            "b3RBY2VQcm90b2J1Zi5TbG90UmVzdWx0UGFjayKQAQoOU2xvdFJlc3VsdFBh",
+            "Y2sSEgoKU2xvdFJlc3VsdBgBIAMoBRIVCg1Hb2xkSW5kZXhMaXN0GAIgAygF",
+            "EhQKDFdpbkluZGV4TGlzdBgDIAMoBRI9ChNCaWdXaWxkRGF0YVBhY2tMaXN0",
+            "GAQgAygLMiAuU2xvdEFjZVByb3RvYnVmLkJpZ1dpbGREYXRhUGFjayI7Cg9C",
+            "aWdXaWxkRGF0YVBhY2sSEQoJTWFpbkluZGV4GAEgASgFEhUKDUNvcHlJbmRl",
+            "eExpc3QYAiADKAUqMgoLUmVxdWVzdENvZGUSDwoLUmVxdWVzdE5vbmUQABII",
+            "CgRVc2VyEAESCAoER2FtZRACKkIKCkFjdGlvbkNvZGUSDgoKQWN0aW9uTm9u",
+            "ZRAAEgkKBUxvZ2luEAESDwoLR2V0VXNlckluZm8QAhIICgRTbG90EAMqRwoK",
+            "UmV0dXJuQ29kZRIOCgpSZXR1cm5Ob25lEAASCwoHU3VjY2VlZBABEggKBEZh",
+            "aWwQAhISCg5EdXBsaWNhdGVMb2dpbhADYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SlotAceProtobuf.RequestCode), typeof(global::SlotAceProtobuf.ActionCode), typeof(global::SlotAceProtobuf.ReturnCode), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -52,8 +52,8 @@ namespace SlotAceProtobuf {
             new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.LoginPack), global::SlotAceProtobuf.LoginPack.Parser, new[]{ "UserId", "Nickname" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.UserInfoPack), global::SlotAceProtobuf.UserInfoPack.Parser, new[]{ "Coin" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.SlotResultListPack), global::SlotAceProtobuf.SlotResultListPack.Parser, new[]{ "SlotResultList" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.SlotResultPack), global::SlotAceProtobuf.SlotResultPack.Parser, new[]{ "SlotResult", "GoldCardDataList", "WinIndexList" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.GoldCardDataPack), global::SlotAceProtobuf.GoldCardDataPack.Parser, new[]{ "GoldCardTypeList", "CardIndexList" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.SlotResultPack), global::SlotAceProtobuf.SlotResultPack.Parser, new[]{ "SlotResult", "GoldIndexList", "WinIndexList", "BigWildDataPackList" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.BigWildDataPack), global::SlotAceProtobuf.BigWildDataPack.Parser, new[]{ "MainIndex", "CopyIndexList" }, null, null, null, null)
           }));
     }
     #endregion
@@ -845,8 +845,9 @@ namespace SlotAceProtobuf {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public SlotResultPack(SlotResultPack other) : this() {
       slotResult_ = other.slotResult_.Clone();
-      goldCardDataList_ = other.goldCardDataList_.Clone();
+      goldIndexList_ = other.goldIndexList_.Clone();
       winIndexList_ = other.winIndexList_.Clone();
+      bigWildDataPackList_ = other.bigWildDataPackList_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -868,17 +869,17 @@ namespace SlotAceProtobuf {
       get { return slotResult_; }
     }
 
-    /// <summary>Field number for the "GoldCardDataList" field.</summary>
-    public const int GoldCardDataListFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::SlotAceProtobuf.GoldCardDataPack> _repeated_goldCardDataList_codec
-        = pb::FieldCodec.ForMessage(18, global::SlotAceProtobuf.GoldCardDataPack.Parser);
-    private readonly pbc::RepeatedField<global::SlotAceProtobuf.GoldCardDataPack> goldCardDataList_ = new pbc::RepeatedField<global::SlotAceProtobuf.GoldCardDataPack>();
+    /// <summary>Field number for the "GoldIndexList" field.</summary>
+    public const int GoldIndexListFieldNumber = 2;
+    private static readonly pb::FieldCodec<int> _repeated_goldIndexList_codec
+        = pb::FieldCodec.ForInt32(18);
+    private readonly pbc::RepeatedField<int> goldIndexList_ = new pbc::RepeatedField<int>();
     /// <summary>
-    /// 黃金牌資料
+    /// 黃金牌位置
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::SlotAceProtobuf.GoldCardDataPack> GoldCardDataList {
-      get { return goldCardDataList_; }
+    public pbc::RepeatedField<int> GoldIndexList {
+      get { return goldIndexList_; }
     }
 
     /// <summary>Field number for the "WinIndexList" field.</summary>
@@ -892,6 +893,19 @@ namespace SlotAceProtobuf {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pbc::RepeatedField<int> WinIndexList {
       get { return winIndexList_; }
+    }
+
+    /// <summary>Field number for the "BigWildDataPackList" field.</summary>
+    public const int BigWildDataPackListFieldNumber = 4;
+    private static readonly pb::FieldCodec<global::SlotAceProtobuf.BigWildDataPack> _repeated_bigWildDataPackList_codec
+        = pb::FieldCodec.ForMessage(34, global::SlotAceProtobuf.BigWildDataPack.Parser);
+    private readonly pbc::RepeatedField<global::SlotAceProtobuf.BigWildDataPack> bigWildDataPackList_ = new pbc::RepeatedField<global::SlotAceProtobuf.BigWildDataPack>();
+    /// <summary>
+    /// 大鬼牌資料
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::SlotAceProtobuf.BigWildDataPack> BigWildDataPackList {
+      get { return bigWildDataPackList_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -908,8 +922,9 @@ namespace SlotAceProtobuf {
         return true;
       }
       if(!slotResult_.Equals(other.slotResult_)) return false;
-      if(!goldCardDataList_.Equals(other.goldCardDataList_)) return false;
+      if(!goldIndexList_.Equals(other.goldIndexList_)) return false;
       if(!winIndexList_.Equals(other.winIndexList_)) return false;
+      if(!bigWildDataPackList_.Equals(other.bigWildDataPackList_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -917,8 +932,9 @@ namespace SlotAceProtobuf {
     public override int GetHashCode() {
       int hash = 1;
       hash ^= slotResult_.GetHashCode();
-      hash ^= goldCardDataList_.GetHashCode();
+      hash ^= goldIndexList_.GetHashCode();
       hash ^= winIndexList_.GetHashCode();
+      hash ^= bigWildDataPackList_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -933,8 +949,9 @@ namespace SlotAceProtobuf {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
       slotResult_.WriteTo(output, _repeated_slotResult_codec);
-      goldCardDataList_.WriteTo(output, _repeated_goldCardDataList_codec);
+      goldIndexList_.WriteTo(output, _repeated_goldIndexList_codec);
       winIndexList_.WriteTo(output, _repeated_winIndexList_codec);
+      bigWildDataPackList_.WriteTo(output, _repeated_bigWildDataPackList_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -944,8 +961,9 @@ namespace SlotAceProtobuf {
     public int CalculateSize() {
       int size = 0;
       size += slotResult_.CalculateSize(_repeated_slotResult_codec);
-      size += goldCardDataList_.CalculateSize(_repeated_goldCardDataList_codec);
+      size += goldIndexList_.CalculateSize(_repeated_goldIndexList_codec);
       size += winIndexList_.CalculateSize(_repeated_winIndexList_codec);
+      size += bigWildDataPackList_.CalculateSize(_repeated_bigWildDataPackList_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -958,8 +976,9 @@ namespace SlotAceProtobuf {
         return;
       }
       slotResult_.Add(other.slotResult_);
-      goldCardDataList_.Add(other.goldCardDataList_);
+      goldIndexList_.Add(other.goldIndexList_);
       winIndexList_.Add(other.winIndexList_);
+      bigWildDataPackList_.Add(other.bigWildDataPackList_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -976,13 +995,18 @@ namespace SlotAceProtobuf {
             slotResult_.AddEntriesFrom(input, _repeated_slotResult_codec);
             break;
           }
-          case 18: {
-            goldCardDataList_.AddEntriesFrom(input, _repeated_goldCardDataList_codec);
+          case 18:
+          case 16: {
+            goldIndexList_.AddEntriesFrom(input, _repeated_goldIndexList_codec);
             break;
           }
           case 26:
           case 24: {
             winIndexList_.AddEntriesFrom(input, _repeated_winIndexList_codec);
+            break;
+          }
+          case 34: {
+            bigWildDataPackList_.AddEntriesFrom(input, _repeated_bigWildDataPackList_codec);
             break;
           }
         }
@@ -992,13 +1016,13 @@ namespace SlotAceProtobuf {
   }
 
   /// <summary>
-  /// 黃金牌資料
+  /// 大鬼牌資料包
   /// </summary>
-  public sealed partial class GoldCardDataPack : pb::IMessage<GoldCardDataPack> {
-    private static readonly pb::MessageParser<GoldCardDataPack> _parser = new pb::MessageParser<GoldCardDataPack>(() => new GoldCardDataPack());
+  public sealed partial class BigWildDataPack : pb::IMessage<BigWildDataPack> {
+    private static readonly pb::MessageParser<BigWildDataPack> _parser = new pb::MessageParser<BigWildDataPack>(() => new BigWildDataPack());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<GoldCardDataPack> Parser { get { return _parser; } }
+    public static pb::MessageParser<BigWildDataPack> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -1011,73 +1035,74 @@ namespace SlotAceProtobuf {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GoldCardDataPack() {
+    public BigWildDataPack() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GoldCardDataPack(GoldCardDataPack other) : this() {
-      goldCardTypeList_ = other.goldCardTypeList_.Clone();
-      cardIndexList_ = other.cardIndexList_.Clone();
+    public BigWildDataPack(BigWildDataPack other) : this() {
+      mainIndex_ = other.mainIndex_;
+      copyIndexList_ = other.copyIndexList_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GoldCardDataPack Clone() {
-      return new GoldCardDataPack(this);
+    public BigWildDataPack Clone() {
+      return new BigWildDataPack(this);
     }
 
-    /// <summary>Field number for the "GoldCardTypeList" field.</summary>
-    public const int GoldCardTypeListFieldNumber = 1;
-    private static readonly pb::FieldCodec<int> _repeated_goldCardTypeList_codec
-        = pb::FieldCodec.ForInt32(10);
-    private readonly pbc::RepeatedField<int> goldCardTypeList_ = new pbc::RepeatedField<int>();
+    /// <summary>Field number for the "MainIndex" field.</summary>
+    public const int MainIndexFieldNumber = 1;
+    private int mainIndex_;
     /// <summary>
-    /// 0=小鬼牌, 1=大鬼牌
+    /// 主卡位置
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<int> GoldCardTypeList {
-      get { return goldCardTypeList_; }
+    public int MainIndex {
+      get { return mainIndex_; }
+      set {
+        mainIndex_ = value;
+      }
     }
 
-    /// <summary>Field number for the "CardIndexList" field.</summary>
-    public const int CardIndexListFieldNumber = 2;
-    private static readonly pb::FieldCodec<int> _repeated_cardIndexList_codec
+    /// <summary>Field number for the "CopyIndexList" field.</summary>
+    public const int CopyIndexListFieldNumber = 2;
+    private static readonly pb::FieldCodec<int> _repeated_copyIndexList_codec
         = pb::FieldCodec.ForInt32(18);
-    private readonly pbc::RepeatedField<int> cardIndexList_ = new pbc::RepeatedField<int>();
+    private readonly pbc::RepeatedField<int> copyIndexList_ = new pbc::RepeatedField<int>();
     /// <summary>
-    /// 位置Index
+    /// 複製位置
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<int> CardIndexList {
-      get { return cardIndexList_; }
+    public pbc::RepeatedField<int> CopyIndexList {
+      get { return copyIndexList_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as GoldCardDataPack);
+      return Equals(other as BigWildDataPack);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(GoldCardDataPack other) {
+    public bool Equals(BigWildDataPack other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if(!goldCardTypeList_.Equals(other.goldCardTypeList_)) return false;
-      if(!cardIndexList_.Equals(other.cardIndexList_)) return false;
+      if (MainIndex != other.MainIndex) return false;
+      if(!copyIndexList_.Equals(other.copyIndexList_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      hash ^= goldCardTypeList_.GetHashCode();
-      hash ^= cardIndexList_.GetHashCode();
+      if (MainIndex != 0) hash ^= MainIndex.GetHashCode();
+      hash ^= copyIndexList_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1091,8 +1116,11 @@ namespace SlotAceProtobuf {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      goldCardTypeList_.WriteTo(output, _repeated_goldCardTypeList_codec);
-      cardIndexList_.WriteTo(output, _repeated_cardIndexList_codec);
+      if (MainIndex != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(MainIndex);
+      }
+      copyIndexList_.WriteTo(output, _repeated_copyIndexList_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1101,8 +1129,10 @@ namespace SlotAceProtobuf {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      size += goldCardTypeList_.CalculateSize(_repeated_goldCardTypeList_codec);
-      size += cardIndexList_.CalculateSize(_repeated_cardIndexList_codec);
+      if (MainIndex != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MainIndex);
+      }
+      size += copyIndexList_.CalculateSize(_repeated_copyIndexList_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -1110,12 +1140,14 @@ namespace SlotAceProtobuf {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(GoldCardDataPack other) {
+    public void MergeFrom(BigWildDataPack other) {
       if (other == null) {
         return;
       }
-      goldCardTypeList_.Add(other.goldCardTypeList_);
-      cardIndexList_.Add(other.cardIndexList_);
+      if (other.MainIndex != 0) {
+        MainIndex = other.MainIndex;
+      }
+      copyIndexList_.Add(other.copyIndexList_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1127,14 +1159,13 @@ namespace SlotAceProtobuf {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10:
           case 8: {
-            goldCardTypeList_.AddEntriesFrom(input, _repeated_goldCardTypeList_codec);
+            MainIndex = input.ReadInt32();
             break;
           }
           case 18:
           case 16: {
-            cardIndexList_.AddEntriesFrom(input, _repeated_cardIndexList_codec);
+            copyIndexList_.AddEntriesFrom(input, _repeated_copyIndexList_codec);
             break;
           }
         }

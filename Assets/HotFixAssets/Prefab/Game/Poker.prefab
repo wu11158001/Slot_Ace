@@ -75,7 +75,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 128b9c256eac04da99f072fdc0c7b8ab, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.8235294}
   m_FlipX: 0
@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NotWin_Obj: {fileID: 1696506445975312319}
+  BigWildTurmEffect_Obj: {fileID: 0}
 --- !u!212 &7658189048854336649
 SpriteRenderer:
   m_ObjectHideFlags: 0

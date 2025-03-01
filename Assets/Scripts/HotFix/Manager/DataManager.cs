@@ -9,22 +9,27 @@ public class SlotResultData
 {
     // 盤面結果
     public List<List<int>> SlotCardNumList;
-    // 黃金牌資料
-    public List<GoldCardData> GoldCardDataList;
+    // 黃金牌位置
+    public List<List<int>> GoldCardIndexList;
     // 中獎牌位置
     public List<List<int>> WinCardPosList;
+    // 大鬼牌資料
+    public List<BigWildData> bigWildDataList;
 }
 
 /// <summary>
-/// 黃金牌資料
+/// 大鬼牌資料
 /// </summary>
-public class GoldCardData
+public class BigWildData
 {
-    // 位置
-    public List<int> CardIndexList;
-    // 類型(0=小鬼牌, 1=大鬼牌)
-    public List<int> CardTypeLiist;
+    // 主卡位置
+    public int MainIndex;
+    // 複製位置
+    public List<int> CopyIndexList;
+    // 複製撲克
+    public List<Poker> CopyPokerList;
 }
+
 
 public class DataManager : UnitySingleton<DataManager>
 {

@@ -77,14 +77,10 @@ public class Game_View : MonoBehaviour
                     },
                 },
 
-                // 黃金牌資料
-                GoldCardDataList = new()
+                // 黃金牌位置
+                GoldCardIndexList = new()
                 {
-                    new GoldCardData()
-                    {
-                        CardIndexList = new() { 7 },
-                        CardTypeLiist = new() { 0 }
-                    },
+                    new() { 7 },
                 },
             };
             StartSlot(slotResultData, true);
@@ -118,6 +114,9 @@ public class Game_View : MonoBehaviour
     {
         for (int i = 0; i < slotResultData.SlotCardNumList.Count; i++)
         {
+            // 是否有大鬼牌
+            bool hasBigWild = false;
+
             // 重製撲克牌
             foreach (var poker in _pokerList)
             {
@@ -130,8 +129,24 @@ public class Game_View : MonoBehaviour
             {
                 // 設置撲克牌
                 int pokerNum = slotResultData.SlotCardNumList[i][index];
-                bool isGold = slotResultData.GoldCardDataList[i].CardIndexList.Contains(index);
-                poker.SetPoker(pokerNum, isGold);
+                bool isGold = slotResultData.GoldCardIndexList[i].Contains(index);
+                BigWildData bigWildData = new();
+                if (pokerNum == 9)
+                {
+                    // 大鬼牌
+                    bigWildData = slotResultData.bigWildDataList.Where(x => x.MainIndex == index).FirstOrDefault();
+                    if (bigWildData != null && bigWildData.CopyIndexList != null)
+                    {
+                        hasBigWild = true;
+                        bigWildData.CopyPokerList = new();
+                        for (int copyIndex = 0; copyIndex < bigWildData.CopyIndexList.Count; copyIndex++)
+                        {
+                            bigWildData.CopyPokerList.Add(_pokerList[bigWildData.CopyIndexList[copyIndex]]);
+                        }
+                    }                                      
+                }
+
+                poker.SetPokerAndTurn(pokerNum, isGold, bigWildData);
 
                 StartCoroutine(ISlotEffect(poker));
                 yield return new WaitForSeconds(slotYieldTime);
@@ -145,6 +160,23 @@ public class Game_View : MonoBehaviour
             {
                 isFinishSlot = _pokerList.All(x => x.gameObject.transform.position == x.TargetPos);
                 yield return null;
+            }
+
+            // 有大鬼牌
+            if (hasBigWild)
+            {
+                yield return new WaitForSeconds(0.45f);
+            }
+
+            // 再次設置撲克牌牌面確保顯示資料正確
+            index = 0;
+            foreach (var poker in _pokerList)
+            {
+                // 設置撲克牌
+                int pokerNum = slotResultData.SlotCardNumList[i][index];
+                bool isGold = slotResultData.GoldCardIndexList[i].Contains(index);                
+                poker.SetPokerNum(pokerNum, isGold);
+                index++;
             }
 
             // 中獎牌效果
@@ -172,10 +204,17 @@ public class Game_View : MonoBehaviour
 
             if (!isInit)
             {
-                yield return new WaitForSeconds(2);
+                if (slotResultData.WinCardPosList != null && slotResultData.WinCardPosList[i].Count > 0)
+                {
+                    yield return new WaitForSeconds(2);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(0.5f);
+                }
             }
 
-            // 中獎牌翻牌/位置重製
+            // 中獎牌位置重製(非黃金牌)
             if (slotResultData.WinCardPosList != null)
             {
                 foreach (var winPos in slotResultData.WinCardPosList[i])
@@ -183,8 +222,12 @@ public class Game_View : MonoBehaviour
                     Poker winPoker = _pokerList.Where(x => x.PosIndex == winPos).FirstOrDefault();
                     if (winPoker)
                     {
-                        float slotPosY = winPoker.TargetPos.y + slotStartPositionAddY;
-                        winPoker.gameObject.transform.position = new(winPoker.TargetPos.x, slotPosY, 0);
+                        if (!slotResultData.GoldCardIndexList[i].Contains(winPos))
+                        {
+                            // 一般牌
+                            float slotPosY = winPoker.TargetPos.y + slotStartPositionAddY;
+                            winPoker.gameObject.transform.position = new(winPoker.TargetPos.x, slotPosY, 0);
+                        }                     
                     }
                 }
             }

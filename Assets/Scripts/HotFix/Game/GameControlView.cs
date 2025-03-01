@@ -134,6 +134,6 @@ public class GameControlView : MonoBehaviour
 
         ComboTextEffect_Obj.SetActive(false);
         ComboTextEffect_Obj.SetActive(true);
-        Combo_Num.text = $"{combo}";
+        Combo_Num.text = $"X{combo}";
     }
 }
