@@ -22,7 +22,7 @@ public class Game_Model : MonoBehaviour
         List<List<int>> slotResoultList = new();
         List<List<int>> goldCardDataList = new();
         List<List<int>> winCardPosList = new();
-        List<BigWildData> bigWildDataList = new();
+        List<List<BigWildData>> bigWildDataList = new();
 
         foreach (var resultList in mainPack.SlotResultListPack.SlotResultList)
         {
@@ -38,6 +38,12 @@ public class Game_Model : MonoBehaviour
             // 大鬼牌資料
             if (resultList.BigWildDataPackList != null && resultList.BigWildDataPackList.Count > 0)
             {
+                List<BigWildData> bigWildList = new();
+                for (int i = 0; i < 20; i++)
+                {
+                    bigWildList.Add(new BigWildData());
+                }
+
                 foreach (var bigWild in resultList.BigWildDataPackList)
                 {
                     BigWildData bigWildData = new()
@@ -45,8 +51,14 @@ public class Game_Model : MonoBehaviour
                         MainIndex = bigWild.MainIndex,
                         CopyIndexList = new(bigWild.CopyIndexList),
                     };
-                    bigWildDataList.Add(bigWildData);
+                    bigWildList[bigWild.MainIndex] = bigWildData;
                 }
+                bigWildDataList.Add(bigWildList);
+            }
+            else
+            {
+                List<BigWildData> tempBigWildData = new();
+                bigWildDataList.Add(tempBigWildData);
             }
         }
 

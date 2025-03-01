@@ -113,7 +113,8 @@ public class Game_View : MonoBehaviour
     private IEnumerator IStartSlotEffect(SlotResultData slotResultData, bool isInit)
     {
         for (int i = 0; i < slotResultData.SlotCardNumList.Count; i++)
-        {
+        {            
+
             // 是否有大鬼牌
             bool hasBigWild = false;
 
@@ -134,7 +135,7 @@ public class Game_View : MonoBehaviour
                 if (pokerNum == 9)
                 {
                     // 大鬼牌
-                    bigWildData = slotResultData.bigWildDataList.Where(x => x.MainIndex == index).FirstOrDefault();
+                    bigWildData = slotResultData.bigWildDataList[i][index];
                     if (bigWildData != null && bigWildData.CopyIndexList != null)
                     {
                         hasBigWild = true;

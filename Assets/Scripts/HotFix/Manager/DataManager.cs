@@ -14,7 +14,7 @@ public class SlotResultData
     // 中獎牌位置
     public List<List<int>> WinCardPosList;
     // 大鬼牌資料
-    public List<BigWildData> bigWildDataList;
+    public List<List<BigWildData>> bigWildDataList;
 }
 
 /// <summary>
