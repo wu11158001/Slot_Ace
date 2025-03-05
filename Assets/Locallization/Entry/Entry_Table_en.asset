@@ -22,18 +22,6 @@ MonoBehaviour:
     m_Localized: Retry
     m_Metadata:
       m_Items: []
-  - m_Id: 422748798783488
-    m_Localized: Failed to connect to the server.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 423521217613824
-    m_Localized: Google login failed.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 423905722044416
-    m_Localized: Hot update failed.
-    m_Metadata:
-      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -5,10 +5,13 @@ using System;
 
 public class Poker : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer Poker_Sr;
+    [SerializeField] Animator Poker_Ani;
+    [SerializeField] Coin _coin;
     [SerializeField] GameObject NotWin_Obj;
+    [SerializeField] GameObject CopyEffect_Obj;
 
-    private SpriteRenderer _spriteRenderer;
-    private Animator _animator;
+
 
     // 動畫Hash_是否中獎
     private readonly int _IsWin_Hash = Animator.StringToHash("IsWin");
@@ -19,12 +22,6 @@ public class Poker : MonoBehaviour
     public int PosIndex { get; private set; }
     // 移動目標位置
     public Vector3 TargetPos { get; private set; }
-
-    private void Awake()
-    {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _animator = GetComponent<Animator>();
-    }
 
     /// <summary>
     /// 初始化
@@ -38,17 +35,41 @@ public class Poker : MonoBehaviour
     }
 
     /// <summary>
+    /// 重製撲克牌
+    /// </summary>
+    public void ResetPoker()
+    {
+        CopyEffect_Obj.SetActive(false);
+        NotWin_Obj.SetActive(false);
+        Poker_Ani.SetBool(_IsWin_Hash, false);
+
+        _coin.ResetCoin();
+    }
+
+    /// <summary>
     /// 設置撲克牌型
     /// </summary>
     /// <param name="num"></param>
     /// <param name="isGold"></param>
     public void SetPokerNum(int num, bool isGold)
     {
-        _spriteRenderer.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[num];
-        _spriteRenderer.color =
-            isGold ?
-            Color.yellow :
-            Color.white;
+        if (num == 10)
+        {
+            // 金幣
+
+            Poker_Sr.enabled = false;
+            _coin.OpenCoin();
+        }
+        else
+        {
+            // 撲克
+
+            Poker_Sr.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[num];
+            Poker_Sr.color =
+                isGold ?
+                Color.yellow :
+                Color.white;
+        }        
     }
 
     /// <summary>
@@ -58,32 +79,45 @@ public class Poker : MonoBehaviour
     /// <param name="isGold">是否為黃金牌</param>
     /// <param name="bigWildData">大鬼牌資料</param>
     public void SetPokerAndTurn(int num, bool isGold, BigWildData bigWildData)
-    {       
-        if (num == 8 || num == 9)
+    {
+        if (num == 10)
+        {
+            // 金幣
+
+            Poker_Sr.enabled = false;
+            _coin.OpenCoin();
+        }
+        else if (num == 8 || num == 9)
         {
             // 黃金牌
+
             StartCoroutine(IGoldTurn(num, bigWildData));
         }
         else
         {
             // 一般牌
 
-            _spriteRenderer.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[num];
+            Poker_Sr.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[num];
         }
 
-        _spriteRenderer.color =
+        Poker_Sr.color =
             isGold ?
             Color.yellow :
             Color.white;
     }
 
     /// <summary>
-    /// 重製撲克牌
+    /// 掉落完成
     /// </summary>
-    public void ResetPoker()
+    /// <param name="num">牌型編號</param>
+    public void OnDropOver(int num)
     {
-        NotWin_Obj.SetActive(false);
-        _animator.SetBool(_IsWin_Hash, false);
+        if (num == 10)
+        {
+            // 金幣
+
+            _coin.OnDropOver();
+        }
     }
 
     /// <summary>
@@ -92,7 +126,7 @@ public class Poker : MonoBehaviour
     public void Winning()
     {
         NotWin_Obj.SetActive(false);
-        _animator.SetBool(_IsWin_Hash, true);
+        Poker_Ani.SetBool(_IsWin_Hash, true);
     }
 
     /// <summary>
@@ -132,7 +166,7 @@ public class Poker : MonoBehaviour
             yield return null;
         }
         transform.rotation = Quaternion.Euler(0, 90, 0);
-        _spriteRenderer.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[wildNum];
+        Poker_Sr.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[wildNum];
 
         startTime = DateTime.Now;
         while ((DateTime.Now - startTime).TotalSeconds < during)
@@ -148,15 +182,14 @@ public class Poker : MonoBehaviour
         // 大鬼牌主牌
         if (bigWildData != null && bigWildData.MainIndex == PosIndex && wildNum == 9)
         {
-            IBigWildTurnEffect();
-
             // 複製大鬼牌
             for (int i = 0; i < bigWildData.CopyPokerList.Count; i++)
             {
                 GameObject copyObj = Instantiate(gameObject);
                 copyObj.transform.position = transform.position;
                 SpriteRenderer spriteRenderer = copyObj.GetComponent<SpriteRenderer>();
-                spriteRenderer.sortingOrder = 10;
+                spriteRenderer.sortingOrder = 15;
+                copyObj.GetComponent<Poker>().enabled = false;
                 Poker targetPoker = bigWildData.CopyPokerList[i];
                 StartCoroutine(ICopyBigWildMovement(targetPoker, copyObj));
             }
@@ -182,16 +215,22 @@ public class Poker : MonoBehaviour
             yield return null;
         }
 
-        targetPoker.IBigWildTurnEffect();
+        StartCoroutine(targetPoker.IBigWildCopyEffect());
         Destroy(copyObj);
     }
 
     /// <summary>
-    /// 大鬼牌轉牌
+    /// 大鬼牌複製效果
     /// </summary>
     /// <returns></returns>
-    public void IBigWildTurnEffect()
+    public IEnumerator IBigWildCopyEffect()
     {
-        _spriteRenderer.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[9];
+        Poker_Sr.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[9];
+        Poker_Sr.color = Color.white;
+        CopyEffect_Obj.SetActive(true);
+
+        yield return new WaitForSeconds(_CopyBigWildMoveTime);
+
+        CopyEffect_Obj.SetActive(false);
     }
 }

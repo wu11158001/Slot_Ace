@@ -27,15 +27,29 @@ public class EntryView : MonoBehaviour
     private void Start()
     {
         entryErrorView.gameObject.SetActive(false);
-        Caching.ClearCache();
+        //Caching.ClearCache();
         
 #if UNITY_EDITOR
-        StartCoroutine(IUpdateComplete());
+        //StartCoroutine(IUpdateComplete());
+        //StartCoroutine(IDoUpdateAddressable());
 #else
-        StartCoroutine(IDoUpdateAddressable());
+        //StartCoroutine(IDoUpdateAddressable());
 #endif
     }
 
+    /// <summary>
+    /// 熱更新錯誤
+    /// </summary>
+    public void OnHitFixError()
+    {
+        LanguageManager.I.GetString(LocalizationTableEnum.MessageTip_Table, "Hot update failed.", (text) =>
+        {
+            entryErrorView.gameObject.SetActive(true);
+            entryErrorView.SetErrorMsg(text);
+        });
+    }
+
+    /*
     /// <summary>
     /// 執行熱更新
     /// </summary>
@@ -44,22 +58,26 @@ public class EntryView : MonoBehaviour
     {
         LodingBar_Img.fillAmount = 0;
 
+        AsyncOperationHandle<IResourceLocator> initHandle = Addressables.InitializeAsync();
+        yield return initHandle;
+
         // 檢測更新
-        var checkHandle = Addressables.CheckForCatalogUpdates(true);
+        var checkHandle = Addressables.CheckForCatalogUpdates(false);
         yield return checkHandle;
         if (checkHandle.Status != AsyncOperationStatus.Succeeded)
         {
-            OnError("檢測更新錯誤");
+            OnHitFixError();
             yield break;
         }
 
+        Debug.Log($"更新數量 : {checkHandle.Result.Count}");
         if (checkHandle.Result.Count > 0)
         {
-            var updateHandle = Addressables.UpdateCatalogs(checkHandle.Result, true);
+            var updateHandle = Addressables.UpdateCatalogs(checkHandle.Result, false);
             yield return updateHandle;
             if (updateHandle.Status != AsyncOperationStatus.Succeeded)
             {
-                OnError("更新錯誤");
+                OnHitFixError();
                 yield break;
             }
 
@@ -77,7 +95,7 @@ public class EntryView : MonoBehaviour
                 yield return sizeHandle;
                 if (sizeHandle.Status != AsyncOperationStatus.Succeeded)
                 {
-                    OnError("獲取待下載文件總大小錯誤");
+                    OnHitFixError();
                     yield break;
                 }
 
@@ -87,12 +105,12 @@ public class EntryView : MonoBehaviour
                 if (totalDownloadSize > 0)
                 {
                     // 下載
-                    var downloadHandle = Addressables.DownloadDependenciesAsync(keys, true);
+                    var downloadHandle = Addressables.DownloadDependenciesAsync(keys, false);
                     while (!downloadHandle.IsDone)
                     {
                         if (downloadHandle.Status == AsyncOperationStatus.Failed)
                         {
-                            OnError($"下載錯誤 : {downloadHandle.OperationException}");
+                            OnHitFixError();
                             yield break;
                         }
 
@@ -113,8 +131,12 @@ public class EntryView : MonoBehaviour
                         Debug.Log("下載完成");
                         LodingBar_Img.fillAmount = 1;
                     }
+
+                    downloadHandle.Release();
                 }
             }
+
+            updateHandle.Release();
         }
         else
         {
@@ -122,27 +144,9 @@ public class EntryView : MonoBehaviour
             LoadingProgress_Txt.text = $"Enter Game";
         }
 
+        checkHandle.Release();
+
         StartCoroutine(IUpdateComplete());
-    }
-
-    /// <summary>
-    /// 錯誤
-    /// </summary>
-    /// <param name="msg">錯誤訊息</param>
-    /// <param name="isReloadHotFix">重載熱更/重新連接服務器</param>
-    private void OnError(string msg, bool isReloadHotFix = true)
-    {
-        Debug.LogError(msg);
-        string key =
-            isReloadHotFix ?
-            "Hot update failed." :
-            msg;
-
-        LanguageManager.I.GetString(LocalizationTableEnum.Entry_Table, key, (text) =>
-        {
-            entryErrorView.gameObject.SetActive(true);
-            entryErrorView.SetErrorMsg(text, isReloadHotFix);
-        });
     }
 
     /// <summary>
@@ -175,11 +179,12 @@ public class EntryView : MonoBehaviour
         }  
 #endif
 
+
         Type type = ass.GetType("LauncherManager");
         GameObject launcherObj = new("LauncherManager");
         launcherObj.AddComponent(type);
-        type.GetMethod("GameLauncher").Invoke(launcherObj.GetComponent(type), new object[] { isEditor });
+        type.GetMethod("GameLauncher", BindingFlags.Public | BindingFlags.Instance).Invoke(launcherObj.GetComponent(type), new object[] { isEditor });
 
         yield return null;
-    }
+    }*/
 }

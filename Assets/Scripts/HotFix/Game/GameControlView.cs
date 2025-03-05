@@ -51,7 +51,7 @@ public class GameControlView : MonoBehaviour
         Slot_Btn.onClick.AddListener(() =>
         {
             Slot_Btn.interactable = false;
-            _gameMVC.game_Contriller.SendSlotRequest();            
+            _gameMVC.game_Contriller.SendSlotRequest();
         });
     }
 

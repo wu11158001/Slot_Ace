@@ -13,6 +13,7 @@ public enum SceneEnum
 public enum ViewEnum
 {
     GameControlView,
+    MessageTipView,
 }
 
 /// <summary>
@@ -21,4 +22,7 @@ public enum ViewEnum
 public enum LocalizationTableEnum
 {
     Entry_Table = 0,
+    MessageTip_Table,
+    Common_Table,
+    Game_Table,
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 989e60ebabb5b2948b965084005bf8c1
   m_currentHash:
     serializedVersion: 2
-    Hash: a17ba876721e5381ce580328345b5c65
+    Hash: 659c1a8b17fa49f26d935f8c645311fb
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 1
   m_CatalogRequestsTimeout: 0
@@ -61,7 +61,6 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: 89c3a1361a71a0f4ab8b297259ba4568, type: 2}
   - {fileID: 11400000, guid: f287b12834db13a4ea65d696c651b436, type: 2}
-  - {fileID: 11400000, guid: c4c5ed6221973d34ebf4bfd47d64f9ed, type: 2}
   - {fileID: 11400000, guid: b92a181e0907e4741b636f54c4c7342e, type: 2}
   - {fileID: 11400000, guid: 90b6ffd4795bb3c4aa031f05f7799d07, type: 2}
   - {fileID: 11400000, guid: 6a6cd145892600845813cccf0d2a98c5, type: 2}
@@ -77,9 +76,9 @@ MonoBehaviour:
       m_ProfileName: Default
       m_Values:
       - m_Id: 0883d1ff28485c944bbbcefa72e918f3
-        m_Value: https://wu11158001.github.io/Slot_Ace_HotFix/[BuildTarget]/
+        m_Value: 'http://127.0.0.1:8080/Slot_Ace_HotFix/[BuildTarget]'
       - m_Id: 692da45d4a5771a44bfc54e9ac56bb65
-        m_Value: http://127.0.0.1:8080
+        m_Value: 'http://127.0.0.1:8080/Slot_Ace_HotFix/[BuildTarget]'
       - m_Id: bee386336b3b2b8458e36434a844d80e
         m_Value: 'E:\HttpServer\Slot_Ace_HotFix/[BuildTarget]'
       - m_Id: c7720f1608efe5c458c791bb8e522680
@@ -109,10 +108,14 @@ MonoBehaviour:
     - Locale
     - Locale-zh-TW
     - Locale-en
+    - Scenes
+    - DLL
+    - Prefab
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 173f302fe195a9c44a59910c26fef2d5, type: 2}
-  m_InitializationObjects: []
+  m_InitializationObjects:
+  - {fileID: 11400000, guid: c7b3ba7d757fe8241909e44b06c2cfbf, type: 2}
   m_CertificateHandlerType:
     m_AssemblyName: 
     m_ClassName: 

@@ -9,14 +9,22 @@ public class GameMVC : MonoBehaviour
 
     private void Awake()
     {
-        game_View = GetComponent<Game_View>();
+        Debug.Log("GameMVC 初始化...");
+
         game_Contriller = GetComponent<Game_Controller>();
         game_Model = GetComponent<Game_Model>();
+        game_View = GetComponent<Game_View>();
+
+        game_Contriller.Initialize(this);
+        game_Model.Initialize(this);
+        game_View.Initialize(this);
 
         ViewManager.I.OpenView<GameControlView>(ViewEnum.GameControlView, (view) =>
         {
             gameControlView = view;
             view.SetGameMVC(this);
+
+            Debug.Log("GameMVC 初始化完成");
         });
     }
 }

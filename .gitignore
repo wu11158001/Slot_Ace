@@ -67,3 +67,7 @@ crashlytics-build.properties
 # My Fild
 HybridCLRData/
 Bundles/
+Temp/
+
+[UnityEngine.Application.persistentDataPath]/
+*.utmp

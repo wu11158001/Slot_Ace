@@ -34,10 +34,32 @@ public class SceneLoadManager : UnitySingleton<SceneLoadManager>
             {
                 // 遊戲
                 case SceneEnum.Game:
-                    Addressables.LoadAssetAsync<GameObject>("Prefab/Game/GameMVC.prefab").Completed += (assets) =>
+                    Addressables.LoadAssetAsync<GameObject>("Prefab/Game/GameMVC.prefab").Completed += (handle) =>
                     {
-                        Instantiate(assets.Result);
+                        if (handle.Status == AsyncOperationStatus.Succeeded)
+                        {                            
+                            Instantiate(handle.Result);                           
+                        }
+                        else
+                        {
+                            Debug.LogError("資源加載失敗: " + handle.OperationException);
+                        }
+
+                        Addressables.Release(handle);
                     };
+                    /*Addressables.InstantiateAsync("Prefab/Game/GameMVC.prefab").Completed += (handle) =>
+                    {
+                        if (handle.Status == AsyncOperationStatus.Succeeded)
+                        {
+                            Debug.Log("GameMVC 資源實例化成功。");
+                        }
+                        else
+                        {
+                            Debug.LogError("GameMVC 資源實例化失敗: " + handle.OperationException);
+                        }
+
+                        //Addressables.Release(handle);
+                    };*/
                     break;
             }
         }

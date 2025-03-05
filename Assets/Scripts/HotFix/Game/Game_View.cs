@@ -25,22 +25,16 @@ public class Game_View : MonoBehaviour
     // 場上撲克牌
     private List<Poker> _pokerList;
 
-    private void Awake()
-    {
-        _gameMVC = GetComponent<GameMVC>();
-
-        CreatePokers();
-    }
-
     /// <summary>
     /// 初始化
     /// </summary>
-    private void CreatePokers()
+    public void Initialize(GameMVC gameMVC)
     {
+        _gameMVC = gameMVC;
         _pokerList = new();
 
         // 產生撲克牌
-        Addressables.LoadAssetAsync<GameObject>("Prefab/Game/Poker.prefab").Completed += (assets) =>
+        Addressables.LoadAssetAsync<GameObject>("Prefab/Game/Poker.prefab").Completed += (handle) =>
         {
             for (int row = 0; row < 5; row++)
             {
@@ -50,7 +44,7 @@ public class Game_View : MonoBehaviour
                     float posY = pokerStartPosition.y + (col * pokerSpace.y);
                     Vector3 targetPos = new(posX, posY, 0);
 
-                    GameObject pokerObj = Instantiate(assets.Result, PokerArea);
+                    GameObject pokerObj = Instantiate(handle.Result, PokerArea);
                     pokerObj.transform.position = targetPos;
                     Poker poker = pokerObj.GetComponent<Poker>();
                     poker.Initialize(
@@ -61,30 +55,40 @@ public class Game_View : MonoBehaviour
                 }
             }
 
-            // 初始牌面
-            SlotResultData slotResultData = new()
-            {
-                // 盤面結果
-                SlotCardNumList = new()
-                {
-                    new()
-                    {
-                        7, 7, 7, 7,
-                        6, 6, 6, 6,
-                        5, 5, 5, 5,
-                        4, 4, 4, 4,
-                        3, 3, 3, 3,
-                    },
-                },
+            FirstSlot();
 
-                // 黃金牌位置
-                GoldCardIndexList = new()
-                {
-                    new() { 7 },
-                },
-            };
-            StartSlot(slotResultData, true);
+            Addressables.Release(handle);
         };
+    }
+
+    /// <summary>
+    /// 首次輪轉(初始畫面)
+    /// </summary>
+    private void FirstSlot()
+    {
+        // 初始牌面
+        SlotResultData slotResultData = new()
+        {
+            // 盤面結果
+            SlotCardNumList = new()
+            {
+                new()
+                {
+                    7,7,7,7,
+                    6,6,6,6,
+                    5,5,5,5,
+                    4,4,4,4,
+                    3,3,3,3,
+                },
+            },
+
+            // 黃金牌位置
+            GoldCardIndexList = new()
+            {
+                new() { 7 },
+            },
+        };
+        StartSlot(slotResultData, true);
     }
 
     /// <summary>
@@ -149,7 +153,7 @@ public class Game_View : MonoBehaviour
 
                 poker.SetPokerAndTurn(pokerNum, isGold, bigWildData);
 
-                StartCoroutine(ISlotEffect(poker));
+                StartCoroutine(ISlotEffect(poker, pokerNum));
                 yield return new WaitForSeconds(slotYieldTime);
 
                 index++;
@@ -166,7 +170,7 @@ public class Game_View : MonoBehaviour
             // 有大鬼牌
             if (hasBigWild)
             {
-                yield return new WaitForSeconds(0.45f);
+                yield return new WaitForSeconds(1.0f);
             }
 
             // 再次設置撲克牌牌面確保顯示資料正確
@@ -207,7 +211,7 @@ public class Game_View : MonoBehaviour
             {
                 if (slotResultData.WinCardPosList != null && slotResultData.WinCardPosList[i].Count > 0)
                 {
-                    yield return new WaitForSeconds(2);
+                    yield return new WaitForSeconds(2.0f);
                 }
                 else
                 {
@@ -240,10 +244,10 @@ public class Game_View : MonoBehaviour
     /// <summary>
     /// 輪轉效果
     /// </summary>
-    /// <param name="tr">物件</param>
-    /// <param name="targetPos">目標位置</param>
+    /// <param name="poker"></param>
+    /// <param name="num">牌型編號</param>
     /// <returns></returns>
-    private IEnumerator ISlotEffect(Poker poker)
+    private IEnumerator ISlotEffect(Poker poker, int num)
     {
         Transform tr = poker.gameObject.transform;
 
@@ -260,5 +264,6 @@ public class Game_View : MonoBehaviour
         }
 
         tr.position = poker.TargetPos;
+        poker.OnDropOver(num);
     }
 }

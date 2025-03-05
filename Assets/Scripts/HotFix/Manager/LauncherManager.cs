@@ -21,7 +21,7 @@ public class LauncherManager : MonoBehaviour
     /// <param name="isEditor"></param>
     public void GameLauncher(bool isEditor)
     {
-        Debug.Log("遊戲啟動");
+        Debug.Log("遊戲啟動...");
         _isEditor = isEditor;
 
         new GameObject("UnityMainThreadDispatcher").AddComponent<UnityMainThreadDispatcher>();
@@ -103,12 +103,21 @@ public class LauncherManager : MonoBehaviour
     /// <param name="msg"></param>
     private void OnError(string msg)
     {
-        Assembly ass = AppDomain.CurrentDomain.GetAssemblies().First(a => a.GetName().Name == "Assembly-CSharp");
-        Type type = ass.GetType("EntryView");
-        GameObject entryViewObj = GameObject.Find("EntryView");
-        type.GetMethod("OnError", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(entryViewObj.GetComponent(type), new object[] { msg, false });
+        LanguageManager.I.GetString(LocalizationTableEnum.MessageTip_Table, msg, (text) =>
+        {
+            ViewManager.I.OpenView<MessageTipView>(ViewEnum.MessageTipView, (view) =>
+            {
+                view.SetMessageTipView(text, false, ReGameLauncher, null, true);
+            });
+        });
+    }
 
-        Destroy(gameObject); 
+    /// <summary>
+    /// 重新啟動遊戲
+    /// </summary>
+    public void ReGameLauncher()
+    {
+        GameLauncher(_isEditor);
     }
 
     /// <summary>

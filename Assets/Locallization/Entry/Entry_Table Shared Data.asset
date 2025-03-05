@@ -19,18 +19,6 @@ MonoBehaviour:
     m_Key: Retry
     m_Metadata:
       m_Items: []
-  - m_Id: 422748798783488
-    m_Key: Failed to connect to the server.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 423521217613824
-    m_Key: Google login failed.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 423905722044416
-    m_Key: Hot update failed.
-    m_Metadata:
-      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

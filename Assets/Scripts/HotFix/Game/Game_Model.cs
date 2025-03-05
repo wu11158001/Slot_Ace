@@ -8,9 +8,13 @@ public class Game_Model : MonoBehaviour
 {
     private GameMVC _gameMVC;
 
-    private void Awake()
+    /// <summary>
+    /// 初始化
+    /// </summary>
+    /// <param name="gameMVC"></param>
+    public void Initialize(GameMVC gameMVC)
     {
-        _gameMVC = GetComponent<GameMVC>();
+        _gameMVC = gameMVC;
     }
 
     /// <summary>

@@ -121,22 +121,13 @@ public class EntryErrorView : MonoBehaviour
     /// 設置錯誤訊息
     /// </summary>
     /// <param name="msg">錯誤訊息</param>
-    /// <param name="isReloadHotFix">重載熱更/重新連接服務器</param>
-    public void SetErrorMsg(string msg, bool isReloadHotFix)
+    public void SetErrorMsg(string msg)
     {
         Msg_Txt.text = msg;
         Retry_Btn.onClick.RemoveAllListeners();
         Retry_Btn.onClick.AddListener(() =>
         {
-            if (isReloadHotFix)
-            {
-                StartCoroutine(EntryView.I.IDoUpdateAddressable());
-            }
-            else
-            {
-                StartCoroutine(EntryView.I.IUpdateComplete());
-            }
-
+            CheckHitFixAssets.I.InitializeAddressable();
             gameObject.SetActive(false);
         });
     }

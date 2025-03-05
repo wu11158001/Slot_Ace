@@ -21,6 +21,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-zh-TW
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e3358cc39c3a094da1af0e3a306f675
+    m_Address: MessageTip_Table_zh-TW
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-TW
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 463f81fe777c5e24c87b164f6f94073a
+    m_Address: Common_Table_zh-TW
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-TW
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 780065b4d1adde9469d2ef73511e44db
     m_Address: Entry_Table_zh-TW
     m_ReadOnly: 1
