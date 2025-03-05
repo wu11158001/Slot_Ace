@@ -8,12 +8,10 @@ using System.Linq;
 public class Game_View : MonoBehaviour
 {
     [SerializeField] Transform PokerArea;
+    [SerializeField] Transform TwoCoinColumnEffectArea;
 
-    [Space(30)]
-    [Header("輪轉效果參數")]
-    [SerializeField] float slotStartPositionAddY;
-    [SerializeField] float slotYieldTime;
-    [SerializeField] float slotMoveSpeed;
+    // 輪轉開始位置增加Y
+    private float slotStartPositionAddY = 9.4f;
 
     private GameMVC _gameMVC;
 
@@ -24,6 +22,8 @@ public class Game_View : MonoBehaviour
 
     // 場上撲克牌
     private List<Poker> _pokerList;
+    // 產生2枚金幣出現效果
+    private List<GameObject> _twoCoinColumnEffectList;
 
     /// <summary>
     /// 初始化
@@ -32,6 +32,7 @@ public class Game_View : MonoBehaviour
     {
         _gameMVC = gameMVC;
         _pokerList = new();
+        _twoCoinColumnEffectList = new();
 
         // 產生撲克牌
         Addressables.LoadAssetAsync<GameObject>("Prefab/Game/Poker.prefab").Completed += (handle) =>
@@ -58,6 +59,20 @@ public class Game_View : MonoBehaviour
             FirstSlot();
 
             Addressables.Release(handle);
+        };
+
+        // 產生2枚金幣出現效果
+        Addressables.LoadAssetAsync<GameObject>("Prefab/Game/TwoCoinColumnEffect.prefab").Completed += (handle) =>
+        {
+            for (int row = 0; row < 5; row++)
+            {
+                float posX = pokerStartPosition.x + (row * pokerSpace.x);
+
+                GameObject twoCoinColumnEffect = Instantiate(handle.Result, TwoCoinColumnEffectArea);
+                twoCoinColumnEffect.transform.position = new Vector3(posX, -0.3f, 0);
+                twoCoinColumnEffect.SetActive(false);
+                _twoCoinColumnEffectList.Add(twoCoinColumnEffect);
+            }
         };
     }
 
@@ -116,8 +131,21 @@ public class Game_View : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IStartSlotEffect(SlotResultData slotResultData, bool isInit)
     {
+        // 已出現金幣數量
+        int coinCount = 0;
+
+        // 重製撲克牌
+        foreach (var poker in _pokerList)
+        {
+            poker.ResetPoker();
+        }
+
         for (int i = 0; i < slotResultData.SlotCardNumList.Count; i++)
-        {            
+        {
+            // 一般輪轉撲克牌等待時間
+            float normalYieldTime = 0.01f;
+            // 2枚金幣出現輪轉撲克牌等待時間
+            float twoCoinTieldTime = 0.25f;
 
             // 是否有大鬼牌
             bool hasBigWild = false;
@@ -125,13 +153,20 @@ public class Game_View : MonoBehaviour
             // 重製撲克牌
             foreach (var poker in _pokerList)
             {
-                poker.ResetPoker();
+                poker.SlotResetPoker();
             }
 
             // 輪轉效果
             int index = 0;
+            int column = 0;
             foreach (var poker in _pokerList)
             {
+                // 每列首個撲克掉落
+                if (index > 0 && index % 4 == 0)
+                {
+                    column++;
+                }
+
                 // 設置撲克牌
                 int pokerNum = slotResultData.SlotCardNumList[i][index];
                 bool isGold = slotResultData.GoldCardIndexList[i].Contains(index);
@@ -139,6 +174,7 @@ public class Game_View : MonoBehaviour
                 if (pokerNum == 9)
                 {
                     // 大鬼牌
+
                     bigWildData = slotResultData.bigWildDataList[i][index];
                     if (bigWildData != null && bigWildData.CopyIndexList != null)
                     {
@@ -150,11 +186,69 @@ public class Game_View : MonoBehaviour
                         }
                     }                                      
                 }
+                else if (poker.CurrNum != 10 && pokerNum == 10)
+                {
+                    // 金幣
+
+                    coinCount++;                    
+                }
 
                 poker.SetPokerAndTurn(pokerNum, isGold, bigWildData);
+                if (coinCount >= 2)
+                {
+                    foreach (var tempPoker in _pokerList)
+                    {
+                        if (tempPoker.CurrNum == 10)
+                        {
+                            tempPoker.OpenCoinShineEffect();
+                        }
+                    }
+                }
 
                 StartCoroutine(ISlotEffect(poker, pokerNum));
-                yield return new WaitForSeconds(slotYieldTime);
+
+                if (i == 0 && coinCount == 2)
+                {
+                    // 金幣數量差1枚(首輪輪轉)
+
+                    yield return new WaitForSeconds(twoCoinTieldTime);
+                }
+                else
+                {
+                    // 一般輪轉掉落
+
+                    yield return new WaitForSeconds(normalYieldTime);
+                }
+
+                // 每列首個撲克掉落
+                if (index > 0 && index % 4 == 0)
+                {
+                    // 首輪輪轉
+                    if (i == 0)
+                    {
+                        // 重製兩枚金幣出現效果
+                        ResetTwoCoinColumnEffect();
+
+                        // 前幾列撲克牌開啟黑色遮罩
+                        if (coinCount == 2)
+                        {
+                            int openBlockMaskCount = column * 4;
+                            for (int blockIndex = 0; blockIndex < openBlockMaskCount; blockIndex++)
+                            {
+                                if (_pokerList[blockIndex].CurrNum != 10)
+                                {
+                                    _pokerList[blockIndex].OpenBlockMask();
+                                }
+                            }
+                        }
+                    }                                  
+                }
+
+                // 開啟兩枚金幣效果(首輪輪轉)
+                if (i == 0 && coinCount == 2)
+                {
+                    _twoCoinColumnEffectList[column].SetActive(true);
+                }
 
                 index++;
             }
@@ -172,6 +266,9 @@ public class Game_View : MonoBehaviour
             {
                 yield return new WaitForSeconds(1.0f);
             }
+
+            // 重製兩枚金幣出現效果
+            ResetTwoCoinColumnEffect();
 
             // 再次設置撲克牌牌面確保顯示資料正確
             index = 0;
@@ -192,7 +289,10 @@ public class Game_View : MonoBehaviour
                     // 有中獎預設所有牌未中獎效果
                     foreach (var poker in _pokerList)
                     {
-                        poker.NotWin();
+                        if (poker.CurrNum != 10)
+                        {
+                            poker.OpenBlockMask();
+                        }                        
                     }
 
                     // 設置連擊數UI
@@ -249,6 +349,8 @@ public class Game_View : MonoBehaviour
     /// <returns></returns>
     private IEnumerator ISlotEffect(Poker poker, int num)
     {
+        float slotMoveSpeed = 30;
+
         Transform tr = poker.gameObject.transform;
 
         while (tr.position.y > poker.TargetPos.y)
@@ -265,5 +367,16 @@ public class Game_View : MonoBehaviour
 
         tr.position = poker.TargetPos;
         poker.OnDropOver(num);
+    }
+
+    /// <summary>
+    /// 重製兩枚金幣出現效果
+    /// </summary>
+    private void ResetTwoCoinColumnEffect()
+    {        
+        foreach (var twoCoinColumnEffect in _twoCoinColumnEffectList)
+        {
+            twoCoinColumnEffect.SetActive(false);
+        }
     }
 }

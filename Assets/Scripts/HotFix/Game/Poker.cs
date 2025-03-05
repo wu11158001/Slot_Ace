@@ -8,16 +8,16 @@ public class Poker : MonoBehaviour
     [SerializeField] SpriteRenderer Poker_Sr;
     [SerializeField] Animator Poker_Ani;
     [SerializeField] Coin _coin;
-    [SerializeField] GameObject NotWin_Obj;
+    [SerializeField] GameObject BlockMask_Obj;
     [SerializeField] GameObject CopyEffect_Obj;
-
-
 
     // 動畫Hash_是否中獎
     private readonly int _IsWin_Hash = Animator.StringToHash("IsWin");
     // 複製大鬼牌移動時間
     private readonly float _CopyBigWildMoveTime = 0.4f;
 
+    // 當前顯示編號
+    public int CurrNum { get; private set; }
     // 位置
     public int PosIndex { get; private set; }
     // 移動目標位置
@@ -39,11 +39,23 @@ public class Poker : MonoBehaviour
     /// </summary>
     public void ResetPoker()
     {
+        CurrNum = -1;
         CopyEffect_Obj.SetActive(false);
-        NotWin_Obj.SetActive(false);
+        BlockMask_Obj.SetActive(false);
         Poker_Ani.SetBool(_IsWin_Hash, false);
+        Poker_Sr.enabled = true;
 
         _coin.ResetCoin();
+    }
+
+    /// <summary>
+    /// 輪轉重製撲克牌
+    /// </summary>
+    public void SlotResetPoker()
+    {
+        CopyEffect_Obj.SetActive(false);
+        BlockMask_Obj.SetActive(false);
+        Poker_Ani.SetBool(_IsWin_Hash, false);
     }
 
     /// <summary>
@@ -53,6 +65,9 @@ public class Poker : MonoBehaviour
     /// <param name="isGold"></param>
     public void SetPokerNum(int num, bool isGold)
     {
+        CurrNum = num;
+        BlockMask_Obj.SetActive(false);
+
         if (num == 10)
         {
             // 金幣
@@ -80,6 +95,8 @@ public class Poker : MonoBehaviour
     /// <param name="bigWildData">大鬼牌資料</param>
     public void SetPokerAndTurn(int num, bool isGold, BigWildData bigWildData)
     {
+        CurrNum = num;
+
         if (num == 10)
         {
             // 金幣
@@ -121,20 +138,28 @@ public class Poker : MonoBehaviour
     }
 
     /// <summary>
+    /// 開啟金幣閃爍背景效果
+    /// </summary>
+    public void OpenCoinShineEffect()
+    {
+        _coin.OpenShineEffect();
+    }
+
+    /// <summary>
     /// 中獎
     /// </summary>
     public void Winning()
     {
-        NotWin_Obj.SetActive(false);
+        BlockMask_Obj.SetActive(false);
         Poker_Ani.SetBool(_IsWin_Hash, true);
     }
 
     /// <summary>
-    /// 未中獎
+    /// 開啟黑色遮罩
     /// </summary>
-    public void NotWin()
+    public void OpenBlockMask()
     {
-        NotWin_Obj.SetActive(true);
+        BlockMask_Obj.SetActive(true);
     }
 
     /// <summary>

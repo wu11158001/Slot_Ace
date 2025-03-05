@@ -69,5 +69,4 @@ HybridCLRData/
 Bundles/
 Temp/
 
-[UnityEngine.Application.persistentDataPath]/
 *.utmp
