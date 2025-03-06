@@ -44,4 +44,13 @@ public class Coin : MonoBehaviour
     {
         ShineEffect_Obj.SetActive(true);
     }
+
+    /// <summary>
+    /// 中獎效果開關
+    /// </summary>
+    /// <param name="isOpen"></param>
+    public void SwitchWinEffect(bool isOpen)
+    {
+        Coin_Ani.SetBool(_IsWin_Hash, isOpen);
+    }
 }

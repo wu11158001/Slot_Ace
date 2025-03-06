@@ -23,15 +23,15 @@ public class Game_Model : MonoBehaviour
     /// <param name="mainPack"></param>
     public void HandleSlotRequest(MainPack mainPack)
     {
-        List<List<int>> slotResoultList = new();
+        List<List<int>> spinResoultList = new();
         List<List<int>> goldCardDataList = new();
         List<List<int>> winCardPosList = new();
         List<List<BigWildData>> bigWildDataList = new();
 
-        foreach (var resultList in mainPack.SlotResultListPack.SlotResultList)
+        foreach (var resultList in mainPack.SpinResultListPack.SpinResultList)
         {
             // 盤面結果
-            slotResoultList.Add(new(resultList.SlotResult));
+            spinResoultList.Add(new(resultList.SpinResult));
 
             // 黃金牌資料
             goldCardDataList.Add(new(resultList.GoldIndexList));
@@ -66,13 +66,21 @@ public class Game_Model : MonoBehaviour
             }
         }
 
+        // 用戶訊息資料
+        UserInfoData userInfoData = new()
+        {
+            UserCoin = mainPack.UserInfoPack.Coin,
+            FreeSpin = mainPack.UserInfoPack.FreeSpin,
+        };
+
         // 輪轉結果
         SlotResultData slotResultData = new()
         {
-            SlotCardNumList = slotResoultList,
+            SpinCardNumList = spinResoultList,
             GoldCardIndexList = goldCardDataList,
             WinCardPosList = winCardPosList,
-            bigWildDataList = bigWildDataList,
+            BigWildDataList = bigWildDataList,
+            userInfoData = userInfoData,
         };
 
         _gameMVC.game_View.StartSlot(slotResultData);

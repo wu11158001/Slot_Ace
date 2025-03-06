@@ -8,13 +8,26 @@ using System.Collections.Generic;
 public class SlotResultData
 {
     // 盤面結果
-    public List<List<int>> SlotCardNumList;
+    public List<List<int>> SpinCardNumList;
     // 黃金牌位置
     public List<List<int>> GoldCardIndexList;
     // 中獎牌位置
     public List<List<int>> WinCardPosList;
     // 大鬼牌資料
-    public List<List<BigWildData>> bigWildDataList;
+    public List<List<BigWildData>> BigWildDataList;
+    // 用戶訊息資料
+    public UserInfoData userInfoData;
+}
+
+/// <summary>
+/// 用戶訊息資料
+/// </summary>
+public class UserInfoData
+{
+    // 用戶籌碼
+    public int UserCoin;
+    // 免費輪轉次數
+    public int FreeSpin;
 }
 
 /// <summary>

@@ -22,6 +22,18 @@ MonoBehaviour:
     m_Localized: Start
     m_Metadata:
       m_Items: []
+  - m_Id: 1768771521548288
+    m_Localized: CONGRATS!\nFREE GAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1769647103479808
+    m_Localized: SPINS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1770500673703936
+    m_Localized: ELIMINATION MULTIPLIER
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

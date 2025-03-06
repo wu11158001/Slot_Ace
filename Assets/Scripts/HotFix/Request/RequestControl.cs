@@ -43,16 +43,16 @@ public static class RequestControl
     /// <summary>
     /// 輪轉請求
     /// </summary>
-    /// <param name="loginPack"></param>
+    /// <param name="spinRequestPack"></param>
     /// <param name="callback"></param>
-    public static void SlotRequest(LoginPack loginPack, UnityAction<MainPack> callback)
+    public static void SlotRequest(SpinRequestPack spinRequestPack, UnityAction<MainPack> callback)
     {
         MainPack mainPack = new()
         {
             RequestCode = RequestCode.Game,
-            ActionCode = ActionCode.Slot,
+            ActionCode = ActionCode.Spin,
 
-            LoginPack = loginPack,
+            SpinRequestPack = spinRequestPack,
         };
 
         ClientManager.I.Send(mainPack, callback);

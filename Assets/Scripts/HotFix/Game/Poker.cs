@@ -22,16 +22,20 @@ public class Poker : MonoBehaviour
     public int PosIndex { get; private set; }
     // 移動目標位置
     public Vector3 TargetPos { get; private set; }
+    // 牌背面編號
+    public int BackIndex { get; set; }
 
     /// <summary>
     /// 初始化
     /// </summary>
-    /// <param name="posIndex"></param>
-    /// <param name="targetPos"></param>
-    public void Initialize(int posIndex, Vector3 targetPos)
+    /// <param name="posIndex">位置</param>
+    /// <param name="targetPos">移動目標位置</param>
+    /// <param name="backIndex">牌背面編號</param>
+    public void Initialize(int posIndex, Vector3 targetPos, int backIndex)
     {
         PosIndex = posIndex;
         TargetPos = targetPos;
+        BackIndex = backIndex;
     }
 
     /// <summary>
@@ -41,7 +45,7 @@ public class Poker : MonoBehaviour
     {
         CurrNum = -1;
         CopyEffect_Obj.SetActive(false);
-        BlockMask_Obj.SetActive(false);
+        SwitchBlockMask(false);
         Poker_Ani.SetBool(_IsWin_Hash, false);
         Poker_Sr.enabled = true;
 
@@ -54,7 +58,7 @@ public class Poker : MonoBehaviour
     public void SlotResetPoker()
     {
         CopyEffect_Obj.SetActive(false);
-        BlockMask_Obj.SetActive(false);
+        SwitchBlockMask(false);
         Poker_Ani.SetBool(_IsWin_Hash, false);
     }
 
@@ -66,7 +70,7 @@ public class Poker : MonoBehaviour
     public void SetPokerNum(int num, bool isGold)
     {
         CurrNum = num;
-        BlockMask_Obj.SetActive(false);
+        SwitchBlockMask(false);
 
         if (num == 10)
         {
@@ -146,20 +150,30 @@ public class Poker : MonoBehaviour
     }
 
     /// <summary>
+    /// 金幣中獎效果開關
+    /// </summary>
+    /// <param name="isOpen"></param>
+    public void OnCoinSwitchWinEffect(bool isOpen)
+    {
+        _coin.SwitchWinEffect(isOpen);
+    }
+
+    /// <summary>
     /// 中獎
     /// </summary>
     public void Winning()
     {
-        BlockMask_Obj.SetActive(false);
+        SwitchBlockMask(false);
         Poker_Ani.SetBool(_IsWin_Hash, true);
     }
 
     /// <summary>
-    /// 開啟黑色遮罩
+    /// 黑色遮罩開關
     /// </summary>
-    public void OpenBlockMask()
+    /// <param name="isOpen"></param>
+    public void SwitchBlockMask(bool isOpen)
     {
-        BlockMask_Obj.SetActive(true);
+        BlockMask_Obj.SetActive(isOpen);
     }
 
     /// <summary>
@@ -175,6 +189,9 @@ public class Poker : MonoBehaviour
         {
             yield break;
         }
+
+        Poker_Sr.color = Color.white;
+        Poker_Sr.sprite = AssetsManager.I.SOManager.PokerBackSprite_SO.SpriteList[BackIndex];
 
         // 翻轉時間
         float during = 0.25f;

@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PokerSprite_SO: {fileID: 11400000, guid: 264b080ee04458f418bd86fd816eb0f4, type: 2}
+  PokerBackSprite_SO: {fileID: 11400000, guid: 4cb141d13b255c34289bd1d370c57db7, type: 2}

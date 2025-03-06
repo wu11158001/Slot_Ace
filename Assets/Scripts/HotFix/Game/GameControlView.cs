@@ -13,12 +13,30 @@ public class GameControlView : MonoBehaviour
     [SerializeField] TextMeshProUGUI Coin_Txt;
 
     [Space(30)]
-    [Header("連擊")]
-    [SerializeField] Color NormalCombosTextColor;
-    [SerializeField] Color CurrCombosTextColor;
-    [SerializeField] List<TextMeshProUGUI> CombosTextList;
+    [Header("乘倍背景")]
+    [SerializeField] Color MultiplierBgNormalColor;
+    [SerializeField] Color MultiplierBgFreeGameColor;
+    [SerializeField] Image MultiplierBg_Img;
+
+    [Space(30)]
+    [Header("乘倍文字")]
+    [SerializeField] Color NormalMultiplierTextColor;
+    [SerializeField] Color CurrMultiplierTextColor;
+    [SerializeField] List<TextMeshProUGUI> MultiplierTextList;
     [SerializeField] GameObject ComboTextEffect_Obj;
     [SerializeField] TextMeshProUGUI Combo_Num;
+
+    [Space(30)]
+    [Header("免費遊戲")]
+    [SerializeField] TextMeshProUGUI FreeSpinCount_Txt;
+
+    [Space(30)]
+    [Header("贏分")]
+    [SerializeField] TextMeshProUGUI TotalWinValue_Txt;
+
+    [Space(30)]
+    [Header("金幣中獎")]
+    [SerializeField] GameObject CoinWinArea;
 
     [Space(30)]
     [Header("遊戲操作")]
@@ -26,10 +44,15 @@ public class GameControlView : MonoBehaviour
 
     private GameMVC _gameMVC;
 
+    // 乘倍變化
+    private List<int> _multiplierNormalNumList = new() { 1, 2, 3, 5 };
+    private List<int> _multiplierFreeSpinNumList = new() { 2, 4, 6, 10 };
+
     private void Awake()
     {
         ComboTextEffect_Obj.SetActive(false);
         Slot_Btn.interactable = false;
+        SwitchCoinWinArea(false);
 
         // 載入頭像
         StartCoroutine(Utils.I.ImageUrlToSprite(DataManager.I.UserImgUrl, (sprite) =>
@@ -50,8 +73,11 @@ public class GameControlView : MonoBehaviour
         // 輪轉按鈕
         Slot_Btn.onClick.AddListener(() =>
         {
+            // 下注值
+            int betValue = 0;
+
             Slot_Btn.interactable = false;
-            _gameMVC.game_Contriller.SendSlotRequest();
+            _gameMVC.game_Contriller.SendSpinRequest(betValue);
         });
     }
 
@@ -76,8 +102,65 @@ public class GameControlView : MonoBehaviour
             return;
         }
 
-        Nickname_Txt.text = mainPack.LoginPack.Nickname;
-        Coin_Txt.text = mainPack.UserInfoPack.Coin.ToString("N0");
+        // 暱稱
+        string nickname = mainPack.LoginPack.Nickname;
+        // 用戶籌碼
+        int coin = mainPack.UserInfoPack.Coin;
+        // 免費輪轉次數
+        int freeSpin = mainPack.UserInfoPack.FreeSpin;
+
+        Nickname_Txt.text = nickname;
+        Coin_Txt.text = coin.ToString("N0");
+
+        SetMultiplierText(freeSpin);
+    }
+
+    /// <summary>
+    /// 輪轉結束更新資料
+    /// </summary>
+    /// <param name="userInfoData"></param>
+    public void SpinCopleteUpdateData(UserInfoData userInfoData)
+    {
+        if (userInfoData == null) return;
+
+        // 用戶籌碼
+        int coin = userInfoData.UserCoin;
+        // 免費輪轉次數
+        int freeSpin = userInfoData.FreeSpin;
+
+        Coin_Txt.text = coin.ToString("N0");
+
+        SetMultiplierText(freeSpin);
+    }
+
+    /// <summary>
+    /// 設置免費輪轉相關UI
+    /// </summary>
+    /// <param name="freeSpin"></param>
+    private void SetMultiplierText(int freeSpin)
+    {
+        FreeSpinCount_Txt.gameObject.SetActive(freeSpin > 0);
+        FreeSpinCount_Txt.text = $"{freeSpin}";
+
+        MultiplierBg_Img.color =
+            freeSpin > 0 ?
+            MultiplierBgFreeGameColor :
+            NormalMultiplierTextColor;
+
+        if (freeSpin > 0)
+        {
+            for (int i = 0; i < MultiplierTextList.Count; i++)
+            {
+                MultiplierTextList[i].text = $"X{_multiplierFreeSpinNumList[i]}";
+            }
+        }
+        else
+        {
+            for (int i = 0; i < MultiplierTextList.Count; i++)
+            {
+                MultiplierTextList[i].text = $"X{_multiplierNormalNumList[i]}";
+            }
+        }
     }
 
     /// <summary>
@@ -98,24 +181,24 @@ public class GameControlView : MonoBehaviour
         SetComboEffectText(combo + 1);
 
         int currIndex = combo;
-        if (currIndex >= CombosTextList.Count)
+        if (currIndex >= MultiplierTextList.Count)
         {
-            currIndex = CombosTextList.Count - 1;
+            currIndex = MultiplierTextList.Count - 1;
         }
         else if (currIndex <= 0)
         {
             currIndex = 0;
         }
 
-        for (int i = 0; i < CombosTextList.Count; i++)
+        for (int i = 0; i < MultiplierTextList.Count; i++)
         {
             if (currIndex == i)
             {
-                CombosTextList[i].color = CurrCombosTextColor;
+                MultiplierTextList[i].color = CurrMultiplierTextColor;
             }
             else
             {
-                CombosTextList[i].color = NormalCombosTextColor;
+                MultiplierTextList[i].color = NormalMultiplierTextColor;
             }
         }
     }
@@ -135,5 +218,14 @@ public class GameControlView : MonoBehaviour
         ComboTextEffect_Obj.SetActive(false);
         ComboTextEffect_Obj.SetActive(true);
         Combo_Num.text = $"X{combo}";
+    }
+
+    /// <summary>
+    /// 金幣中獎畫面開關
+    /// </summary>
+    /// <param name="isOpen"></param>
+    public void SwitchCoinWinArea(bool isOpen)
+    {
+        CoinWinArea.SetActive(isOpen);
     }
 }

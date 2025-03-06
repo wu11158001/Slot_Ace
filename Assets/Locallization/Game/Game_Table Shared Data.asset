@@ -19,6 +19,18 @@ MonoBehaviour:
     m_Key: Start
     m_Metadata:
       m_Items: []
+  - m_Id: 1768771521548288
+    m_Key: CONGRATS!\nFREE GAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1769647103479808
+    m_Key: SPINS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1770500673703936
+    m_Key: ELIMINATION MULTIPLIER
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

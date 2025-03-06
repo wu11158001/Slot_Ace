@@ -37,6 +37,9 @@ public class Game_View : MonoBehaviour
         // 產生撲克牌
         Addressables.LoadAssetAsync<GameObject>("Prefab/Game/Poker.prefab").Completed += (handle) =>
         {
+            // 背面編號
+            int pokerBackIndex = Random.Range(0, AssetsManager.I.SOManager.PokerBackSprite_SO.SpriteList.Count);
+
             for (int row = 0; row < 5; row++)
             {
                 for (int col = 0; col < 4; col++)
@@ -49,8 +52,9 @@ public class Game_View : MonoBehaviour
                     pokerObj.transform.position = targetPos;
                     Poker poker = pokerObj.GetComponent<Poker>();
                     poker.Initialize(
-                        col + (row * 4),
-                        targetPos);
+                        posIndex: col + (row * 4),
+                        targetPos: targetPos,
+                        backIndex: pokerBackIndex);
 
                     _pokerList.Add(poker);
                 }
@@ -85,7 +89,7 @@ public class Game_View : MonoBehaviour
         SlotResultData slotResultData = new()
         {
             // 盤面結果
-            SlotCardNumList = new()
+            SpinCardNumList = new()
             {
                 new()
                 {
@@ -140,7 +144,7 @@ public class Game_View : MonoBehaviour
             poker.ResetPoker();
         }
 
-        for (int i = 0; i < slotResultData.SlotCardNumList.Count; i++)
+        for (int i = 0; i < slotResultData.SpinCardNumList.Count; i++)
         {
             // 一般輪轉撲克牌等待時間
             float normalYieldTime = 0.01f;
@@ -168,14 +172,14 @@ public class Game_View : MonoBehaviour
                 }
 
                 // 設置撲克牌
-                int pokerNum = slotResultData.SlotCardNumList[i][index];
+                int pokerNum = slotResultData.SpinCardNumList[i][index];
                 bool isGold = slotResultData.GoldCardIndexList[i].Contains(index);
                 BigWildData bigWildData = new();
                 if (pokerNum == 9)
                 {
                     // 大鬼牌
 
-                    bigWildData = slotResultData.bigWildDataList[i][index];
+                    bigWildData = slotResultData.BigWildDataList[i][index];
                     if (bigWildData != null && bigWildData.CopyIndexList != null)
                     {
                         hasBigWild = true;
@@ -237,7 +241,7 @@ public class Game_View : MonoBehaviour
                             {
                                 if (_pokerList[blockIndex].CurrNum != 10)
                                 {
-                                    _pokerList[blockIndex].OpenBlockMask();
+                                    _pokerList[blockIndex].SwitchBlockMask(true);
                                 }
                             }
                         }
@@ -275,7 +279,7 @@ public class Game_View : MonoBehaviour
             foreach (var poker in _pokerList)
             {
                 // 設置撲克牌
-                int pokerNum = slotResultData.SlotCardNumList[i][index];
+                int pokerNum = slotResultData.SpinCardNumList[i][index];
                 bool isGold = slotResultData.GoldCardIndexList[i].Contains(index);                
                 poker.SetPokerNum(pokerNum, isGold);
                 index++;
@@ -291,7 +295,7 @@ public class Game_View : MonoBehaviour
                     {
                         if (poker.CurrNum != 10)
                         {
-                            poker.OpenBlockMask();
+                            poker.SwitchBlockMask(true);
                         }                        
                     }
 
@@ -338,6 +342,23 @@ public class Game_View : MonoBehaviour
             }
         }
 
+        // 金幣中獎
+        if (coinCount >= 3)
+        {
+            yield return ICoinWin();
+        }
+
+        SpinComplete(slotResultData);
+        
+    }
+
+    /// <summary>
+    /// 輪轉結束
+    /// </summary>
+    /// <param name="slotResultData"></param>
+    private void SpinComplete(SlotResultData slotResultData)
+    {
+        _gameMVC.gameControlView.SpinCopleteUpdateData(slotResultData.userInfoData);
         _gameMVC.gameControlView.OpenOperation();
     }
 
@@ -378,5 +399,46 @@ public class Game_View : MonoBehaviour
         {
             twoCoinColumnEffect.SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// 金幣中獎
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator ICoinWin()
+    {
+        foreach (var poker in _pokerList)
+        {
+            if (poker.CurrNum == 10)
+            {
+                poker.OnCoinSwitchWinEffect(true);
+            }
+            else
+            {
+                poker.SwitchBlockMask(true);
+            }
+        }
+
+        yield return new WaitForSeconds(2);
+
+        foreach (var poker in _pokerList)
+        {
+            if (poker.CurrNum == 10)
+            {
+                poker.OnCoinSwitchWinEffect(false);
+            }
+            else
+            {
+                poker.SwitchBlockMask(false);
+            }
+        }
+
+        // 開啟金幣中獎畫面
+        _gameMVC.gameControlView.SwitchCoinWinArea(true);
+
+        yield return new WaitForSeconds(2);
+
+        // 關閉金幣中獎畫面
+        _gameMVC.gameControlView.SwitchCoinWinArea(false);
     }
 }

@@ -17,12 +17,13 @@ public class Game_Controller : MonoBehaviour
     /// <summary>
     /// 發送輪轉請求
     /// </summary>
-    public void SendSlotRequest()
+    /// <param name="betValue"></param>
+    public void SendSpinRequest(int betValue)
     {
-        LoginPack loginPack = new()
+        SpinRequestPack spinRequestPack = new()
         {
-            UserId = DataManager.I.UserId,
+            BetValue = betValue,
         };
-        RequestControl.SlotRequest(loginPack, _gameMVC.game_Model.HandleSlotRequest);
+        RequestControl.SlotRequest(spinRequestPack, _gameMVC.game_Model.HandleSlotRequest);
     }
 }
