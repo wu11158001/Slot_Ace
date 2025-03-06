@@ -27,6 +27,7 @@ public class Game_Model : MonoBehaviour
         List<List<int>> goldCardDataList = new();
         List<List<int>> winCardPosList = new();
         List<List<BigWildData>> bigWildDataList = new();
+        List<int> WinValueList = new();
 
         foreach (var resultList in mainPack.SpinResultListPack.SpinResultList)
         {
@@ -64,6 +65,9 @@ public class Game_Model : MonoBehaviour
                 List<BigWildData> tempBigWildData = new();
                 bigWildDataList.Add(tempBigWildData);
             }
+
+            // 贏分
+            WinValueList.Add(resultList.WinValue);
         }
 
         // 用戶訊息資料
@@ -80,6 +84,7 @@ public class Game_Model : MonoBehaviour
             GoldCardIndexList = goldCardDataList,
             WinCardPosList = winCardPosList,
             BigWildDataList = bigWildDataList,
+            WinValueList = WinValueList,
             userInfoData = userInfoData,
         };
 

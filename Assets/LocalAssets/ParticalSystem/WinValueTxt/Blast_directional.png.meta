@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bf04f30f380d18849b60d45ecaab22f6
+guid: d4ed2c24a7c24e3419b43faf029ce757
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: c30788e61446f0148bf8ac44a793d988
+    spriteID: 5a3b4ebd8e92de5429ac4116baa545a8
     vertices: []
     indices: 
     edges: []
@@ -113,5 +113,5 @@ AssetOrigin:
   productId: 200333
   packageName: Hyper Casual FX
   packageVersion: 1.0.1
-  assetPath: Assets/LocalAssets/ParticalSystem/CoinEffect/Ray01.png
+  assetPath: Assets/LocalAssets/ParticalSystem/WinValueTxt/Blast_directional.png
   uploadId: 475766

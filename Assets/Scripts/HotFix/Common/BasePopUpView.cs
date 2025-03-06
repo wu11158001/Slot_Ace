@@ -10,6 +10,7 @@ public class BasePopUpView : MonoBehaviour
     [SerializeField] Button Mask_Btn;
     [SerializeField] RectTransform SlideArea;
     [SerializeField] bool isMaskBtn;
+    [SerializeField] bool isUsingActiveClose;
 
     protected virtual void OnEnable()
     {
@@ -22,7 +23,7 @@ public class BasePopUpView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IDisplayView()
     {
-        float alphaMax = 200;                         // 遮罩透明值最大值
+        float alphaMax = Mask_Btn.image.color.a;      // 遮罩透明值最大值
         float maskEffectTime = 0.2f;                  // 遮罩效果完成時間
         float slideViewMaxPosY = 50.0f;               // 滑動介面最頂部位置
         float slideViewReboundTime = 0.1f;            // 滑動介面回彈時間
@@ -119,6 +120,13 @@ public class BasePopUpView : MonoBehaviour
             yield return null;
         }
 
-        ViewManager.I.CloseCurrView();
+        if (isUsingActiveClose)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            ViewManager.I.CloseCurrView();
+        }
     }
 }

@@ -40,7 +40,13 @@ public class GameControlView : MonoBehaviour
 
     [Space(30)]
     [Header("遊戲操作")]
-    [SerializeField] Button Slot_Btn;
+    [SerializeField] Button Spin_Btn;
+
+    [Space(30)]
+    [Header("下注值")]
+    [SerializeField] Button ChangeBetValue_Btn;
+    [SerializeField] TextMeshProUGUI CurrBetValue_Txt;
+    [SerializeField] ChangeBetValueView changeBetValueView;
 
     private GameMVC _gameMVC;
 
@@ -48,10 +54,18 @@ public class GameControlView : MonoBehaviour
     private List<int> _multiplierNormalNumList = new() { 1, 2, 3, 5 };
     private List<int> _multiplierFreeSpinNumList = new() { 2, 4, 6, 10 };
 
+    // 當前總贏分
+    private int _currTotalWinValue;
+    // 用戶籌碼
+    private int _userCoin;
+    // 免費輪轉
+    private int _freeSpin;
+
     private void Awake()
     {
+        TotalWinValue_Txt.text = $"0";
         ComboTextEffect_Obj.SetActive(false);
-        Slot_Btn.interactable = false;
+        Spin_Btn.interactable = false;
         SwitchCoinWinArea(false);
 
         // 載入頭像
@@ -71,13 +85,27 @@ public class GameControlView : MonoBehaviour
     private void Start()
     {
         // 輪轉按鈕
-        Slot_Btn.onClick.AddListener(() =>
+        Spin_Btn.onClick.AddListener(() =>
         {
             // 下注值
-            int betValue = 0;
+            int betValue = changeBetValueView.BetValue;
 
-            Slot_Btn.interactable = false;
+            _currTotalWinValue = 0;
+            TotalWinValue_Txt.text = _currTotalWinValue.ToString("N0");
+
+            if (_freeSpin == 0)
+            {
+                Coin_Txt.text = (_userCoin - betValue).ToString("N0");
+            }
+
+            Spin_Btn.interactable = false;
             _gameMVC.game_Contriller.SendSpinRequest(betValue);
+        });
+
+        // 更換下注值按鈕
+        ChangeBetValue_Btn.onClick.AddListener(() =>
+        {
+            changeBetValueView.gameObject.SetActive(true);
         });
     }
 
@@ -108,9 +136,17 @@ public class GameControlView : MonoBehaviour
         int coin = mainPack.UserInfoPack.Coin;
         // 免費輪轉次數
         int freeSpin = mainPack.UserInfoPack.FreeSpin;
+        // 前個下注值
+        int preBetValue = mainPack.UserInfoPack.PreBetValue;
+
+        _userCoin = coin;
+        _freeSpin = freeSpin;
 
         Nickname_Txt.text = nickname;
         Coin_Txt.text = coin.ToString("N0");
+
+        changeBetValueView.SetInitBetValue(preBetValue);
+        changeBetValueView.gameObject.SetActive(false);
 
         SetMultiplierText(freeSpin);
     }
@@ -128,9 +164,29 @@ public class GameControlView : MonoBehaviour
         // 免費輪轉次數
         int freeSpin = userInfoData.FreeSpin;
 
+        _userCoin = coin;
+        _freeSpin = freeSpin;
+
         Coin_Txt.text = coin.ToString("N0");
 
         SetMultiplierText(freeSpin);
+    }
+
+    /// <summary>
+    /// 設置贏分
+    /// </summary>
+    /// <param name="winValue">贏分</param>
+    public void SetWinValue(int winValue)
+    {
+        int tempUserCoin = _userCoin;
+
+        if (winValue > 0)
+        {
+            Coin_Txt.text = (tempUserCoin + winValue).ToString("N0");
+        }        
+
+        _currTotalWinValue += winValue;
+        TotalWinValue_Txt.text = _currTotalWinValue.ToString("N0");
     }
 
     /// <summary>
@@ -139,6 +195,7 @@ public class GameControlView : MonoBehaviour
     /// <param name="freeSpin"></param>
     private void SetMultiplierText(int freeSpin)
     {
+        ChangeBetValue_Btn.interactable = freeSpin == 0;
         FreeSpinCount_Txt.gameObject.SetActive(freeSpin > 0);
         FreeSpinCount_Txt.text = $"{freeSpin}";
 
@@ -169,7 +226,7 @@ public class GameControlView : MonoBehaviour
     public void OpenOperation()
     {
         SetComboPanelText(-1);
-        Slot_Btn.interactable = true;
+        Spin_Btn.interactable = true;
     }
 
     /// <summary>
@@ -227,5 +284,17 @@ public class GameControlView : MonoBehaviour
     public void SwitchCoinWinArea(bool isOpen)
     {
         CoinWinArea.SetActive(isOpen);
+    }
+
+    /// <summary>
+    /// 設置當前下注值文字
+    /// </summary>
+    /// <param name="betValue"></param>
+    public void SetBetValueText(int betValue)
+    {
+        LanguageManager.I.GetString(LocalizationTableEnum.Game_Table, "Bet", (text) =>
+        {
+            CurrBetValue_Txt.text = $"{text} : {betValue}";
+        });        
     }
 }

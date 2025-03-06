@@ -4,11 +4,13 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 
 public class Game_View : MonoBehaviour
 {
     [SerializeField] Transform PokerArea;
     [SerializeField] Transform TwoCoinColumnEffectArea;
+    [SerializeField] TextMeshPro RoundWin_Txt;
 
     // 輪轉開始位置增加Y
     private float slotStartPositionAddY = 9.4f;
@@ -33,6 +35,8 @@ public class Game_View : MonoBehaviour
         _gameMVC = gameMVC;
         _pokerList = new();
         _twoCoinColumnEffectList = new();
+
+        RoundWin_Txt.gameObject.SetActive(false);
 
         // 產生撲克牌
         Addressables.LoadAssetAsync<GameObject>("Prefab/Game/Poker.prefab").Completed += (handle) =>
@@ -144,7 +148,7 @@ public class Game_View : MonoBehaviour
             poker.ResetPoker();
         }
 
-        for (int i = 0; i < slotResultData.SpinCardNumList.Count; i++)
+        for (int round = 0; round < slotResultData.SpinCardNumList.Count; round++)
         {
             // 一般輪轉撲克牌等待時間
             float normalYieldTime = 0.01f;
@@ -172,14 +176,14 @@ public class Game_View : MonoBehaviour
                 }
 
                 // 設置撲克牌
-                int pokerNum = slotResultData.SpinCardNumList[i][index];
-                bool isGold = slotResultData.GoldCardIndexList[i].Contains(index);
+                int pokerNum = slotResultData.SpinCardNumList[round][index];
+                bool isGold = slotResultData.GoldCardIndexList[round].Contains(index);
                 BigWildData bigWildData = new();
                 if (pokerNum == 9)
                 {
                     // 大鬼牌
 
-                    bigWildData = slotResultData.BigWildDataList[i][index];
+                    bigWildData = slotResultData.BigWildDataList[round][index];
                     if (bigWildData != null && bigWildData.CopyIndexList != null)
                     {
                         hasBigWild = true;
@@ -211,7 +215,7 @@ public class Game_View : MonoBehaviour
 
                 StartCoroutine(ISlotEffect(poker, pokerNum));
 
-                if (i == 0 && coinCount == 2)
+                if (round == 0 && coinCount == 2)
                 {
                     // 金幣數量差1枚(首輪輪轉)
 
@@ -228,7 +232,7 @@ public class Game_View : MonoBehaviour
                 if (index > 0 && index % 4 == 0)
                 {
                     // 首輪輪轉
-                    if (i == 0)
+                    if (round == 0)
                     {
                         // 重製兩枚金幣出現效果
                         ResetTwoCoinColumnEffect();
@@ -249,7 +253,7 @@ public class Game_View : MonoBehaviour
                 }
 
                 // 開啟兩枚金幣效果(首輪輪轉)
-                if (i == 0 && coinCount == 2)
+                if (round == 0 && coinCount == 2)
                 {
                     _twoCoinColumnEffectList[column].SetActive(true);
                 }
@@ -279,8 +283,8 @@ public class Game_View : MonoBehaviour
             foreach (var poker in _pokerList)
             {
                 // 設置撲克牌
-                int pokerNum = slotResultData.SpinCardNumList[i][index];
-                bool isGold = slotResultData.GoldCardIndexList[i].Contains(index);                
+                int pokerNum = slotResultData.SpinCardNumList[round][index];
+                bool isGold = slotResultData.GoldCardIndexList[round].Contains(index);                
                 poker.SetPokerNum(pokerNum, isGold);
                 index++;
             }
@@ -288,7 +292,7 @@ public class Game_View : MonoBehaviour
             // 中獎牌效果
             if (slotResultData.WinCardPosList != null)
             {
-                if (slotResultData.WinCardPosList[i].Count > 0)
+                if (slotResultData.WinCardPosList[round].Count > 0)
                 {
                     // 有中獎預設所有牌未中獎效果
                     foreach (var poker in _pokerList)
@@ -300,20 +304,30 @@ public class Game_View : MonoBehaviour
                     }
 
                     // 設置連擊數UI
-                    _gameMVC.gameControlView.SetComboPanelText(i);
+                    _gameMVC.gameControlView.SetComboPanelText(round);
                 }
 
                 // 中獎牌效果
-                foreach (var winPos in slotResultData.WinCardPosList[i])
+                foreach (var winPos in slotResultData.WinCardPosList[round])
                 {
                     Poker winPoker = _pokerList.Where(x => x.PosIndex == winPos).FirstOrDefault();
                     if (winPoker) winPoker.Winning();
                 }
+
+                // 顯示贏分UI
+                _gameMVC.gameControlView.SetWinValue(slotResultData.WinValueList[round]);
+                // 顯示贏分文字
+                if (slotResultData.WinValueList[round] > 0)
+                {
+                    RoundWin_Txt.gameObject.SetActive(true);
+                    RoundWin_Txt.text = slotResultData.WinValueList[round].ToString("N0");
+                }
+                
             }
 
             if (!isInit)
             {
-                if (slotResultData.WinCardPosList != null && slotResultData.WinCardPosList[i].Count > 0)
+                if (slotResultData.WinCardPosList != null && slotResultData.WinCardPosList[round].Count > 0)
                 {
                     yield return new WaitForSeconds(2.0f);
                 }
@@ -321,17 +335,22 @@ public class Game_View : MonoBehaviour
                 {
                     yield return new WaitForSeconds(0.5f);
                 }
+
+                // 關閉贏分UI
+                _gameMVC.gameControlView.SetWinValue(0);
+                // 關閉贏分文字
+                RoundWin_Txt.gameObject.SetActive(false);
             }
 
             // 中獎牌位置重製(非黃金牌)
             if (slotResultData.WinCardPosList != null)
             {
-                foreach (var winPos in slotResultData.WinCardPosList[i])
+                foreach (var winPos in slotResultData.WinCardPosList[round])
                 {
                     Poker winPoker = _pokerList.Where(x => x.PosIndex == winPos).FirstOrDefault();
                     if (winPoker)
                     {
-                        if (!slotResultData.GoldCardIndexList[i].Contains(winPos))
+                        if (!slotResultData.GoldCardIndexList[round].Contains(winPos))
                         {
                             // 一般牌
                             float slotPosY = winPoker.TargetPos.y + slotStartPositionAddY;

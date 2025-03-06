@@ -34,6 +34,18 @@ MonoBehaviour:
     m_Localized: ELIMINATION MULTIPLIER
     m_Metadata:
       m_Items: []
+  - m_Id: 1999166842277888
+    m_Localized: FREE SPIN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2025106905436160
+    m_Localized: 'Win :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2086535071207424
+    m_Localized: Bet
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

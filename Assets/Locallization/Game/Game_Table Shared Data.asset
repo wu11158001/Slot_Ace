@@ -31,6 +31,18 @@ MonoBehaviour:
     m_Key: ELIMINATION MULTIPLIER
     m_Metadata:
       m_Items: []
+  - m_Id: 1999166842277888
+    m_Key: FREE SPIN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2025106905436160
+    m_Key: 'Win :'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2086535071207424
+    m_Key: Bet
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

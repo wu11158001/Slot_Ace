@@ -34,26 +34,27 @@ namespace SlotAceProtobuf {
             "c3RQYWNrGAYgASgLMiAuU2xvdEFjZVByb3RvYnVmLlNwaW5SZXF1ZXN0UGFj",
             "axI/ChJTcGluUmVzdWx0TGlzdFBhY2sYByABKAsyIy5TbG90QWNlUHJvdG9i",
             "dWYuU3BpblJlc3VsdExpc3RQYWNrIi0KCUxvZ2luUGFjaxIOCgZVc2VySWQY",
-            "ASABKAkSEAoITmlja25hbWUYAiABKAkiLgoMVXNlckluZm9QYWNrEgwKBENv",
-            "aW4YASABKAUSEAoIRnJlZVNwaW4YAiABKAUiIwoPU3BpblJlcXVlc3RQYWNr",
-            "EhAKCEJldFZhbHVlGAEgASgFIk0KElNwaW5SZXN1bHRMaXN0UGFjaxI3Cg5T",
-            "cGluUmVzdWx0TGlzdBgBIAMoCzIfLlNsb3RBY2VQcm90b2J1Zi5TcGluUmVz",
-            "dWx0UGFjayKiAQoOU3BpblJlc3VsdFBhY2sSEgoKU3BpblJlc3VsdBgBIAMo",
-            "BRIVCg1Hb2xkSW5kZXhMaXN0GAIgAygFEhQKDFdpbkluZGV4TGlzdBgDIAMo",
-            "BRI9ChNCaWdXaWxkRGF0YVBhY2tMaXN0GAQgAygLMiAuU2xvdEFjZVByb3Rv",
-            "YnVmLkJpZ1dpbGREYXRhUGFjaxIQCghXaW5WYWx1ZRgFIAEoBSI7Cg9CaWdX",
-            "aWxkRGF0YVBhY2sSEQoJTWFpbkluZGV4GAEgASgFEhUKDUNvcHlJbmRleExp",
-            "c3QYAiADKAUqMgoLUmVxdWVzdENvZGUSDwoLUmVxdWVzdE5vbmUQABIICgRV",
-            "c2VyEAESCAoER2FtZRACKkIKCkFjdGlvbkNvZGUSDgoKQWN0aW9uTm9uZRAA",
-            "EgkKBUxvZ2luEAESDwoLR2V0VXNlckluZm8QAhIICgRTcGluEAMqRwoKUmV0",
-            "dXJuQ29kZRIOCgpSZXR1cm5Ob25lEAASCwoHU3VjY2VlZBABEggKBEZhaWwQ",
-            "AhISCg5EdXBsaWNhdGVMb2dpbhADYgZwcm90bzM="));
+            "ASABKAkSEAoITmlja25hbWUYAiABKAkiQwoMVXNlckluZm9QYWNrEgwKBENv",
+            "aW4YASABKAUSEAoIRnJlZVNwaW4YAiABKAUSEwoLUHJlQmV0VmFsdWUYAyAB",
+            "KAUiIwoPU3BpblJlcXVlc3RQYWNrEhAKCEJldFZhbHVlGAEgASgFIk0KElNw",
+            "aW5SZXN1bHRMaXN0UGFjaxI3Cg5TcGluUmVzdWx0TGlzdBgBIAMoCzIfLlNs",
+            "b3RBY2VQcm90b2J1Zi5TcGluUmVzdWx0UGFjayKiAQoOU3BpblJlc3VsdFBh",
+            "Y2sSEgoKU3BpblJlc3VsdBgBIAMoBRIVCg1Hb2xkSW5kZXhMaXN0GAIgAygF",
+            "EhQKDFdpbkluZGV4TGlzdBgDIAMoBRI9ChNCaWdXaWxkRGF0YVBhY2tMaXN0",
+            "GAQgAygLMiAuU2xvdEFjZVByb3RvYnVmLkJpZ1dpbGREYXRhUGFjaxIQCghX",
+            "aW5WYWx1ZRgFIAEoBSI7Cg9CaWdXaWxkRGF0YVBhY2sSEQoJTWFpbkluZGV4",
+            "GAEgASgFEhUKDUNvcHlJbmRleExpc3QYAiADKAUqMgoLUmVxdWVzdENvZGUS",
+            "DwoLUmVxdWVzdE5vbmUQABIICgRVc2VyEAESCAoER2FtZRACKkIKCkFjdGlv",
+            "bkNvZGUSDgoKQWN0aW9uTm9uZRAAEgkKBUxvZ2luEAESDwoLR2V0VXNlcklu",
+            "Zm8QAhIICgRTcGluEAMqRwoKUmV0dXJuQ29kZRIOCgpSZXR1cm5Ob25lEAAS",
+            "CwoHU3VjY2VlZBABEggKBEZhaWwQAhISCg5EdXBsaWNhdGVMb2dpbhADYgZw",
+            "cm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::SlotAceProtobuf.RequestCode), typeof(global::SlotAceProtobuf.ActionCode), typeof(global::SlotAceProtobuf.ReturnCode), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.MainPack), global::SlotAceProtobuf.MainPack.Parser, new[]{ "RequestCode", "ActionCode", "ReturnCode", "LoginPack", "UserInfoPack", "SpinRequestPack", "SpinResultListPack" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.LoginPack), global::SlotAceProtobuf.LoginPack.Parser, new[]{ "UserId", "Nickname" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.UserInfoPack), global::SlotAceProtobuf.UserInfoPack.Parser, new[]{ "Coin", "FreeSpin" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.UserInfoPack), global::SlotAceProtobuf.UserInfoPack.Parser, new[]{ "Coin", "FreeSpin", "PreBetValue" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.SpinRequestPack), global::SlotAceProtobuf.SpinRequestPack.Parser, new[]{ "BetValue" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.SpinResultListPack), global::SlotAceProtobuf.SpinResultListPack.Parser, new[]{ "SpinResultList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::SlotAceProtobuf.SpinResultPack), global::SlotAceProtobuf.SpinResultPack.Parser, new[]{ "SpinResult", "GoldIndexList", "WinIndexList", "BigWildDataPackList", "WinValue" }, null, null, null, null),
@@ -622,6 +623,7 @@ namespace SlotAceProtobuf {
     public UserInfoPack(UserInfoPack other) : this() {
       coin_ = other.coin_;
       freeSpin_ = other.freeSpin_;
+      preBetValue_ = other.preBetValue_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -658,6 +660,20 @@ namespace SlotAceProtobuf {
       }
     }
 
+    /// <summary>Field number for the "PreBetValue" field.</summary>
+    public const int PreBetValueFieldNumber = 3;
+    private int preBetValue_;
+    /// <summary>
+    /// 前個下注值
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int PreBetValue {
+      get { return preBetValue_; }
+      set {
+        preBetValue_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as UserInfoPack);
@@ -673,6 +689,7 @@ namespace SlotAceProtobuf {
       }
       if (Coin != other.Coin) return false;
       if (FreeSpin != other.FreeSpin) return false;
+      if (PreBetValue != other.PreBetValue) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -681,6 +698,7 @@ namespace SlotAceProtobuf {
       int hash = 1;
       if (Coin != 0) hash ^= Coin.GetHashCode();
       if (FreeSpin != 0) hash ^= FreeSpin.GetHashCode();
+      if (PreBetValue != 0) hash ^= PreBetValue.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -702,6 +720,10 @@ namespace SlotAceProtobuf {
         output.WriteRawTag(16);
         output.WriteInt32(FreeSpin);
       }
+      if (PreBetValue != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(PreBetValue);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -715,6 +737,9 @@ namespace SlotAceProtobuf {
       }
       if (FreeSpin != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(FreeSpin);
+      }
+      if (PreBetValue != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(PreBetValue);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -733,6 +758,9 @@ namespace SlotAceProtobuf {
       if (other.FreeSpin != 0) {
         FreeSpin = other.FreeSpin;
       }
+      if (other.PreBetValue != 0) {
+        PreBetValue = other.PreBetValue;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -750,6 +778,10 @@ namespace SlotAceProtobuf {
           }
           case 16: {
             FreeSpin = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            PreBetValue = input.ReadInt32();
             break;
           }
         }
@@ -1117,7 +1149,7 @@ namespace SlotAceProtobuf {
     public const int WinValueFieldNumber = 5;
     private int winValue_;
     /// <summary>
-    /// 本輪贏得值
+    /// 本輪贏分值
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int WinValue {

@@ -15,6 +15,8 @@ public class SlotResultData
     public List<List<int>> WinCardPosList;
     // 大鬼牌資料
     public List<List<BigWildData>> BigWildDataList;
+    // 每輪贏分
+    public List<int> WinValueList;
     // 用戶訊息資料
     public UserInfoData userInfoData;
 }
