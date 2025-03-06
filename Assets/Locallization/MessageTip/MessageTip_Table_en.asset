@@ -30,6 +30,10 @@ MonoBehaviour:
     m_Localized: Hot update failed.
     m_Metadata:
       m_Items: []
+  - m_Id: 799615502454784
+    m_Localized: Not enough chips.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

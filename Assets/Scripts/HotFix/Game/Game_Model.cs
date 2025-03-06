@@ -23,6 +23,24 @@ public class Game_Model : MonoBehaviour
     /// <param name="mainPack"></param>
     public void HandleSlotRequest(MainPack mainPack)
     {
+        // 金幣不足
+        if (mainPack.ReturnCode == ReturnCode.Fail)
+        {
+            LanguageManager.I.GetString(LocalizationTableEnum.MessageTip_Table, "Not enough chips.", (text) =>
+            {
+                ViewManager.I.OpenView<MessageTipView>(ViewEnum.MessageTipView, (view) =>
+                {
+                    view.SetMessageTipView(
+                        msg: text, 
+                        isUsingCancelBtn: false, 
+                        confirmCallback: () => { _gameMVC.gameControlView.OpenOperation(); }, 
+                        cancelCallback: null, 
+                        isDirectlyClose: false);
+                });
+            });
+            return;
+        }
+
         List<List<int>> spinResoultList = new();
         List<List<int>> goldCardDataList = new();
         List<List<int>> winCardPosList = new();

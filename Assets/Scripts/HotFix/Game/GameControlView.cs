@@ -93,7 +93,8 @@ public class GameControlView : MonoBehaviour
             _currTotalWinValue = 0;
             TotalWinValue_Txt.text = _currTotalWinValue.ToString("N0");
 
-            if (_freeSpin == 0)
+            if (_freeSpin == 0 && 
+                _userCoin - betValue >= 0)
             {
                 Coin_Txt.text = (_userCoin - betValue).ToString("N0");
             }

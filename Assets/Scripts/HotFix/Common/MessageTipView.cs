@@ -21,7 +21,6 @@ public class MessageTipView : BasePopUpView
     /// <param name="isUsingCancelBtn">是否使用取消按鈕</param>
     /// <param name="confirmCallback">確認回傳</param>
     /// <param name="cancelCallback">取消回傳</param>
-    /// <param name="isDirectlyClose">直接關閉介面</param>
     public void SetMessageTipView(string msg, bool isUsingCancelBtn, UnityAction confirmCallback, UnityAction cancelCallback = null, bool isDirectlyClose = false)
     {
         Msg_Txt.text = msg;

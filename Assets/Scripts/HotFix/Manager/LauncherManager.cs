@@ -107,7 +107,12 @@ public class LauncherManager : MonoBehaviour
         {
             ViewManager.I.OpenView<MessageTipView>(ViewEnum.MessageTipView, (view) =>
             {
-                view.SetMessageTipView(text, false, ReGameLauncher, null, true);
+                view.SetMessageTipView(
+                    msg: text,
+                    isUsingCancelBtn: false,
+                    confirmCallback: ReGameLauncher,
+                    cancelCallback: null,
+                    isDirectlyClose: true);
             });
         });
     }

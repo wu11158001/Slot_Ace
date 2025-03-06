@@ -383,6 +383,7 @@ MonoBehaviour:
   Mask_Btn: {fileID: 1424779939005816954}
   SlideArea: {fileID: 4749350824255759774}
   isMaskBtn: 0
+  isUsingActiveClose: 0
   Msg_Txt: {fileID: 5405715357554135532}
   Confirm_Btn: {fileID: 4762921182966296137}
   Cancel_Btn: {fileID: 4856077022537437654}
@@ -445,7 +446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.8235294}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -453,7 +454,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4

@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: Hot update failed.
     m_Metadata:
       m_Items: []
+  - m_Id: 799615502454784
+    m_Key: Not enough chips.
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

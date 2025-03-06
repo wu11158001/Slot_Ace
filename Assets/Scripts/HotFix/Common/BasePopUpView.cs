@@ -12,6 +12,14 @@ public class BasePopUpView : MonoBehaviour
     [SerializeField] bool isMaskBtn;
     [SerializeField] bool isUsingActiveClose;
 
+    // 遮罩目標透明值
+    private float _targetAlpha;
+
+    protected virtual void Awake()
+    {
+        _targetAlpha = 255 * Mask_Btn.image.color.a;
+    }
+
     protected virtual void OnEnable()
     {
         StartCoroutine(IDisplayView());
@@ -23,11 +31,11 @@ public class BasePopUpView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IDisplayView()
     {
-        float alphaMax = Mask_Btn.image.color.a;      // 遮罩透明值最大值
-        float maskEffectTime = 0.2f;                  // 遮罩效果完成時間
-        float slideViewMaxPosY = 50.0f;               // 滑動介面最頂部位置
-        float slideViewReboundTime = 0.1f;            // 滑動介面回彈時間
-        float slideViewPauseTime = 0.05f;             // 滑動介面停頓時間
+        float alphaMax = _targetAlpha;                      // 遮罩目標透明值
+        float maskEffectTime = 0.2f;                        // 遮罩效果完成時間
+        float slideViewMaxPosY = 50.0f;                     // 滑動介面最頂部位置
+        float slideViewReboundTime = 0.1f;                  // 滑動介面回彈時間
+        float slideViewPauseTime = 0.05f;                   // 滑動介面停頓時間
 
         DateTime startTime = DateTime.Now;
 
