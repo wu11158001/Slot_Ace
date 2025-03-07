@@ -9,6 +9,10 @@ public class CoinWinView : MonoBehaviour
     [SerializeField] GameObject GetFreeSpinArea;
     [SerializeField] GameObject FreeSpinFinishArea;
     [SerializeField] TextMeshProUGUI FreeSpinTotalWon_Txt;
+    [SerializeField] Animator FreeSpinTotalWon_Animator;
+
+    // 免費輪轉總贏分文字效果
+    private int _isSizeEffect_Hash = Animator.StringToHash("IsSizeEffect");
 
     /// <summary>1
     /// 獲得免費輪轉介面開關
@@ -41,6 +45,8 @@ public class CoinWinView : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IFreeSpinFinishEffect(int totalWon)
     {
+        FreeSpinTotalWon_Animator.SetBool(_isSizeEffect_Hash, false);
+
         // 贏分增加效果
         yield return Utils.I.ICoinTextIncreaseEffect(
             start: 0,
@@ -49,27 +55,7 @@ public class CoinWinView : MonoBehaviour
             FreeSpinTotalWon_Txt);
 
         // 大小變化效果
-        float initFontSize = FreeSpinTotalWon_Txt.fontSize;
-        float targetFontSize = initFontSize + 50;
-
-        DateTime startTime = DateTime.Now;
-        while ((DateTime.Now - startTime).TotalSeconds < 0.5f)
-        {
-            float progress = (float)(DateTime.Now - startTime).TotalSeconds / 0.5f;
-            float size = Mathf.Lerp(initFontSize, targetFontSize, progress);
-            FreeSpinTotalWon_Txt.fontSize = size;
-            yield return null;
-        }
-
-        startTime = DateTime.Now;
-        while ((DateTime.Now - startTime).TotalSeconds < 0.5f)
-        {
-            float progress = (float)(DateTime.Now - startTime).TotalSeconds / 0.5f;
-            float size = Mathf.Lerp(targetFontSize, initFontSize, progress);
-            FreeSpinTotalWon_Txt.fontSize = size;
-            yield return null;
-        }
-        FreeSpinTotalWon_Txt.fontSize = initFontSize;
+        FreeSpinTotalWon_Animator.SetBool(_isSizeEffect_Hash, true);
 
         // 關閉
         yield return new WaitForSeconds(2);

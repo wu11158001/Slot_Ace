@@ -15,21 +15,14 @@ public class ChangeBetValueView : BasePopUpView
     [Header("更換下注值")]
     [SerializeField] Color NormalBtnColor;
     [SerializeField] Color SelectBtnColor;
-    [SerializeField] List<Button> BtnList;
-    
+    [SerializeField] List<Button> BtnList;    
 
     // 下注值更改值
     private List<int> _changeBetValueList = new()
     {
-        10,
-        15,
-        20,
-        50,
-        100,
-        200,
-        500,
-        1000,
-        5000,
+        10, 15, 20,
+        50, 100, 200,
+        500, 1000, 5000,
     };
 
     // 當前選擇按鈕編號
