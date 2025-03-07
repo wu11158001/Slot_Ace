@@ -50,6 +50,10 @@ MonoBehaviour:
     m_Localized: CONGRATS!\nYOU HAVE WON
     m_Metadata:
       m_Items: []
+  - m_Id: 2328861064499200
+    m_Localized: Betting options
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

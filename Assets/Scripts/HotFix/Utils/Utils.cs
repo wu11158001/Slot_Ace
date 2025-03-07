@@ -83,6 +83,23 @@ public class Utils : UnitySingleton<Utils>
     }
 
     /// <summary>
+    /// Html獲取顏色
+    /// </summary>
+    /// <param name="htmlString"></param>
+    /// <returns></returns>
+    public Color HtmlStringToColor(string htmlString)
+    {
+        if( ColorUtility.TryParseHtmlString("#FF0000", out Color color))
+        {
+            return color;
+        }
+        else
+        {
+            return Color.white;
+        }
+    }
+
+    /// <summary>
     /// 載入url圖片
     /// </summary>
     /// <param name="url"></param>

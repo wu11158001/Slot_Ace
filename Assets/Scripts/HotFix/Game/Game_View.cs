@@ -10,12 +10,14 @@ public class Game_View : MonoBehaviour
 {
     [SerializeField] Transform PokerArea;
     [SerializeField] Transform TwoCoinColumnEffectArea;
+    [SerializeField] Transform EffectPoolArea;
     [SerializeField] TextMeshPro RoundWin_Txt;
+
+    private GameMVC _gameMVC;
+    private ObjPool _effectPool;
 
     // 輪轉開始位置增加Y
     private float slotStartPositionAddY = 9.4f;
-
-    private GameMVC _gameMVC;
 
     // 左上撲克牌起始位置
     private Vector3 pokerStartPosition = new(-3.2f, -2.8f, 0);
@@ -32,6 +34,8 @@ public class Game_View : MonoBehaviour
     /// </summary>
     public void Initialize(GameMVC gameMVC)
     {
+        _effectPool = new(EffectPoolArea, 20);
+
         _gameMVC = gameMVC;
         _pokerList = new();
         _twoCoinColumnEffectList = new();
@@ -328,10 +332,14 @@ public class Game_View : MonoBehaviour
             {
                 if (slotResultData.WinCardPosList != null && slotResultData.WinCardPosList[round].Count > 0)
                 {
+                    // 有中獎
+
                     yield return new WaitForSeconds(2.0f);
                 }
                 else
                 {
+                    // 未中獎
+
                     yield return new WaitForSeconds(0.5f);
                 }
 
@@ -352,6 +360,11 @@ public class Game_View : MonoBehaviour
                             // 一般牌
                             float slotPosY = winPoker.TargetPos.y + slotStartPositionAddY;
                             winPoker.gameObject.transform.position = new(winPoker.TargetPos.x, slotPosY, 0);
+
+                            // 產生消除特效
+                            GameObject createEffect = AssetsManager.I.SOManager.Effect_SO.GameObjectList[0];
+                            Transform effectObj = _effectPool.CreateObj<Transform>(createEffect);
+                            effectObj.position = winPoker.TargetPos;
                         }                     
                     }
                 }

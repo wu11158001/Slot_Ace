@@ -47,6 +47,10 @@ MonoBehaviour:
     m_Key: Bet
     m_Metadata:
       m_Items: []
+  - m_Id: 2328861064499200
+    m_Key: Betting options
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

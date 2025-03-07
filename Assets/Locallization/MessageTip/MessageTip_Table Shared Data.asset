@@ -15,6 +15,10 @@ MonoBehaviour:
   m_TableCollectionName: MessageTip_Table
   m_TableCollectionNameGuidString: ce2c54549b60da94486452712f184281
   m_Entries:
+  - m_Id: 946852685615104
+    m_Key: Prompt message
+    m_Metadata:
+      m_Items: []
   - m_Id: 79662092288
     m_Key: Failed to connect to the server.
     m_Metadata:

@@ -12,7 +12,7 @@ using System.Linq;
 
 public class EntryView : MonoBehaviour
 {
-    [SerializeField] Image LodingBar_Img;
+    [SerializeField] Slider LodingBar_Sli;
     [SerializeField] TextMeshProUGUI LoadingProgress_Txt;
     [SerializeField] EntryErrorView entryErrorView;
 

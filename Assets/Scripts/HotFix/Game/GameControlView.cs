@@ -8,14 +8,12 @@ using System.Collections.Generic;
 public class GameControlView : MonoBehaviour
 {
     [Header("用戶訊息")]
-    [SerializeField] Image Avatar_Img;
-    [SerializeField] TextMeshProUGUI Nickname_Txt;
     [SerializeField] TextMeshProUGUI Coin_Txt;
 
     [Space(30)]
     [Header("乘倍背景")]
     [SerializeField] Color MultiplierBgNormalColor;
-    [SerializeField] Color MultiplierBgFreeGameColor;
+    [SerializeField] Color MultiplierBgFreeSpinColor;
     [SerializeField] Image MultiplierBg_Img;
 
     [Space(30)]
@@ -59,12 +57,6 @@ public class GameControlView : MonoBehaviour
         TotalWinValue_Txt.text = $"0";
         ComboTextEffect_Obj.SetActive(false);
         Spin_Btn.interactable = false;
-
-        // 載入頭像
-        StartCoroutine(Utils.I.ImageUrlToSprite(DataManager.I.UserImgUrl, (sprite) =>
-        {
-            if (sprite != null) Avatar_Img.sprite = sprite;
-        }));
     }
 
     private void Start()
@@ -102,7 +94,6 @@ public class GameControlView : MonoBehaviour
     /// </summary>
     public void InitUpdateUI()
     {
-        Nickname_Txt.text = _gameMVC.game_Model.Nickname; ;
         Coin_Txt.text = _gameMVC.game_Model.RecodeUserCoin.ToString("N0");
 
         changeBetValueView.SetInitBetValue(_gameMVC.game_Model.PreBetValue);
@@ -146,11 +137,13 @@ public class GameControlView : MonoBehaviour
         FreeSpinCount_Txt.gameObject.SetActive(freeSpin > 0);
         FreeSpinCount_Txt.text = $"{freeSpin}";
 
+        // 倍率背景
         MultiplierBg_Img.color =
             freeSpin > 0 ?
-            MultiplierBgFreeGameColor :
-            NormalMultiplierTextColor;
+            MultiplierBgFreeSpinColor :
+            MultiplierBgNormalColor;
 
+        // 倍率文字
         if (freeSpin > 0)
         {
             for (int i = 0; i < MultiplierTextList.Count; i++)
