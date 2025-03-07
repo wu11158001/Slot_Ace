@@ -314,15 +314,14 @@ public class Game_View : MonoBehaviour
                     if (winPoker) winPoker.Winning();
                 }
 
-                // 顯示贏分UI
-                _gameMVC.gameControlView.SetWinValue(slotResultData.WinValueList[round]);
+                // 設置贏分
+                _gameMVC.game_Model.SetWinValue(slotResultData.WinValueList[round]);
                 // 顯示贏分文字
                 if (slotResultData.WinValueList[round] > 0)
                 {
                     RoundWin_Txt.gameObject.SetActive(true);
                     RoundWin_Txt.text = slotResultData.WinValueList[round].ToString("N0");
-                }
-                
+                }                
             }
 
             if (!isInit)
@@ -336,8 +335,6 @@ public class Game_View : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                 }
 
-                // 關閉贏分UI
-                _gameMVC.gameControlView.SetWinValue(0);
                 // 關閉贏分文字
                 RoundWin_Txt.gameObject.SetActive(false);
             }
@@ -377,7 +374,7 @@ public class Game_View : MonoBehaviour
     /// <param name="slotResultData"></param>
     private void SpinComplete(SlotResultData slotResultData)
     {
-        _gameMVC.gameControlView.SpinCopleteUpdateData(slotResultData.userInfoData);
+        _gameMVC.game_Model.SpinCopleteUpdateData(slotResultData.userInfoData);
         _gameMVC.gameControlView.OpenOperation();
     }
 
@@ -453,11 +450,11 @@ public class Game_View : MonoBehaviour
         }
 
         // 開啟金幣中獎畫面
-        _gameMVC.gameControlView.SwitchCoinWinArea(true);
+        _gameMVC.gameControlView.GetFreeSpinAreaSwitch(true);
 
         yield return new WaitForSeconds(2);
 
         // 關閉金幣中獎畫面
-        _gameMVC.gameControlView.SwitchCoinWinArea(false);
+        _gameMVC.gameControlView.GetFreeSpinAreaSwitch(false);
     }
 }

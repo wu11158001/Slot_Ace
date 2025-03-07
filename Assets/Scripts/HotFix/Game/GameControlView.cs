@@ -36,7 +36,7 @@ public class GameControlView : MonoBehaviour
 
     [Space(30)]
     [Header("金幣中獎")]
-    [SerializeField] GameObject CoinWinArea;
+    [SerializeField] CoinWinView coinWinView;
 
     [Space(30)]
     [Header("遊戲操作")]
@@ -54,32 +54,17 @@ public class GameControlView : MonoBehaviour
     private List<int> _multiplierNormalNumList = new() { 1, 2, 3, 5 };
     private List<int> _multiplierFreeSpinNumList = new() { 2, 4, 6, 10 };
 
-    // 當前總贏分
-    private int _currTotalWinValue;
-    // 用戶籌碼
-    private int _userCoin;
-    // 免費輪轉
-    private int _freeSpin;
-
     private void Awake()
     {
         TotalWinValue_Txt.text = $"0";
         ComboTextEffect_Obj.SetActive(false);
         Spin_Btn.interactable = false;
-        SwitchCoinWinArea(false);
 
         // 載入頭像
         StartCoroutine(Utils.I.ImageUrlToSprite(DataManager.I.UserImgUrl, (sprite) =>
         {
             if (sprite != null) Avatar_Img.sprite = sprite;
         }));
-
-        // 獲取用戶訊息
-        LoginPack loginPack = new()
-        {
-            UserId = DataManager.I.UserId,
-        };
-        RequestControl.GetUserInfoRequest(loginPack, UpdateUserInfo);
     }
 
     private void Start()
@@ -89,18 +74,11 @@ public class GameControlView : MonoBehaviour
         {
             // 下注值
             int betValue = changeBetValueView.BetValue;
+            _gameMVC.game_Model.StartSpin(betValue);
 
-            _currTotalWinValue = 0;
-            TotalWinValue_Txt.text = _currTotalWinValue.ToString("N0");
-
-            if (_freeSpin == 0 && 
-                _userCoin - betValue >= 0)
-            {
-                Coin_Txt.text = (_userCoin - betValue).ToString("N0");
-            }
-
+            TotalWinValue_Txt.text = _gameMVC.game_Model.RecodeTotalWinValue.ToString("N0");
+            Coin_Txt.text = _gameMVC.game_Model.RecodeUserCoin.ToString("N0");
             Spin_Btn.interactable = false;
-            _gameMVC.game_Contriller.SendSpinRequest(betValue);
         });
 
         // 更換下注值按鈕
@@ -120,74 +98,42 @@ public class GameControlView : MonoBehaviour
     }
 
     /// <summary>
-    /// 更新用戶訊息
+    /// 初始更新介面
     /// </summary>
-    /// <param name="mainPack"></param>
-    private void UpdateUserInfo(MainPack mainPack)
+    public void InitUpdateUI()
     {
-        if (mainPack == null)
-        {
-            Debug.LogError("更新用戶訊息錯誤");
-            return;
-        }
+        Nickname_Txt.text = _gameMVC.game_Model.Nickname; ;
+        Coin_Txt.text = _gameMVC.game_Model.RecodeUserCoin.ToString("N0");
 
-        // 暱稱
-        string nickname = mainPack.LoginPack.Nickname;
-        // 用戶籌碼
-        int coin = mainPack.UserInfoPack.Coin;
-        // 免費輪轉次數
-        int freeSpin = mainPack.UserInfoPack.FreeSpin;
-        // 前個下注值
-        int preBetValue = mainPack.UserInfoPack.PreBetValue;
-
-        _userCoin = coin;
-        _freeSpin = freeSpin;
-
-        Nickname_Txt.text = nickname;
-        Coin_Txt.text = coin.ToString("N0");
-
-        changeBetValueView.SetInitBetValue(preBetValue);
+        changeBetValueView.SetInitBetValue(_gameMVC.game_Model.PreBetValue);
         changeBetValueView.gameObject.SetActive(false);
 
-        SetMultiplierText(freeSpin);
+        SetMultiplierText(_gameMVC.game_Model.RecodeFreeSpin);
     }
 
     /// <summary>
-    /// 輪轉結束更新資料
+    /// 輪轉結束更新介面
     /// </summary>
-    /// <param name="userInfoData"></param>
-    public void SpinCopleteUpdateData(UserInfoData userInfoData)
+    public void SpinCopleteUpdateUI()
     {
-        if (userInfoData == null) return;
-
-        // 用戶籌碼
-        int coin = userInfoData.UserCoin;
-        // 免費輪轉次數
-        int freeSpin = userInfoData.FreeSpin;
-
-        _userCoin = coin;
-        _freeSpin = freeSpin;
-
-        Coin_Txt.text = coin.ToString("N0");
-
-        SetMultiplierText(freeSpin);
+        Coin_Txt.text = _gameMVC.game_Model.RecodeUserCoin.ToString("N0");
+        SetMultiplierText(_gameMVC.game_Model.RecodeFreeSpin);
     }
 
     /// <summary>
-    /// 設置贏分
+    /// 顯示贏分
     /// </summary>
     /// <param name="winValue">贏分</param>
-    public void SetWinValue(int winValue)
+    public void ShowWinValue(int winValue)
     {
-        int tempUserCoin = _userCoin;
+        int tempUserCoin = _gameMVC.game_Model.RecodeUserCoin;
 
         if (winValue > 0)
         {
             Coin_Txt.text = (tempUserCoin + winValue).ToString("N0");
         }        
 
-        _currTotalWinValue += winValue;
-        TotalWinValue_Txt.text = _currTotalWinValue.ToString("N0");
+        TotalWinValue_Txt.text = _gameMVC.game_Model.RecodeTotalWinValue.ToString("N0");
     }
 
     /// <summary>
@@ -279,12 +225,22 @@ public class GameControlView : MonoBehaviour
     }
 
     /// <summary>
-    /// 金幣中獎畫面開關
+    /// 獲得金幣中獎畫面開關
     /// </summary>
     /// <param name="isOpen"></param>
-    public void SwitchCoinWinArea(bool isOpen)
+    public void GetFreeSpinAreaSwitch(bool isOpen)
     {
-        CoinWinArea.SetActive(isOpen);
+        coinWinView.GetFreeSpinAreaSwitch(isOpen);
+    }
+
+    /// <summary>
+    /// 設置免費輪轉結束介面
+    /// </summary>
+    /// <param name="totalWon"></param>
+    public void SetFreeSpinFinish()
+    {
+        int totalWon = _gameMVC.game_Model.RecodeFreeSpinTotalWinValue;
+        coinWinView.SetFreeSpinFinish(totalWon);
     }
 
     /// <summary>

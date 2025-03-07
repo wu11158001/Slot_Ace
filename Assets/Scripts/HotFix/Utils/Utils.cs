@@ -10,6 +10,11 @@ using System;
 
 public class Utils : UnitySingleton<Utils>
 {
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
     // 觸碰的UI
     private GraphicRaycaster graphicRaycaster;
     private EventSystem eventSystem;
@@ -232,6 +237,34 @@ public class Utils : UnitySingleton<Utils>
             return (num / 1_000D).ToString("0.##") + "K";
         else
             return num.ToString("#,0"); // 小於1000顯示原始數字，並加上逗號格式
+    }
+
+    /// <summary>
+    /// 金幣文字增加效果
+    /// </summary>
+    /// <param name="start">起始值</param>
+    /// <param name="target">目標值</param>
+    /// <param name="during">持續時間</param>
+    /// <param name="textMeshProUGUI"></param>
+    /// <returns></returns>
+    public IEnumerator ICoinTextIncreaseEffect(int start, int target, float during, TextMeshProUGUI textMeshProUGUI)
+    {
+        if (textMeshProUGUI == null)
+        {
+            yield break;
+        }
+
+        DateTime startTime = DateTime.Now;
+
+        while ((DateTime.Now - startTime).TotalSeconds < during)
+        {
+            float progress = (float)(DateTime.Now - startTime).TotalSeconds / during;
+            int num = Mathf.RoundToInt(Mathf.Lerp(start, target, progress));
+            textMeshProUGUI.text = num.ToString("N0");
+            yield return null;
+        }
+
+        textMeshProUGUI.text = target.ToString("N0");
     }
 
     /// <summary>
