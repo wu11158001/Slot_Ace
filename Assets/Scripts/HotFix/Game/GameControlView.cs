@@ -25,6 +25,10 @@ public class GameControlView : MonoBehaviour
     [SerializeField] TextMeshProUGUI Combo_Num;
 
     [Space(30)]
+    [Header("語言")]
+    [SerializeField] TMP_Dropdown Language_Dd;
+
+    [Space(30)]
     [Header("免費遊戲")]
     [SerializeField] TextMeshProUGUI FreeSpinCount_Txt;
 
@@ -57,6 +61,13 @@ public class GameControlView : MonoBehaviour
         TotalWinValue_Txt.text = $"0";
         ComboTextEffect_Obj.SetActive(false);
         Spin_Btn.interactable = false;
+
+        // 設置語言選單內容
+        Utils.I.SetOptionsToDropdown(
+            dropdown: Language_Dd,
+            options: new() { "繁體中文", "English" });
+
+        Language_Dd.value = LanguageManager.I.CurrLanguage;
     }
 
     private void Start()
@@ -77,6 +88,12 @@ public class GameControlView : MonoBehaviour
         ChangeBetValue_Btn.onClick.AddListener(() =>
         {
             changeBetValueView.gameObject.SetActive(true);
+        });
+
+        // 語言選單
+        Language_Dd.onValueChanged.AddListener((value) =>
+        {
+            LanguageManager.I.ChangeLanguage(value);
         });
     }
 

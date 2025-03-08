@@ -35,6 +35,8 @@ public class LauncherManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator IProjectInitialize()
     {
+        LanguageManager.I.InitializeLanguageManager();
+
         yield return AssetsManager.I.Initialize();
 
         // 連接服務器
