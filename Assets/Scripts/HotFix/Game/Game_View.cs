@@ -371,6 +371,22 @@ public class Game_View : MonoBehaviour
             }
         }
 
+        // 中大獎
+        int multiple = _gameMVC.game_Model.RecodeTotalWinValue / _gameMVC.game_Model.PreBetValue;
+        if (multiple >= DataManager.BigWinDataList[DataManager.BigWinDataList.Count - 1].Multiple)
+        {
+            BigWinView bigWinView = null;
+            ViewManager.I.OpenView<BigWinView>(ViewEnum.BigWinView, (view) =>
+            {
+                bigWinView = view;
+            });
+
+            if (bigWinView != null)
+            {
+                yield return bigWinView.IShowBigWin(_gameMVC.game_Model);
+            }
+        }
+
         // 金幣中獎
         if (coinCount >= 3)
         {

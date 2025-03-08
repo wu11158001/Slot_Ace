@@ -47,19 +47,6 @@ public class SceneLoadManager : UnitySingleton<SceneLoadManager>
 
                         Addressables.Release(handle);
                     };
-                    /*Addressables.InstantiateAsync("Prefab/Game/GameMVC.prefab").Completed += (handle) =>
-                    {
-                        if (handle.Status == AsyncOperationStatus.Succeeded)
-                        {
-                            Debug.Log("GameMVC 資源實例化成功。");
-                        }
-                        else
-                        {
-                            Debug.LogError("GameMVC 資源實例化失敗: " + handle.OperationException);
-                        }
-
-                        //Addressables.Release(handle);
-                    };*/
                     break;
             }
         }

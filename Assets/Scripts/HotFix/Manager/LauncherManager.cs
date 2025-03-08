@@ -76,7 +76,7 @@ public class LauncherManager : MonoBehaviour
             return;
         }
 
-        DataManager.I.UserId = loginPack.UserId;
+        DataManager.UserId = loginPack.UserId;
 
         RequestControl.LoginServerRequest(loginPack, OnLoginServerResult);
     }
@@ -103,6 +103,8 @@ public class LauncherManager : MonoBehaviour
     /// <param name="msg"></param>
     private void OnError(string msg)
     {
+        Debug.LogError($"啟動錯誤: {msg}");
+
         LanguageManager.I.GetString(LocalizationTableEnum.MessageTip_Table, msg, (text) =>
         {
             ViewManager.I.OpenView<MessageTipView>(ViewEnum.MessageTipView, (view) =>

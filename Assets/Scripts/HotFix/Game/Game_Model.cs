@@ -32,7 +32,7 @@ public class Game_Model : MonoBehaviour
         // 獲取用戶訊息
         LoginPack loginPack = new()
         {
-            UserId = DataManager.I.UserId,
+            UserId = DataManager.UserId,
         };
         RequestControl.GetUserInfoRequest(loginPack, (mainPack) =>
         {

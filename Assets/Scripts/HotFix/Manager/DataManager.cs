@@ -45,11 +45,32 @@ public class BigWildData
     public List<Poker> CopyPokerList;
 }
 
+/// <summary>
+/// 大獎資料
+/// </summary>
+public class BigWinData
+{
+    // 大獎名稱
+    public string TypeString;
+    // 中獎所需倍數
+    public int Multiple;
+}
 
-public class DataManager : UnitySingleton<DataManager>
+public static class DataManager
 {
     // 用戶ID
-    public string UserId { get; set; }
+    public static string UserId { get; set; }
     // 頭像URL
-    public string UserImgUrl { get; set; }
+    public static string UserImgUrl { get; set; }
+
+    // 大獎資料
+    public static List<BigWinData> BigWinDataList = new()
+    {
+        // Mega Win
+        new() { TypeString = "Mega\nWin", Multiple = 30 },
+        // Super Win
+        new() { TypeString = "Super\nWin", Multiple = 20 },
+        // Big Win
+        new() { TypeString = "Big\nWin", Multiple = 10 },
+    };
 }

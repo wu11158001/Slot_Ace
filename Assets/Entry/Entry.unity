@@ -124,48 +124,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1972998976746903096, guid: a77425990e0b78d4497c59375d96f137, type: 3}
   m_PrefabInstance: {fileID: 6565913143129654764}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &78341379 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3823150780366524153, guid: a77425990e0b78d4497c59375d96f137, type: 3}
-  m_PrefabInstance: {fileID: 6565913143129654764}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &78341382 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8345027121829999037, guid: a77425990e0b78d4497c59375d96f137, type: 3}
-  m_PrefabInstance: {fileID: 6565913143129654764}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 78341379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &78341384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 78341379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ea6e153e2c70e34e8d7b5728317cc82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Poker0_Img: {fileID: 78341382}
-  Poker1_Img: {fileID: 1222069044}
-  PokerSpriteList:
-  - {fileID: -3017632856372990247, guid: 9c51e8c8a2429944ba67b85a2bb148f8, type: 3}
-  - {fileID: -5380170316889814623, guid: d8f76e8159ce22c4db2ac8a9461115f6, type: 3}
-  - {fileID: -8680797543115379092, guid: 4c86f4ff6a4c5574d8120bd27e11fab1, type: 3}
-  - {fileID: 1646720447909147354, guid: 5d9dfb586123dd5409072123215afb1b, type: 3}
-  - {fileID: -3859272008004827343, guid: 9e871a1f4513f3e43a18248698d38566, type: 3}
-  - {fileID: -581286770295223724, guid: fb1e2b66b287cf24185e7879d0564333, type: 3}
-  - {fileID: -3173057495752149194, guid: 2b599edd1d8dcdd4c95fe376fa857adf, type: 3}
-  - {fileID: 4432793351920879750, guid: 33ba8ea143ef9a44b8ca695dd8182fd9, type: 3}
-  - {fileID: -4859783777405034084, guid: 236b1e00264da6d4d89bbf984277ea4f, type: 3}
-  - {fileID: 2136130118105564158, guid: 4863983aff4fede489206034b91a7a7e, type: 3}
-  - {fileID: 21300000, guid: dfebb63c0f201493da05aebe44f1e17c, type: 3}
 --- !u!1 &448607033
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,17 +390,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1222069044 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2486539905681679812, guid: a77425990e0b78d4497c59375d96f137, type: 3}
-  m_PrefabInstance: {fileID: 6565913143129654764}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1731515871
 GameObject:
   m_ObjectHideFlags: 0
@@ -1021,21 +968,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2486539905681679812, guid: a77425990e0b78d4497c59375d96f137, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -3017632856372990247, guid: 9c51e8c8a2429944ba67b85a2bb148f8, type: 3}
-    - target: {fileID: 8345027121829999037, guid: a77425990e0b78d4497c59375d96f137, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: -3017632856372990247, guid: 9c51e8c8a2429944ba67b85a2bb148f8, type: 3}
+    - target: {fileID: 7275948660347153646, guid: a77425990e0b78d4497c59375d96f137, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3823150780366524153, guid: a77425990e0b78d4497c59375d96f137, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 78341384}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a77425990e0b78d4497c59375d96f137, type: 3}
 --- !u!114 &6565913143129654765 stripped
 MonoBehaviour:

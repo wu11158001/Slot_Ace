@@ -130,19 +130,6 @@ MonoBehaviour:
   LodingBar_Sli: {fileID: 515106778380063528}
   LoadingProgress_Txt: {fileID: 6270719828957704090}
   entryErrorView: {fileID: 2162291344949596279}
-  Poker1_Img: {fileID: 2486539905681679812}
-  PokerSpriteList:
-  - {fileID: -3017632856372990247, guid: 9c51e8c8a2429944ba67b85a2bb148f8, type: 3}
-  - {fileID: -5380170316889814623, guid: d8f76e8159ce22c4db2ac8a9461115f6, type: 3}
-  - {fileID: -8680797543115379092, guid: 4c86f4ff6a4c5574d8120bd27e11fab1, type: 3}
-  - {fileID: 1646720447909147354, guid: 5d9dfb586123dd5409072123215afb1b, type: 3}
-  - {fileID: -3859272008004827343, guid: 9e871a1f4513f3e43a18248698d38566, type: 3}
-  - {fileID: -581286770295223724, guid: fb1e2b66b287cf24185e7879d0564333, type: 3}
-  - {fileID: -3173057495752149194, guid: 2b599edd1d8dcdd4c95fe376fa857adf, type: 3}
-  - {fileID: 4432793351920879750, guid: 33ba8ea143ef9a44b8ca695dd8182fd9, type: 3}
-  - {fileID: -4859783777405034084, guid: 236b1e00264da6d4d89bbf984277ea4f, type: 3}
-  - {fileID: 2136130118105564158, guid: 4863983aff4fede489206034b91a7a7e, type: 3}
-  - {fileID: 21300000, guid: dfebb63c0f201493da05aebe44f1e17c, type: 3}
 --- !u!1 &1405059684436643425
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,6 +829,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6465585097267852854}
+  - component: {fileID: 1345194049418019872}
   - component: {fileID: 756980424504603840}
   - component: {fileID: 8345027121829999037}
   - component: {fileID: 1513616890133559198}
@@ -872,6 +860,32 @@ RectTransform:
   m_AnchoredPosition: {x: -465, y: 99}
   m_SizeDelta: {x: 217.99998, y: 264.4929}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1345194049418019872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3823150780366524153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ea6e153e2c70e34e8d7b5728317cc82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Poker0_Img: {fileID: 8345027121829999037}
+  Poker1_Img: {fileID: 2486539905681679812}
+  PokerSpriteList:
+  - {fileID: -3017632856372990247, guid: 9c51e8c8a2429944ba67b85a2bb148f8, type: 3}
+  - {fileID: -5380170316889814623, guid: d8f76e8159ce22c4db2ac8a9461115f6, type: 3}
+  - {fileID: -8680797543115379092, guid: 4c86f4ff6a4c5574d8120bd27e11fab1, type: 3}
+  - {fileID: 1646720447909147354, guid: 5d9dfb586123dd5409072123215afb1b, type: 3}
+  - {fileID: -3859272008004827343, guid: 9e871a1f4513f3e43a18248698d38566, type: 3}
+  - {fileID: -581286770295223724, guid: fb1e2b66b287cf24185e7879d0564333, type: 3}
+  - {fileID: -3173057495752149194, guid: 2b599edd1d8dcdd4c95fe376fa857adf, type: 3}
+  - {fileID: 4432793351920879750, guid: 33ba8ea143ef9a44b8ca695dd8182fd9, type: 3}
+  - {fileID: -4859783777405034084, guid: 236b1e00264da6d4d89bbf984277ea4f, type: 3}
+  - {fileID: 2136130118105564158, guid: 4863983aff4fede489206034b91a7a7e, type: 3}
+  - {fileID: 21300000, guid: dfebb63c0f201493da05aebe44f1e17c, type: 3}
 --- !u!222 &756980424504603840
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -900,7 +914,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8680797543115379092, guid: 4c86f4ff6a4c5574d8120bd27e11fab1, type: 3}
+  m_Sprite: {fileID: -3017632856372990247, guid: 9c51e8c8a2429944ba67b85a2bb148f8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1430,7 +1444,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8680797543115379092, guid: 4c86f4ff6a4c5574d8120bd27e11fab1, type: 3}
+  m_Sprite: {fileID: -3017632856372990247, guid: 9c51e8c8a2429944ba67b85a2bb148f8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1653,7 +1667,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
   m_Value: 0
   m_OnValueChanged:

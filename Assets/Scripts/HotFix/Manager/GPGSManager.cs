@@ -22,7 +22,7 @@ public static class GPGSManager
                 string nickname = PlayGamesPlatform.Instance.GetUserDisplayName();
                 string imgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
-                DataManager.I.UserImgUrl = imgUrl;
+                DataManager.UserImgUrl = imgUrl;
 
                 Debug.Log($"用戶登入 : {nickname} ID : {userId}");
 

@@ -72,52 +72,6 @@ public class EntryErrorView : MonoBehaviour
     }
 
     /// <summary>
-    /// 介面關閉
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator ICloseView()
-    {
-        float slideViewReboundPosY = 50.0f;             // 滑動介面回彈位置
-        float slideViewReboundTime = 0.1f;              // 滑動介面回彈時間
-        float waitTime = 0.05f;                         // 等待開始下滑時間
-        float slideTime = 0.2f;                         // 下滑完成時間
-
-        DateTime startTime = DateTime.Now;
-        while ((DateTime.Now - startTime).TotalSeconds <= slideViewReboundTime)
-        {
-            float progress = (float)(DateTime.Now - startTime).TotalSeconds / slideViewReboundTime;
-            // 介面向上滑動效果
-            float posY = Mathf.Lerp(0, slideViewReboundPosY, progress);
-            SlideArea.anchoredPosition = new Vector2(0, posY);
-
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(waitTime);
-
-        Color color = Mask_Img.color;
-        float currMaskAlpha = color.a;
-        float currViewPosY = SlideArea.anchoredPosition.y;
-        startTime = DateTime.Now;
-        while ((DateTime.Now - startTime).TotalSeconds <= slideTime)
-        {
-            float progress = (float)(DateTime.Now - startTime).TotalSeconds / slideTime;
-
-            // 遮罩淡出效果
-            color.a = Mathf.Lerp(currMaskAlpha, 0, progress);
-            Mask_Img.color = color;
-
-            // 介面向下滑動效果
-            float posY = Mathf.Lerp(currViewPosY, -Screen.height, progress);
-            SlideArea.anchoredPosition = new Vector2(0, posY);
-
-            yield return null;
-        }
-
-        ViewManager.I.CloseCurrView();
-    }
-
-    /// <summary>
     /// 設置錯誤訊息
     /// </summary>
     /// <param name="msg">錯誤訊息</param>

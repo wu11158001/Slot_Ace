@@ -42,17 +42,28 @@ public class ClientManager : UnitySingleton<ClientManager>
 #if UNITY_EDITOR
         ip = "127.0.0.1";
 #elif UNITY_ANDROID
-        ip = "192.168.3.176";
-#endif  
+    ip = "192.168.3.176";
+#endif
 
         socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
         try
         {
-            socket.Connect(ip, port);
-            
-            //開始接收訊息
-            StartReceive();
+            // 非同步連接
+            IAsyncResult result = socket.BeginConnect(ip, port, null, null);
 
+            // 設定超時時間
+            bool success = result.AsyncWaitHandle.WaitOne(2000, true);
+
+            if (!success || !socket.Connected)
+            {
+                Debug.LogWarning("連接超時或失敗");
+                socket.Close();
+                return false;
+            }
+
+            // 開始接收訊息
+            StartReceive();
             Debug.Log("連接服務器成功");
             return true;
         }

@@ -11,7 +11,7 @@ public class CoinWinView : MonoBehaviour
     [SerializeField] TextMeshProUGUI FreeSpinTotalWon_Txt;
     [SerializeField] Animator FreeSpinTotalWon_Animator;
 
-    // 免費輪轉總贏分文字效果
+    // 贏分文字大小效果Hash
     private int _isSizeEffect_Hash = Animator.StringToHash("IsSizeEffect");
 
     /// <summary>1

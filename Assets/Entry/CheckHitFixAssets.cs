@@ -35,7 +35,7 @@ public class CheckHitFixAssets : MonoBehaviour
         if (_initHandle.Status != AsyncOperationStatus.Succeeded)
         {
             Debug.LogError("初始化Addressable失敗!");
-            entryView.OnHitFixError();
+            entryView.OnHotFixError();
             return;
         }
 
@@ -52,13 +52,14 @@ public class CheckHitFixAssets : MonoBehaviour
         if (checkHandle.Status != AsyncOperationStatus.Succeeded)
         {
             Debug.LogError("檢查是否有更新資源失敗!");
-            entryView.OnHitFixError();
+            entryView.OnHotFixError();
             return;
         }
 
         if (checkHandle.Result.Count <= 0)
         {
             Debug.Log("沒有更新資源");
+            checkHandle.Release();
             UpdateComplete();
             return;
         }
@@ -79,7 +80,7 @@ public class CheckHitFixAssets : MonoBehaviour
         if (updateHandle.Status != AsyncOperationStatus.Succeeded)
         {
             Debug.LogError("獲取下載資源失敗!");
-            entryView.OnHitFixError();
+            entryView.OnHotFixError();
             return;
         }
 
@@ -93,7 +94,7 @@ public class CheckHitFixAssets : MonoBehaviour
             if (sizeHandle.Status != AsyncOperationStatus.Succeeded)
             {
                 Debug.LogError($"{locator.Keys} : 獲取下載資源大小失敗!");
-                entryView.OnHitFixError();
+                entryView.OnHotFixError();
                 return;
             }
 
@@ -106,6 +107,7 @@ public class CheckHitFixAssets : MonoBehaviour
         if (totalSize <= 0)
         {
             UpdateComplete();
+            updateHandle.Release();
             return;
         }
 
@@ -126,12 +128,15 @@ public class CheckHitFixAssets : MonoBehaviour
             if (downloadHandle.Status != AsyncOperationStatus.Succeeded)
             {
                 Debug.LogError($"{locator.Keys} : 下載資源失敗!");
-                entryView.OnHitFixError();
+                entryView.OnHotFixError();
                 return;
             }
 
             // 下載進度百分比(0~1)
             float progressPrcent = downloadHandle.PercentComplete * 100;
+            Debug.Log($"下載進度 : {progressPrcent}");
+            entryView.UpdateProgress(progressPrcent);
+
             downloadHandle.Release();
         }
 
@@ -146,6 +151,7 @@ public class CheckHitFixAssets : MonoBehaviour
     {
         _initHandle.Release();
 
+        entryView.UpdateProgress(100);
         bool isEditor = false;
         Assembly ass = null;
 

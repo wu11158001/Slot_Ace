@@ -14,6 +14,7 @@ public enum ViewEnum
 {
     GameControlView,
     MessageTipView,
+    BigWinView,
 }
 
 /// <summary>
