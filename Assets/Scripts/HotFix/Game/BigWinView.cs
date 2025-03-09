@@ -45,6 +45,8 @@ public class BigWinView : MonoBehaviour
         GameObject effectObj = AssetsManager.I.SOManager.Effect_SO.GameObjectList[1];
         Instantiate(effectObj).transform.position = Vector3.zero;
 
+        AudioManager.I.PlaySound(SoundEnum.BigWin);
+
         WinType_Txt.text = $"{bigWinData.TypeString}";
         yield return IWinEffect(totalWon);
     }

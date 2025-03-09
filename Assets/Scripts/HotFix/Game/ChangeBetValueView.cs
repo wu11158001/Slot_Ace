@@ -43,6 +43,7 @@ public class ChangeBetValueView : BasePopUpView
 
             BtnList[i].onClick.AddListener(() =>
             {
+                AudioManager.I.PlaySound(SoundEnum.ButtonClick);
                 SetBetValueData(index);
                 StartCoroutine(ICloseView());
             });

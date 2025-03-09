@@ -132,6 +132,7 @@ public class Game_View : MonoBehaviour
             poker.gameObject.transform.position = new(poker.TargetPos.x, slotPosY, 0);
         }
 
+        AudioManager.I.PlaySound(SoundEnum.Poker_Deal);
         StartCoroutine(IStartSlotEffect(slotResultData, isInit));
     }
 
@@ -160,7 +161,7 @@ public class Game_View : MonoBehaviour
             float twoCoinTieldTime = 0.25f;
 
             // 是否有大鬼牌
-            bool hasBigWild = false;
+            bool isHasBigWild = false;
 
             // 重製撲克牌
             foreach (var poker in _pokerList)
@@ -190,7 +191,7 @@ public class Game_View : MonoBehaviour
                     bigWildData = slotResultData.BigWildDataList[round][index];
                     if (bigWildData != null && bigWildData.CopyIndexList != null)
                     {
-                        hasBigWild = true;
+                        isHasBigWild = true;
                         bigWildData.CopyPokerList = new();
                         for (int copyIndex = 0; copyIndex < bigWildData.CopyIndexList.Count; copyIndex++)
                         {
@@ -202,7 +203,19 @@ public class Game_View : MonoBehaviour
                 {
                     // 金幣
 
-                    coinCount++;                    
+                    coinCount++;
+                    if (coinCount == 1)
+                    {
+                        AudioManager.I.PlaySound(SoundEnum.Coin_One);
+                    }
+                    else if (coinCount == 2)
+                    {
+                        AudioManager.I.PlaySound(SoundEnum.Coin_Two);
+                    }
+                    else
+                    {
+                        AudioManager.I.PlaySound(SoundEnum.Coin_Three);
+                    }
                 }
 
                 poker.SetPokerAndTurn(pokerNum, isGold, bigWildData);
@@ -217,7 +230,11 @@ public class Game_View : MonoBehaviour
                     }
                 }
 
-                StartCoroutine(ISlotEffect(poker, pokerNum));
+                // 撲克牌輪轉效果
+                StartCoroutine(IPokerSpinEffect(
+                    poker: poker, 
+                    num: pokerNum, 
+                    isFirstRound: round == 0));
 
                 if (round == 0 && coinCount == 2)
                 {
@@ -258,8 +275,14 @@ public class Game_View : MonoBehaviour
 
                 // 開啟兩枚金幣效果(首輪輪轉)
                 if (round == 0 && coinCount == 2)
-                {
+                {                    
                     _twoCoinColumnEffectList[column].SetActive(true);
+
+                    // 每列首個撲克掉落
+                    if (index % 4 == 0)
+                    {
+                        AudioManager.I.PlaySound(SoundEnum.FreeSpin_TwoCoin, true);
+                    }                    
                 }
 
                 index++;
@@ -274,7 +297,7 @@ public class Game_View : MonoBehaviour
             }
 
             // 有大鬼牌
-            if (hasBigWild)
+            if (isHasBigWild)
             {
                 yield return new WaitForSeconds(1.0f);
             }
@@ -314,6 +337,8 @@ public class Game_View : MonoBehaviour
                 // 中獎牌效果
                 foreach (var winPos in slotResultData.WinCardPosList[round])
                 {
+                    AudioManager.I.PlaySound(SoundEnum.Poker_Win, true);
+
                     Poker winPoker = _pokerList.Where(x => x.PosIndex == winPos).FirstOrDefault();
                     if (winPoker) winPoker.Winning();
                 }
@@ -348,7 +373,7 @@ public class Game_View : MonoBehaviour
             }
 
             // 中獎牌位置重製(非黃金牌)
-            if (slotResultData.WinCardPosList != null)
+            if (slotResultData.WinCardPosList != null && slotResultData.WinCardPosList.Count > 0)
             {
                 foreach (var winPos in slotResultData.WinCardPosList[round])
                 {
@@ -365,6 +390,8 @@ public class Game_View : MonoBehaviour
                             GameObject createEffect = AssetsManager.I.SOManager.Effect_SO.GameObjectList[0];
                             Transform effectObj = _effectPool.CreateObj<Transform>(createEffect);
                             effectObj.position = winPoker.TargetPos;
+
+                            AudioManager.I.PlaySound(SoundEnum.Poker_Clear, true);
                         }                     
                     }
                 }
@@ -408,16 +435,23 @@ public class Game_View : MonoBehaviour
     }
 
     /// <summary>
-    /// 輪轉效果
+    /// 撲克牌輪轉效果
     /// </summary>
     /// <param name="poker"></param>
     /// <param name="num">牌型編號</param>
+    /// <param name="isFirstRound">是否是首輪輪轉</param>
     /// <returns></returns>
-    private IEnumerator ISlotEffect(Poker poker, int num)
+    private IEnumerator IPokerSpinEffect(Poker poker, int num, bool isFirstRound)
     {
         float slotMoveSpeed = 30;
 
         Transform tr = poker.gameObject.transform;
+
+        // 單獨掉落
+        if (!isFirstRound && tr.position != poker.TargetPos)
+        {            
+            AudioManager.I.PlaySound(SoundEnum.Poker_SingleDeal, true);
+        }
 
         while (tr.position.y > poker.TargetPos.y)
         {
@@ -452,6 +486,8 @@ public class Game_View : MonoBehaviour
     /// <returns></returns>
     private IEnumerator ICoinWin()
     {
+        AudioManager.I.PlaySound(SoundEnum.FreeSpin_Three);
+
         foreach (var poker in _pokerList)
         {
             if (poker.CurrNum == 10)
@@ -479,6 +515,7 @@ public class Game_View : MonoBehaviour
         }
 
         // 開啟金幣中獎畫面
+        AudioManager.I.PlaySound(SoundEnum.FreeSpin_Srart);
         _gameMVC.gameControlView.GetFreeSpinAreaSwitch(true);
 
         yield return new WaitForSeconds(2);

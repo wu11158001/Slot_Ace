@@ -46,4 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PokerSprite_SO: {fileID: 11400000, guid: 264b080ee04458f418bd86fd816eb0f4, type: 2}
   PokerBackSprite_SO: {fileID: 11400000, guid: 4cb141d13b255c34289bd1d370c57db7, type: 2}
+  Setting_SO: {fileID: 11400000, guid: 30bf717198aac7c4aabb8fea8c01ab57, type: 2}
   Effect_SO: {fileID: 11400000, guid: db930924fd2076a45a556bc54752aa3f, type: 2}
+  BGM_SO: {fileID: 11400000, guid: 21066f53b2f16eb4db31f1c9e605a446, type: 2}
+  Sound_SO: {fileID: 11400000, guid: 25c8af093089b82429ee08d802f49cc7, type: 2}

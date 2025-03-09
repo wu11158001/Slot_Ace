@@ -25,12 +25,12 @@ public class GameControlView : MonoBehaviour
     [SerializeField] TextMeshProUGUI Combo_Num;
 
     [Space(30)]
-    [Header("語言")]
-    [SerializeField] TMP_Dropdown Language_Dd;
-
-    [Space(30)]
     [Header("免費遊戲")]
     [SerializeField] TextMeshProUGUI FreeSpinCount_Txt;
+
+    [Space(30)]
+    [Header("設置")]
+    [SerializeField] Button Setting_Btn;
 
     [Space(30)]
     [Header("贏分")]
@@ -61,13 +61,6 @@ public class GameControlView : MonoBehaviour
         TotalWinValue_Txt.text = $"0";
         ComboTextEffect_Obj.SetActive(false);
         Spin_Btn.interactable = false;
-
-        // 設置語言選單內容
-        Utils.I.SetOptionsToDropdown(
-            dropdown: Language_Dd,
-            options: new() { "繁體中文", "English" });
-
-        Language_Dd.value = LanguageManager.I.CurrLanguage;
     }
 
     private void Start()
@@ -75,6 +68,8 @@ public class GameControlView : MonoBehaviour
         // 輪轉按鈕
         Spin_Btn.onClick.AddListener(() =>
         {
+            AudioManager.I.PlaySound(SoundEnum.Spin);
+
             // 下注值
             int betValue = changeBetValueView.BetValue;
             _gameMVC.game_Model.StartSpin(betValue);
@@ -87,13 +82,14 @@ public class GameControlView : MonoBehaviour
         // 更換下注值按鈕
         ChangeBetValue_Btn.onClick.AddListener(() =>
         {
+            AudioManager.I.PlaySound(SoundEnum.ButtonClick);
             changeBetValueView.gameObject.SetActive(true);
         });
 
-        // 語言選單
-        Language_Dd.onValueChanged.AddListener((value) =>
+        // 設置按鈕
+        Setting_Btn.onClick.AddListener(() =>
         {
-            LanguageManager.I.ChangeLanguage(value);
+            ViewManager.I.OpenView<RectTransform>(ViewEnum.SettingView);
         });
     }
 

@@ -52,6 +52,16 @@ public class Game_Model : MonoBehaviour
             PreBetValue = mainPack.UserInfoPack.PreBetValue;
 
             _gameMVC.gameControlView.InitUpdateUI();
+            _gameMVC.gameControlView.SetBetValueText(PreBetValue);
+
+            if (RecodeFreeSpin  == 0)
+            {
+                AudioManager.I.PlayBGM(BGMEnum.NormalBgm);
+            }
+            else
+            {
+                AudioManager.I.PlayBGM(BGMEnum.FreeSpinBGM);
+            }
         });
     }
 
@@ -180,6 +190,7 @@ public class Game_Model : MonoBehaviour
         // 免費輪轉結束
         if (freeSpin == 0 && RecodeFreeSpin == 1)
         {
+            AudioManager.I.PlayBGM(BGMEnum.NormalBgm);
             _gameMVC.gameControlView.SetFreeSpinFinish();
         }
 

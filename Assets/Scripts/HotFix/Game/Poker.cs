@@ -210,6 +210,8 @@ public class Poker : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 90, 0);
         Poker_Sr.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[wildNum];
 
+        AudioManager.I.PlaySound(SoundEnum.Poker_Turn, true, 1);
+
         startTime = DateTime.Now;
         while ((DateTime.Now - startTime).TotalSeconds < during)
         {
@@ -267,6 +269,7 @@ public class Poker : MonoBehaviour
     /// <returns></returns>
     public IEnumerator IBigWildCopyEffect()
     {
+        AudioManager.I.PlaySound(SoundEnum.CopyWild, true);
         Poker_Sr.sprite = AssetsManager.I.SOManager.PokerSprite_SO.SpriteList[9];
         Poker_Sr.color = Color.white;
         CopyEffect_Obj.SetActive(true);

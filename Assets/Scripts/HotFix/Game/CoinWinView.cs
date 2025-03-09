@@ -34,6 +34,7 @@ public class CoinWinView : MonoBehaviour
         FreeSpinFinishArea.SetActive(totalWon > 0);
         if (totalWon > 0)
         {
+            AudioManager.I.PlaySound(SoundEnum.FreeSpin_Finish);
             StartCoroutine(IFreeSpinFinishEffect(totalWon));
         }
     }
@@ -59,6 +60,7 @@ public class CoinWinView : MonoBehaviour
 
         // 關閉
         yield return new WaitForSeconds(2);
+
         FreeSpinFinishArea.SetActive(false);
     }
 }
