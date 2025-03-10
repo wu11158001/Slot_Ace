@@ -57,14 +57,14 @@ public class ClientManager : UnitySingleton<ClientManager>
 
             if (!success || !socket.Connected)
             {
-                Debug.LogWarning("連接超時或失敗");
+                Debug.LogWarning("連接超時或失敗!");
                 socket.Close();
                 return false;
             }
 
             // 開始接收訊息
             StartReceive();
-            Debug.Log("連接服務器成功");
+            Debug.Log("連接服務器成功。");
             return true;
         }
         catch (Exception e)
@@ -140,6 +140,27 @@ public class ClientManager : UnitySingleton<ClientManager>
     public void Send(MainPack pack, UnityAction<MainPack> callback)
     {
         RequestManager.I.AddRequest(pack.ActionCode, callback);
-        socket.Send(Message.PackData(pack));
+
+        try
+        {
+            socket.Send(Message.PackData(pack));
+        }
+        catch (Exception)
+        {
+            Debug.LogError("無法連接服務器!");
+
+            LanguageManager.I.GetString(LocalizationTableEnum.MessageTip_Table, "Can not reach server.", (text) =>
+            {
+                ViewManager.I.OpenView<MessageTipView>(ViewEnum.MessageTipView, (view) =>
+                {
+                    view.SetMessageTipView(
+                        msg: text,
+                        isUsingCancelBtn: false,
+                        confirmCallback: () => { },
+                        cancelCallback: null,
+                        isDirectlyClose: true);
+                });
+            });   
+        }
     }
 }

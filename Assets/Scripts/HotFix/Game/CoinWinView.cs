@@ -20,6 +20,11 @@ public class CoinWinView : MonoBehaviour
     /// <param name="isOpen"></param>
     public void GetFreeSpinAreaSwitch(bool isOpen)
     {
+        if (isOpen)
+        {
+            AudioManager.I.PlayBGM(BGMEnum.FreeSpinBGM);
+        }
+
         GetFreeSpinArea.SetActive(isOpen);
         FreeSpinFinishArea.SetActive(false);
     }

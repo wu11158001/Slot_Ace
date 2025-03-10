@@ -341,7 +341,7 @@ public class Utils : UnitySingleton<Utils>
     /// </summary>
     /// <param name="dateTime"></param>
     /// <returns></returns>
-    public static long ConvertDateTimeToTimestamp(DateTime dateTime)
+    public long ConvertDateTimeToTimestamp(DateTime dateTime)
     {
         // 確保DateTime對象是基於UTC
         DateTime utcDateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
@@ -357,7 +357,7 @@ public class Utils : UnitySingleton<Utils>
     /// </summary>
     /// <param name="timestamp"></param>
     /// <returns></returns>
-    public static DateTime ConvertTimestampToDate(long timestamp)
+    public DateTime ConvertTimestampToDate(long timestamp)
     {
         // 使用DateTimeOffset將Unix時間戳轉換為DateTime
         DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(timestamp);

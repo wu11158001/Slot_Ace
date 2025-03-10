@@ -38,6 +38,10 @@ MonoBehaviour:
     m_Localized: Prompt message
     m_Metadata:
       m_Items: []
+  - m_Id: 1851188806619136
+    m_Localized: Can not reach server.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

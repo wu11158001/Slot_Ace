@@ -293,7 +293,10 @@ public class AOTGenericReferences : UnityEngine.MonoBehaviour
 	// System.ValueTuple<UnityEngine.Localization.LocaleIdentifier,object>
 	// System.ValueTuple<object,object>
 	// UnityEngine.AddressableAssets.AddressablesImpl.<>c__DisplayClass79_0<object>
+	// UnityEngine.Events.InvokableCall<int>
+	// UnityEngine.Events.UnityAction<int>
 	// UnityEngine.Events.UnityAction<object>
+	// UnityEngine.Events.UnityEvent<int>
 	// UnityEngine.Localization.Operations.GetTableEntryOperation.<>c<object,object>
 	// UnityEngine.Localization.Operations.GetTableEntryOperation<object,object>
 	// UnityEngine.Localization.Operations.LoadAllTablesOperation.<>c<object,object>

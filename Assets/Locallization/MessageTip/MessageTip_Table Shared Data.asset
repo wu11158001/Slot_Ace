@@ -35,6 +35,10 @@ MonoBehaviour:
     m_Key: Not enough chips.
     m_Metadata:
       m_Items: []
+  - m_Id: 1851188806619136
+    m_Key: Can not reach server.
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

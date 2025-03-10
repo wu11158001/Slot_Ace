@@ -9,9 +9,9 @@ public class AudioManager : UnitySingleton<AudioManager>
     private AudioSource _bgmAudioSource;
 
     // 音效池
-    private readonly Dictionary<GameObject, AudioSource> _soundDic = new();
+    private Dictionary<GameObject, AudioSource> _soundDic = new();
     // 限制音效紀錄
-    private readonly Dictionary<SoundEnum, DateTime> _limitSoundDic = new();
+    private Dictionary<string, string> _limitSoundDic = new();
 
     // 音效清理數
     private int _clear = 20;
@@ -59,20 +59,21 @@ public class AudioManager : UnitySingleton<AudioManager>
         // 限制音效判斷
         if (isLimitSound)
         {
-            if (_limitSoundDic.ContainsKey(sound))
+            if (_limitSoundDic.ContainsKey($"{sound}"))
             {
-                if ((DateTime.Now - _limitSoundDic[sound]).TotalSeconds < 0.1f)
+                DateTime limitSoundTime = Utils.I.ConvertTimestampToDate(long.Parse(_limitSoundDic[$"{sound}"]));
+                if ((DateTime.Now - limitSoundTime).TotalSeconds < 1)
                 {                    
                     return;
                 }
                 else
                 {
-                    _limitSoundDic[sound] = DateTime.Now;
+                    _limitSoundDic[$"{sound}"] = Utils.I.ConvertDateTimeToTimestamp(DateTime.Now).ToString();
                 }
             }
             else
             {
-                _limitSoundDic.Add(sound, DateTime.Now);
+                _limitSoundDic.Add($"{sound}", Utils.I.ConvertDateTimeToTimestamp(DateTime.Now).ToString());
             }
         }
 

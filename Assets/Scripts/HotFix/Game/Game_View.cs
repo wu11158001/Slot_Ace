@@ -210,6 +210,7 @@ public class Game_View : MonoBehaviour
                     }
                     else if (coinCount == 2)
                     {
+                        AudioManager.I.PlaySound(SoundEnum.FreeSpin_TwoCoin);
                         AudioManager.I.PlaySound(SoundEnum.Coin_Two);
                     }
                     else
@@ -332,13 +333,13 @@ public class Game_View : MonoBehaviour
 
                     // 設置連擊數UI
                     _gameMVC.gameControlView.SetComboPanelText(round);
+
+                    AudioManager.I.PlaySound(SoundEnum.Poker_Win, true);
                 }
 
                 // 中獎牌效果
                 foreach (var winPos in slotResultData.WinCardPosList[round])
-                {
-                    AudioManager.I.PlaySound(SoundEnum.Poker_Win, true);
-
+                {                    
                     Poker winPoker = _pokerList.Where(x => x.PosIndex == winPos).FirstOrDefault();
                     if (winPoker) winPoker.Winning();
                 }
@@ -374,7 +375,7 @@ public class Game_View : MonoBehaviour
 
             // 中獎牌位置重製(非黃金牌)
             if (slotResultData.WinCardPosList != null && slotResultData.WinCardPosList.Count > 0)
-            {
+            {                
                 foreach (var winPos in slotResultData.WinCardPosList[round])
                 {
                     Poker winPoker = _pokerList.Where(x => x.PosIndex == winPos).FirstOrDefault();
